@@ -1,3 +1,6 @@
+# はじめに
+このドキュメントは FastTrack for Azure (FTA）の日本チームのノウハウやナレッジをまとめたものです。
+
 
 # Contributing
 
