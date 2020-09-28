@@ -1,0 +1,39 @@
+name: PR Helper
+on:
+  pull_request:
+    branches:
+      - main
+  pull_request_review:
+    branches:
+      - main
+  issue_comment:
+    branches:
+      - main
+jobs:
+  prhelper_job:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Run PR Helper
+      id: runprhelper
+      uses: Matticusau/pr-helper@v1.2.3
+      with:
+        repo-token: ${{ secrets.GHACTION_PAT }}
+        enable-prmerge-automation: true
+        enable-prcomment-automation: true
+        enable-prlabel-automation: true
+        enable-prreviewer-frontmatter: false
+        enable-welcomemessage: true
+        welcome-message: "## Thanks for your contribution!\nFor best practices and workflow recommendations, make sure you've followed CONTRIBUTING.md.\n\nBefore marking the PR as ready please review the status of the checks that are run.\n> NOTE: The markdown linter will not report a failure but you should review the log file for any recommendations."
+        prmerge-requireallchecks: true
+        prmerge-requirereviewcount: 1
+        prmerge-method: 'merge'
+        prmerge-deletebranch: 'true'
+        prmerge-deletebranch-config: '{"deny":["main"]}'
+        prmerge-pathcheck: true
+        prmerge-allowpaths: '{"all":["articles/**"]}'
+        prreviewer-authorkey: ''
+        prlabel-default: 'pr-onhold'
+        prlabel-ready: 'pr-ready'
+        prlabel-onhold: 'pr-onhold'
+        prlabel-reviewrequired: 'review-required'
+        prlabel-automerge: 'qualifies-auto-merge'
