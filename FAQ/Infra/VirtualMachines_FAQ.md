@@ -6,8 +6,14 @@ A: できません。基本的にどのディスクでもサイズを大きく�
 
 ## Q: VM 2台で可用性セットを構成する場合、2台分のサーバー構築および費用が必要になりますか？　　
 A: 可用性セット自体には追加の費用はかかりませんので、2台の VM で可用性セットを構成する場合、VM 2台分の費用となります。VM の料金については下記のドキュメントを参照してください。  
+**可用性セット** https://docs.microsoft.com/ja-jp/azure/virtual-machines/availability#availability-sets  
 **Windows Virtual Machines の料金** https://azure.microsoft.com/ja-jp/pricing/details/virtual-machines/windows/  
 **Linux Virtual Machines の料金** https://azure.microsoft.com/ja-jp/pricing/details/virtual-machines/linux/  
+
+## Q: 可用性セットを構成せずに VM をデプロイした場合でも、同一ラック内で、ホストや電源、スイッチなどは冗長構成は取られていますか？  
+A: 可用性セットを構成しない場合、VM は1台の物理ハードウェア上でホストされ、ホストを収納するラックのスイッチや電源の故障の影響から免れることはできません。単一 VM の SLA は、接続されるマネージドディスクの種類によって異なります。詳細は下記のドキュメントを参照してください。  
+**可用性セット** https://docs.microsoft.com/ja-jp/azure/virtual-machines/availability#availability-sets  
+**仮想マシンの SLA** https://azure.microsoft.com/ja-jp/support/legal/sla/virtual-machines/v1_9/  
 
 ## Q: VM 2台で可用性セットを組む場合、VM 2台間のデータ同期はどうなるのでしょう？例えば、DB 2台で可用性セットを組む場合、ユーザーはどちらか一方のサーバーのデータを更新するが、そのデータはいつ、どうやって他方に同期されるのでしょうか？2台ともに動いている状態でしょうか？  
 A: データを同期する仕組みは別に用意しなければいけません。例えば、SQL Server Always-On 可用性グループを構成する場合は、SQL Server自体がデータをレプリケートする役割を持ちます。あるいは、FCI(Failover Cluster Instance)を構成する場合は、1) S2Dクラスターを構成する 2) Premium 共有ファイルを利用する 3) 3rd partyツール（SIOS DataKeeper, NEC ClusterPro等）を使ってディスクのレプリケーションを行う、といった手法が使われます。詳細は下記のドキュメントを参照してください。  
