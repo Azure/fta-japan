@@ -11,7 +11,7 @@ A: 可用性セット自体には追加の費用はかかりませんので、2�
 **Linux Virtual Machines の料金** https://azure.microsoft.com/ja-jp/pricing/details/virtual-machines/linux/  
 
 ## Q: 可用性セットを構成せずに VM をデプロイした場合でも、同一ラック内で、ホストや電源、スイッチなどは冗長構成は取られていますか？  
-A: 可用性セットを構成しない場合、VM は1台の物理ハードウェア上でホストされ、ホストを収納するラックのスイッチや電源の故障の影響から免れることはできません。単一 VM の SLA は、接続されるマネージドディスクの種類によって異なります。詳細は下記のドキュメントを参照してください。  
+A: 可用性セットを構成しない場合、VM は1台の物理ハードウェア上でホストされ、冗長化されていないため、ホストを収納するラックのスイッチや電源の故障の影響から免れることはできません。単一 VM の SLA は、接続されるマネージドディスクの種類によって異なります。詳細は下記のドキュメントを参照してください。  
 **可用性セット** https://docs.microsoft.com/ja-jp/azure/virtual-machines/availability#availability-sets  
 **仮想マシンの SLA** https://azure.microsoft.com/ja-jp/support/legal/sla/virtual-machines/v1_9/  
 
