@@ -19,3 +19,7 @@ A: 可用性セットを構成しない場合、VM は1台の物理ハードウ�
 A: データを同期する仕組みは別に用意しなければいけません。例えば、SQL Server Always-On 可用性グループを構成する場合は、SQL Server自体がデータをレプリケートする役割を持ちます。あるいは、FCI(Failover Cluster Instance)を構成する場合は、1) S2Dクラスターを構成する 2) Premium 共有ファイルを利用する 3) 3rd partyツール（SIOS DataKeeper, NEC ClusterPro等）を使ってディスクのレプリケーションを行う、といった手法が使われます。詳細は下記のドキュメントを参照してください。  
 **Azure のみ:高可用性ソリューション** https://docs.microsoft.com/ja-jp/azure/azure-sql/virtual-machines/windows/business-continuity-high-availability-disaster-recovery-hadr-overview#azure-only-high-availability-solutions    
 なお、この上記ドキュメントに記載されている、Premium SSDを使った共有ディスクは、まだ米国中西部リージョンでしかサポートされていません。(2020年9月29日現在)　　
+
+## Q: サーバー構築時に VM にパブリック IP アドレスを付加しました。サーバー構築後はパブリック IP アドレスは不要のため、プライベート IP アドレスを残したまま、パブリック IP アドレスを削除できますか？削除した場合、後からパブリック IP アドレスを付加できますか？  
+A: VM のネットワークインターフェースの IP 構成から、パブリック IP アドレスの関連付けを解除することができます。その後、必要に応じて、パブリック IP アドレスのリソースを削除します。同様に、新規のパブリック IP アドレスを作成して、VM のネットワークインターフェースに関連付けることが可能です。詳細は下記のドキュメントを参照してください。  
+**パブリック IP アドレスの関連付けを削除する https://docs.microsoft.com/ja-jp/azure/virtual-network/remove-public-ip-address-vm  
