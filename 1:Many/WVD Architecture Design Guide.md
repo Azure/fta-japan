@@ -4,7 +4,7 @@
 内容は FTA のメンバーによって適宜更新されますが、内容の正しさを保証するものではありません。WVD に関する最新の情報や WVD の正確な仕様を確認する場合は必ず[公式ドキュメント](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/overview)を参照してください。
 
 FTA (FastTrack for Azure) 組織については[こちら](https://azure.microsoft.com/ja-jp/programs/azure-fasttrack/)を参照ください。
-
+ごめんなさい
 ## 1. 必要条件
 ## 2. コンセプト
 ## 3. ネットワーク要件
