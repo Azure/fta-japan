@@ -1,7 +1,7 @@
 # 仮想マシン
 
 ## Q: VM の OS ディスクを小さくすることは可能でしょうか？　　
-A: できません。基本的にどのディスクでもサイズを大きくすることはできても小さくすることはできません。詳細は下記のドキュメントを参照してください。なお、 Azure Market Place の Windows Server のイメージには、[smalldisk] とラベルされた30GBサイズのイメージも用意されていますので、これを使って VM をデプロイすると、OS ディスクが30GBで作成され、大きなディスク容量が不要な場合コストを節約できます。ポータルから Market Place -> Windows Server -> 「作成」でドリルダウンすると、様々なバージョンの Windows Servr について、通常サイズまたは smalldisk サイズのイメージが表示され選択することができます。
+A: できません。基本的にどのディスクでもサイズを大きくすることはできても小さくすることはできません。詳細は下記のドキュメントを参照してください。なお、 Azure Market Place の Windows Server のイメージには、[smalldisk] とラベルされた30GBサイズのイメージも用意されていますので、これを使って VM をデプロイすると、OS ディスクが30GBで作成され、大きなディスク容量が不要な場合コストを節約できます。ポータルから Market Place -> Windows Server -> 「作成」でドリルダウンすると、様々なバージョンの Windows Servr について、通常サイズまたは smalldisk サイズのイメージが表示され選択することができます。  
 **マネージドディスクのサイズを変更する** https://docs.microsoft.com/ja-jp/azure/virtual-machines/windows/expand-os-disk#resize-a-managed-disk  
 
 ## Q: VM 2台で可用性セットを構成する場合、2台分のサーバー構築および費用が必要になりますか？　　
