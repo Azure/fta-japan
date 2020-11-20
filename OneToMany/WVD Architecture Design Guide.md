@@ -24,7 +24,7 @@ Windows Virtual Desktop
 ## 4. デザイン パータン
 ここでは一般的なエンタープライズの環境で既存のオンプレミス Active Directory 環境を活用しつつ、セキュリティを意識した形で WVD を利用する場合によく採用される構成を幾つか説明します。
 
-![networkdesign1](https://github.com/Azure/fta-japan/tree/main/OneToMany/images/newtworkdesign1.png)
+![networkdesign1](https://github.com/Azure/fta-japan/blob/main/OneToMany/images/NetworkDesign1.png)
 
 
 
