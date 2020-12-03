@@ -71,7 +71,7 @@ VDI 型で使用する OS はオンプレミスで使用する Windows 10 Enterp
 
 RDS 型では複数ユーザーによる同時ログインを実現するため、オンプレミスでは Windows Server がホスト OS として利用されてきましたが、WVD では Windows Server だけでなく、Windows 10 Enterprise Multisession という独自 OS を利用することが新たに可能になりました。この OS は WVD の利用を想定して Windows Server をベースに作成されたもので、従来の Windows 10 では実現できなかった複数ユーザーによる同時ログインを実現できるようになっており、これによって RDS 型のサービスを Windows 10 で提供することができるようになりました。
 
-![windows10evd](images/windows10EVD.png)
+![windows10evd](images/Windows10EVD.png)
 
 
 ### FSLogix によるプロファイル管理
