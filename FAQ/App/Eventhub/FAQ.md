@@ -14,7 +14,6 @@
 3. このような形でアクセスキーや接続文字列にアクセスすることができます。
 ![Eventhub003](https://media.githubusercontent.com/media/Azure/fta-japan/main/FAQ/App/Eventhub/asset/eventhub003.png)
 
-
 ## EventHubの性能設定はどこからできますか？
 
 1. この画面の左パネルにあるスケーリングをクリックしてください。
@@ -31,3 +30,12 @@
 
 性能設定に関する詳しい説明は以下のドキュメントをご参照ください。  
 [Event Hubs によるスケーリング](https://docs.microsoft.com/ja-jp/azure/event-hubs/event-hubs-scalability)
+
+## EventHubからCosmosDBへデータを書き込みたいのですが？
+EventHubから直接データを書き込み手段はありませんが、Azureのサービスを使ってより簡単に実装することができます。
+
+1. Stream Analyticsを使うパターン（ノンコーディング）
+2. Azure Functionsを使うパターン
+3. その他、App ServiceやVM上で実行されるアプリケーションでロジックを組むパターン
+
+実装難易度、自由度は下に行くほど高くなります。
