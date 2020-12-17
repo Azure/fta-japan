@@ -131,20 +131,7 @@ WVD コントロールプレーンへの接続時には Azure AD での認証と
 1. 
 
 
+## 4. デザイン パータン
 ## 5. ログとモニタリング
 ## 6. 各種ツール
 
-<!---
-
-7.	WVD  ID Security (Optional) 
-  i.	Azure AD Conditional Access (Azure AD Premium) 
-  ii.	Intune 
-  iii.	MDATP
-8.	WVD Image management (Optional) 
-  i.	Capture images 
-  ii.	Shared Image Gallery 
-9.	WVD Misc (Optional)
-  i.	vCPU Quota
-  ii.	Scale limit (https://docs.microsoft.com/ja-jp/azure/architecture/example-scenario/wvd/windows-virtual-desktop)
-
--->
