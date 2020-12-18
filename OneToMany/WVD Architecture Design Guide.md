@@ -13,8 +13,9 @@
 
 FTA (FastTrack for Azure) 組織については[こちら](https://azure.microsoft.com/ja-jp/programs/azure-fasttrack/)を参照ください。
 
----
+<br>
 ## 1. 必要条件
+---
 WVD は Microsoft Azure 上で動作する仮想デスクトップを提供するサービスです。WVD を動作させるには最低限以下のコンポーネントが必要です。
 
 - Azure サブスクリプション
@@ -59,8 +60,9 @@ Azure AD ConnectでADからAzure ADへ同期する設定を実施する際には
 	- WVDのマシンを展開するAzureサブスクリプション
 - WVDにアクセスするユーザーが存在するAzure ADテナントに紐づくAzureサブスクリプションが必要
 
----
+<br>
 ## 2. コンセプト
+---
 <!--
 2.	Concept of WVD (Managed Control plane and Win10 EVD and FSLogix are WVD specific)
 -->
@@ -86,8 +88,9 @@ RDS 型では複数ユーザーによる同時ログインを実現するため�
 ### FSLogix によるプロファイル管理
 主に Windows 10 Multisession OS に対する付加価値を与える機能として、従来の RDS ソリューションで使用されていたリモート ユーザー プロファイルは、FSLogix という Microsoft が買収した製品によって置き換わりました。Windows 10 Multisession を使用する際には必ず FSLogix を使わなければならないということではありませんが、パフォーマンスや信頼性に優れ、また GPO による細かな管理も可能であることから、仮想マシン共有型（プール型）で WVD を利用する際には利用が推奨されています。
   
----
+<br>
 ## 3. ネットワーク要件
+---
 <!--
 3.	WVD Networking (Required Traffic for both WVD session-host and client device)
 -->
@@ -117,8 +120,9 @@ WVD コントロールプレーンへの接続時には Azure AD での認証と
 
 ![windows10evd](images/network-4.png)
 
----
+<br>
 ## 4. デザイン パターン
+---
 ここでは上述したような基礎的な WVD の概要が押さえられていることを前提として、一般的なエンタープライズ環境で WVD を利用する場合によく採用される実践的な構成例を紹介します。
 
 まずは以下の全体像をご覧ください。
@@ -155,7 +159,9 @@ Azure で仮想マシンを動作させるには仮想ネットワーク (Vnet) 
 
 ![networkdesign1](images/porxyandazfw.png)
 
+<br>
 ## 5. ログとモニタリング
+---
 ここでは WVD に限らない Azure を使用する際のログの考え方や取得方法を紹介します。
 
 Azure でのログ取得は Azure Monitor というサービスが担う形となっており、WVD はもちろん、その他の Azure 上の PaaS サービス (App Service 等) や IaaS サービスを使う場合でも基本的には Azure Monitor によるロギングや監視を行うことになります。ちなみに "Azure Monitor" という用語は Azure 上でのモニタリング機能を提供する広義の用語としても使用されますが、多くのケースではその実態は LogAnalytics ワークスペースというログ取得／分析サービスによって行われます。
@@ -214,9 +220,9 @@ https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-enable-
 ![networkdesign1](images/monitor-application.png)
 
 
----
+<br>
 ## 6. 各種ツール
-
+---
 
 ここでは Microsoft Native WVD を利用する上で役立つツールやリンク情報をご紹介します。
 
@@ -232,7 +238,6 @@ https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-enable-
 
 [Proactively monitor ARM-based Windows Virtual Desktop with Azure Log Analytics and Azure Monitor](https://techcommunity.microsoft.com/t5/windows-it-pro-blog/proactively-monitor-arm-based-windows-virtual-desktop-with-azure/ba-p/1508735)
 
----
 ### 6.3 参考リンク情報
 
 [WVD および FSLogix 関連の各種公開情報](https://jpwinsup.github.io/blog/2020/11/05/RemoteDesktopService/WVD/wvd-fslogix-useful-links/) (日本マイクロソフト サポートチームによる Blog)
@@ -253,5 +258,4 @@ https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-enable-
   ii.	Scale limit (https://docs.microsoft.com/ja-jp/azure/architecture/example-scenario/wvd/windows-virtual-desktop)
 
 -->
-=======
 
