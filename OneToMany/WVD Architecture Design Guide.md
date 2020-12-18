@@ -21,10 +21,11 @@ FTA (FastTrack for Azure) 組織については[こちら](https://azure.microso
 
 WVD は Microsoft Azure 上で動作する仮想デスクトップを提供するサービスです。WVD を動作させるには最低限以下のコンポーネントが必要です。
 
-- Azure サブスクリプション
-- Azure AD テナント
 - Windows Active Directory 環境（Azure Active Directory Domain Service でも可）
-- 適切なライセンス（https://azure.microsoft.com/ja-jp/pricing/details/virtual-desktop）
+- Windows Active Directory 環境から Azure AD への同期
+- Azure AD テナント
+- Azure サブスクリプション
+- (適切なライセンス（https://azure.microsoft.com/ja-jp/pricing/details/virtual-desktop ))
 
 WVD は以下の図のイメージで Azure サブスクリプションの Vnet 内に展開した VM に WVD Agent をインストールし、VDI として利用します。WVD を展開する際に必要となるコンポーネントについてご説明します。
 
@@ -32,36 +33,28 @@ WVD は以下の図のイメージで Azure サブスクリプションの Vnet 
 
 1．Active Directory Domain Service (ADDS)
 - WVD VM が参加するドメインコントローラー
--  ADDS の選択肢は複数存在し、お客様のご要件に応じて柔軟に選択できます。
+- ADDS の選択肢は複数存在し、お客様のご要件に応じて柔軟に選択できます。
     - オンプレミスに存在する既存 AD
-        - Azure とオンプレミス DC を専用線 / VPNで接続し、WVD で利用するAzure 上の VM をオンプレミスのADに参加
     - Azure IaaS 上に新規構築
     - Azure の AD サービス (Azure Active Directory Domain Service) を利用
 
 2. Azure AD Connect
-	- AD/DNS からUPN を Azure AD へ同期
+	- AD/DNS から UPN を Azure AD へ同期
 	- 既存で Azure AD Connect を利用している場合は注意が必要
-※AADCがサポートするトポロジ
 	- Azure AD Connect は Windows Server に対してソフトウェアをインストールし、構成する
-Azure AD Connect で AD から Azure AD へ同期する設定を実施する際には以下留意点が存在
-・同期設定時、Azure AD のグローバル管理者権限をもったアカウントが必要
-・同期設定時、AD へのエンタープライズ権限をもったアカウントが必要
-・グローバル管理者は他の Azure AD からゲスト招待されているユーザーは不可
 
 3. Azure AD
-	- WVD にアクセスするユーザーはAzure ADの認証基盤でログイン認証を実施
+	- WVD にアクセスするユーザーは Azure AD の認証基盤でログイン認証を実施
 	- 複数の Azure AD テナントが存在する場合は注意が必要
-※構築の際に問題になることが多い Point
-	- WVD にアクセスする際に AAD の多要素認証機能の利用が可能
-・Azure AD Premier P1 ライセンス以上が必要
 	- AAD には WVD にアクセスするユーザーが ADDS から同期されている
-・別の Azure AD から招待されたゲストユーザー、AzureAD B2B は WVD へのアクセスが不可
+	- 別の Azure AD から招待されたゲストユーザー、AzureAD B2B は WVD へのアクセスが不可
 
 ![adtenant](images/adtenant.png)
 
 4. Azure サブスクリプション
 	- WVD のマシンを展開するAzureサブスクリプション
-- WVD にアクセスするユーザーが存在する Azure AD テナントに紐づく Azure サブスクリプションが必要
+	- WVD にアクセスするユーザーが存在する Azure AD テナントに紐づく Azure サブスクリプションが必要
+
 
 <br>
 
