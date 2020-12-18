@@ -14,6 +14,7 @@
 FTA (FastTrack for Azure) 組織については[こちら](https://azure.microsoft.com/ja-jp/programs/azure-fasttrack/)を参照ください。
 
 <br>
+
 ## 1. 必要条件
 ---
 WVD は Microsoft Azure 上で動作する仮想デスクトップを提供するサービスです。WVD を動作させるには最低限以下のコンポーネントが必要です。
@@ -61,6 +62,7 @@ Azure AD ConnectでADからAzure ADへ同期する設定を実施する際には
 - WVDにアクセスするユーザーが存在するAzure ADテナントに紐づくAzureサブスクリプションが必要
 
 <br>
+
 ## 2. コンセプト
 ---
 <!--
@@ -121,6 +123,7 @@ WVD コントロールプレーンへの接続時には Azure AD での認証と
 ![windows10evd](images/network-4.png)
 
 <br>
+
 ## 4. デザイン パターン
 ---
 ここでは上述したような基礎的な WVD の概要が押さえられていることを前提として、一般的なエンタープライズ環境で WVD を利用する場合によく採用される実践的な構成例を紹介します。
@@ -160,6 +163,7 @@ Azure で仮想マシンを動作させるには仮想ネットワーク (Vnet) 
 ![networkdesign1](images/porxyandazfw.png)
 
 <br>
+
 ## 5. ログとモニタリング
 ---
 ここでは WVD に限らない Azure を使用する際のログの考え方や取得方法を紹介します。
@@ -221,6 +225,7 @@ https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-enable-
 
 
 <br>
+
 ## 6. 各種ツール
 ---
 
