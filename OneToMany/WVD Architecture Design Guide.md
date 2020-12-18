@@ -1,17 +1,19 @@
 # WVD アーキテクチャー デザイン ガイド (Powered By FTA)
 
+このドキュメントは FTA (FastTrack for Azure) のメンバーによって管理されているものであり、WVD (Windows Virtual Desktop) 環境を新たに作成されようとしている方に対して WVD に対する理解を深め、多様なビジネス要件を満たすために WVD や Azure が提供している機能やそのつながりを理解してもらうために作成したものです。
+
+内容は FTA のメンバーによって適宜更新されますが、内容の正しさを保証するものではありません。WVD に関する最新の情報や WVD の正確な仕様を確認する場合は必ず[公式ドキュメント](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/overview)を参照してください。また、ここでは Microsoft が提供する Native WVD についてのみ取り扱います。Citrix 社や VMWare 社によって提供される WVD については本資料では基本的には触れません。
+
+FTA (FastTrack for Azure) 組織については[こちら](https://azure.microsoft.com/ja-jp/programs/azure-fasttrack/)を参照ください。
+
+### 目次
+
 1. 必要条件
 2. コンセプト
 3. ネットワーク要件
 4. デザイン パターン
 5. ログとモニタリング
 6. 各種ツール
-
-このドキュメントは FTA (FastTrack for Azure) のメンバーによって管理されているものであり、WVD (Windows Virtual Desktop) 環境を新たに作成されようとしている方に対して WVD に対する理解を深め、多様なビジネス要件を満たすために WVD や Azure が提供している機能やそのつながりを理解してもらうために作成したものです。
-
-内容は FTA のメンバーによって適宜更新されますが、内容の正しさを保証するものではありません。WVD に関する最新の情報や WVD の正確な仕様を確認する場合は必ず[公式ドキュメント](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/overview)を参照してください。また、ここでは Microsoft が提供する Native WVD についてのみ取り扱います。Citrix 社や VMWare 社によって提供される WVD については本資料では基本的には触れません。
-
-FTA (FastTrack for Azure) 組織については[こちら](https://azure.microsoft.com/ja-jp/programs/azure-fasttrack/)を参照ください。
 
 <br>
 
@@ -24,7 +26,7 @@ WVD は Microsoft Azure 上で動作する仮想デスクトップを提供す�
 - Windows Active Directory 環境（Azure Active Directory Domain Service でも可）
 - 適切なライセンス（https://azure.microsoft.com/ja-jp/pricing/details/virtual-desktop）
 
-WVD は以下図のイメージでAzureサブスクリプションのvNet内に展開したVMにWVD Agentをインストールし、VDI として利用します。WVD を展開する際に必要となるコンポーネントについてご説明します。
+WVD は以下の図のイメージで Azure サブスクリプションの Vnet 内に展開した VM に WVD Agent をインストールし、VDI として利用します。WVD を展開する際に必要となるコンポーネントについてご説明します。
 
 ![overalldesign](images/overalldesign1.png)
 
@@ -32,34 +34,34 @@ WVD は以下図のイメージでAzureサブスクリプションのvNet内に�
 - WVD VM が参加するドメインコントローラー
 -  ADDS の選択肢は複数存在し、お客様のご要件に応じて柔軟に選択できます。
     - オンプレミスに存在する既存 AD
-        - AzureとオンプレミスDCを専用線 / VPNで接続し、WVDで利用するAzure上のVMをオンプレミスのADに参加
-    - Azure IaaS上に新規構築
+        - Azure とオンプレミス DC を専用線 / VPNで接続し、WVD で利用するAzure 上の VM をオンプレミスのADに参加
+    - Azure IaaS 上に新規構築
     - Azure の AD サービス (Azure Active Directory Domain Service) を利用
 
 2. Azure AD Connect
-	- AD/DNSからUPNをAzure ADへ同期
-	- 既存でAzure AD Connectを利用している場合は注意が必要
+	- AD/DNS からUPN を Azure AD へ同期
+	- 既存で Azure AD Connect を利用している場合は注意が必要
 ※AADCがサポートするトポロジ
-	- Azure AD ConnectはWindows Serverに対してソフトウェアをインストールし、構成する
-Azure AD ConnectでADからAzure ADへ同期する設定を実施する際には以下留意点が存在
-・同期設定時、Azure ADのグローバル管理者権限をもったアカウントが必要
-・同期設定時、ADへのエンタープライズ権限をもったアカウントが必要
-・グローバル管理者は他のAzure ADからゲスト招待されているユーザーは不可
+	- Azure AD Connect は Windows Server に対してソフトウェアをインストールし、構成する
+Azure AD Connect で AD から Azure AD へ同期する設定を実施する際には以下留意点が存在
+・同期設定時、Azure AD のグローバル管理者権限をもったアカウントが必要
+・同期設定時、AD へのエンタープライズ権限をもったアカウントが必要
+・グローバル管理者は他の Azure AD からゲスト招待されているユーザーは不可
 
 3. Azure AD
-	- WVDにアクセスするユーザーはAzure ADの認証基盤でログイン認証を実施
-	- 複数のAzure ADテナントが存在する場合は注意が必要
-※構築の際に問題になることが多いPoint
-	- WVDにアクセスする際にAADの多要素認証機能の利用が可能
-・Azure AD Premier P1ライセンス以上が必要
-	- AADにはWVDにアクセスするユーザーがADDSから同期されている
-・別のAzure ADから招待されたゲストユーザー、AzureAD B2B はWVDへのアクセスが不可
+	- WVD にアクセスするユーザーはAzure ADの認証基盤でログイン認証を実施
+	- 複数の Azure AD テナントが存在する場合は注意が必要
+※構築の際に問題になることが多い Point
+	- WVD にアクセスする際に AAD の多要素認証機能の利用が可能
+・Azure AD Premier P1 ライセンス以上が必要
+	- AAD には WVD にアクセスするユーザーが ADDS から同期されている
+・別の Azure AD から招待されたゲストユーザー、AzureAD B2B は WVD へのアクセスが不可
 
 ![adtenant](images/adtenant.png)
 
 4. Azure サブスクリプション
-	- WVDのマシンを展開するAzureサブスクリプション
-- WVDにアクセスするユーザーが存在するAzure ADテナントに紐づくAzureサブスクリプションが必要
+	- WVD のマシンを展開するAzureサブスクリプション
+- WVD にアクセスするユーザーが存在する Azure AD テナントに紐づく Azure サブスクリプションが必要
 
 <br>
 
@@ -96,7 +98,7 @@ RDS 型では複数ユーザーによる同時ログインを実現するため�
 -->
 上述したように WVD ではゲートウェイや Web アクセスのためのサーバーがサービス化され、それらのサーバーに対する管理が必要なくなった半面、ユーザーが管理する必要があるセッション ホストと、Microsoft によって提供される管理系のサーバーが完全に分離された形となっています。そのため、これらがお互いに通信して WVD がサービスとして正常に動作するためのネットワークについては、オンプレミスとは全く異なる設計や考慮が必要になります。
 
-具体的には以下が大きな違いとなります。
+以下、具体的な違いを説明してきます。
 
 ###  3.1. オンプレミス Active Directory と Azure Active Directory の同期
 WVD を利用する前提条件として記載したように、WVD は基本的にはオンプレミス Active Directory （もしくは Azure Active Directory Domain Service）と同期された Azure Active Directory が必要になります。これらは基本的には Azure AD Connect によりユーザーが同期されている必要がありますので、同期のためのネットワーク接続が必要です。
@@ -111,7 +113,7 @@ WVD コントロールプレーンへの接続時には Azure AD での認証と
 ![windows10evd](images/network-2.png)
 
 ### 3.3. セッションホストと WVD コントロール プレーン間の接続
-ユーザーが管理する Azure Virtual Network 内のセッションホストとパブリックなエンドポイントを持つ WVD コントロールプレーン間のネットワーク接続が必要です。細かい内容は [こちら](https://azure.microsoft.com/ja-jp/programs/azure-fasttrack/) を参照してもらえればと思いますが、具体的にはクライアントとの画面転送のためのトラフィックや、必要なエージェントをダウンロードしたり更新したりするための通信等となります。
+ユーザーが管理する Azure Virtual Network 内のセッションホストとパブリックなエンドポイントを持つ WVD コントロールプレーン間のネットワーク接続が必要です。細かい内容は [こちら](https://azure.microsoft.com/ja-jp/programs/azure-fasttrack/) を参照してもらえればと思いますが、具体的にはクライアントとの画面転送のためのトラフィックや、必要なエージェントをダウンロードしたり更新したりするための通信となります。
 
 ![windows10evd](images/network-3.png)
 
@@ -142,7 +144,7 @@ Azure で仮想マシンを動作させるには仮想ネットワーク (Vnet) 
 
 スポーク Vnet 同士は既定では互いに通信できないため、システム毎のセキュリティ境界が分かりやすいことや、新たにセキュリティ境界を分けてシステムを追加したい場合にもスポーク Vnet をハブに繋げればよく、将来に向けた拡張性もある構成となります。
 
-また、必須ではありませんが、ハブ Vnet にはインターネットとのセキュリティ境界となる Azure Firewall が配置されるケースが多数あります。スポーク内の各 VM がインターネットに通信する際に Azure Firewall を経由させるようにすることで Azure Firewall が DMZ として機能し、クライアントが外部に接続する際の通信を Azure Firewall で一元的に理することが可能になります。
+また、必須ではありませんが、ハブ Vnet にはインターネットとのセキュリティ境界となる Azure Firewall が配置されるケースが多数あります。スポーク内の各 VM がインターネットに通信する際に Azure Firewall を経由させるようにすることで Azure Firewall が DMZ として機能し、クライアントが外部に接続する際の通信を Azure Firewall で一元的に管理することが可能になります。
 
 ![networkdesign1](images/hubspoke.png)
 
