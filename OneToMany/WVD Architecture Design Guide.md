@@ -217,6 +217,7 @@ https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-enable-
 ---
 ## 6. 各種ツール
 
+
 ここでは Microsoft Native WVD を利用する上で役立つツールやリンク情報をご紹介します。
 
 ### 6.1 スケーリングツール
@@ -252,3 +253,5 @@ https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-enable-
   ii.	Scale limit (https://docs.microsoft.com/ja-jp/azure/architecture/example-scenario/wvd/windows-virtual-desktop)
 
 -->
+=======
+
