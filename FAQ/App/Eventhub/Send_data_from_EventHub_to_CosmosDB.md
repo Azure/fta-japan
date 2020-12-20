@@ -1,0 +1,2 @@
+`EventHub`で受信したデータをCosmosDBに格納し、Webサービスからそのデータを参照するシナリオにおいて、
+`EventHub`で
