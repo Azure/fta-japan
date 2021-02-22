@@ -106,7 +106,7 @@ WVD コントロールプレーンへの接続時には Azure AD での認証と
 ![windows10evd](images/network-2.png)
 
 ### 3.3. セッションホストと WVD コントロール プレーン間の接続
-ユーザーが管理する Azure Virtual Network 内のセッションホストとパブリックなエンドポイントを持つ WVD コントロールプレーン間のネットワーク接続が必要です。細かい内容は [こちら](https://azure.microsoft.com/ja-jp/programs/azure-fasttrack/) を参照してもらえればと思いますが、具体的にはクライアントとの画面転送のためのトラフィックや、必要なエージェントをダウンロードしたり更新したりするための通信となります。
+ユーザーが管理する Azure Virtual Network 内のセッションホストとパブリックなエンドポイントを持つ WVD コントロールプレーン間のネットワーク接続が必要です。細かい内容は [こちら](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/safe-url-list) を参照してもらえればと思いますが、具体的にはクライアントとの画面転送のためのトラフィックや、必要なエージェントをダウンロードしたり更新したりするための通信となります。
 
 ![windows10evd](images/network-3.png)
 
@@ -196,8 +196,7 @@ https://docs.microsoft.com/ja-jp/azure/active-directory/reports-monitoring/howto
 ### 5.3 Azure リソース
 WVD に限りませんが、Azure 上の多くのサービスは "診断設定" から LogAnaltyics ワークスペースにログを送信する設定を行うことができます。WVD のそのようなサービスの一つで、WVD ホストプールに対するユーザーのログイン操作のログや、エラーが発生した際のログを取得することができます。これらのログは既定では Azure 上で取得されないため、明示的にログを取得する設定を行っておく必要があります。
 
-具体的な設定方法については [診断機能に Log Analytics を使用する](
-https://docs.microsoft.com/ja-jp/azure/active-directory/reports-monitoring/howto-integrate-activity-logs-with-log-analytics) を参照してください。このドキュメントにはログを取得した後にログをクエリーするサンプルも紹介されています。
+具体的な設定方法については [診断機能に Log Analytics を使用する](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/diagnostics-log-analytics) を参照してください。このドキュメントにはログを取得した後にログをクエリーするサンプルも紹介されています。
 
 ![networkdesign1](images/monitor-azureresource.png)
 
