@@ -188,8 +188,7 @@ https://docs.microsoft.com/ja-jp/azure/active-directory/reports-monitoring/howto
 ### 5.2 Azure サブスクリプション
 WVD ホストプールを含む Azure リソースは Azure サブスクリプション内に作成する形になりますが、この際のリソース操作に関する情報、例えばリソースの作成／削除／変更等の操作を後から参照できるようにしておくことも重要です。このログは Azure Activity ログと呼ばれており、こちらも既定では90日間 Azure 内部で自動的に保存がされていますが、それ以上前の情報を遡って参照したい場合や、LogAnalytics による分析を行いたい場合には必要に応じて Azure Monitor にエクスポートする設定をしておく必要があります。
 
-具体的な設定方法については [Azure AD ログを Azure Monitor ログと統合する](
-https://docs.microsoft.com/ja-jp/azure/active-directory/reports-monitoring/howto-integrate-activity-logs-with-log-analytics) の "Log Analytics ワークスペースに送信する" を参照してください。
+具体的な設定方法については [Azure アクティビティ ログ](https://docs.microsoft.com/ja-jp/azure/azure-monitor/essentials/activity-log) の "Log Analytics ワークスペースに送信する" を参照してください。
 
 ![networkdesign1](images/monitor-azuresubscription.png)
 
