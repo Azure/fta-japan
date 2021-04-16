@@ -228,8 +228,11 @@ https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-enable-
 [Azure Automation を使用してセッション ホストをスケーリングする](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/set-up-scaling-script)
 
 ### 6.2 Azure Monitor Workbook によるモニタリング
-上述したログ情報を Azure Monitor (LogAnalytics ワークスペース) に送信してあることが前提ですが、Azure Monitor の Workbook (ブック) 機能を使用して収集したログ情報を簡単にダッシュボード化して監視することができます。
-具体的な設定内容は以下のドキュメントに纏められています。設定方法は単純で、github 上で公開されているテンプレートを Azure 上にインポートするだけですぐに使うことができます。
+上述したログ情報を Azure Monitor (LogAnalytics ワークスペース) に送信してあることが前提ですが、Azure Monitor の Workbook (ブック) 機能を使用して収集したログ情報を簡単にダッシュボード化して監視することができます。具体的な設定内容は以下のドキュメントに纏められています（日本語のドキュメントにはプレビューの記載がありますが、実際には一般利用可能な状態です）。
+
+[Windows Virtual Desktop 向けの Azure Monitor を使用してデプロイを監視する (プレビュー)](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/azure-monitor)
+
+なお、以前は以下のドキュメントで紹介されているように github に公開されたテンプレートをインポートすることで、Azure Monitor Workbook を使用した監視機能が提供されていましたが、現在は Azure Portal に統合された上記の方法に置き換わっています。
 
 [Proactively monitor ARM-based Windows Virtual Desktop with Azure Log Analytics and Azure Monitor](https://techcommunity.microsoft.com/t5/windows-it-pro-blog/proactively-monitor-arm-based-windows-virtual-desktop-with-azure/ba-p/1508735)
 
@@ -238,6 +241,10 @@ https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-enable-
 [WVD および FSLogix 関連の各種公開情報](https://jpwinsup.github.io/blog/2020/11/05/RemoteDesktopService/WVD/wvd-fslogix-useful-links/) (日本マイクロソフト サポートチームによる Blog)
 
 [くらう道](https://www.cloudou.net/) (日本マイクロソフト 社員によるブログ記事)
+
+[WVD 関連の更新情報](https://azure.microsoft.com/ja-jp/updates/?category=windows-virtual-desktop)
+
+[WVD 関連のロードマップ情報](https://www.microsoft.com/ja-jp/microsoft-365/roadmap?filters=Windows%20Virtual%20Desktop)
 
 <!---
 
