@@ -106,7 +106,7 @@ WVD コントロールプレーンへの接続時には Azure AD での認証と
 ![windows10evd](images/network-2.png)
 
 ### 3.3. セッションホストと WVD コントロール プレーン間の接続
-ユーザーが管理する Azure Virtual Network 内のセッションホストとパブリックなエンドポイントを持つ WVD コントロールプレーン間のネットワーク接続が必要です。細かい内容は [こちら](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/safe-url-list) を参照してもらえればと思いますが、具体的にはクライアントとの画面転送のためのトラフィックや、必要なエージェントをダウンロードしたり更新したりするための通信となります。
+ユーザーが管理する Azure Virtual Network 内のセッションホストとパブリックなエンドポイントを持つ WVD コントロールプレーン間のネットワーク接続が必要です。細かい内容は [こちら](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/safe-url-list) を参照してもらえればと思いますが、具体的にはクライアントとの画面転送のためのトラフィックや、必要なエージェントをダウンロードしたり更新したりするための通信となります。また、必要な URL に正しくアクセスできているか確認するための [チェック ツール](https://docs.microsoft.com/en-us/azure/virtual-desktop/safe-url-list#required-url-check-tool) も利用可能です。
 
 ![windows10evd](images/network-3.png)
 
