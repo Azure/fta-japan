@@ -252,6 +252,8 @@ https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-enable-
 
 [Windows 365 Enterprise documentation](https://docs.microsoft.com/ja-jp/windows-365/)
 
+test
+
 <!---
 
 7.	WVD  ID Security (Optional) 
