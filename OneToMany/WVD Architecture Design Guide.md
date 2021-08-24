@@ -238,6 +238,9 @@ https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-enable-
 
 ### 6.3 参考リンク情報
 
+[Azure Firewall Premium プレビューの機能](https://docs.microsoft.com/ja-jp/azure/firewall/premium-features)
+
+
 [AVD および FSLogix 関連の各種公開情報](https://jpwinsup.github.io/blog/2020/11/05/RemoteDesktopService/WVD/wvd-fslogix-useful-links/) (日本マイクロソフト サポートチームによる Blog)
 
 [くらう道](https://www.cloudou.net/) (日本マイクロソフト 社員によるブログ記事)
@@ -245,6 +248,8 @@ https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-enable-
 [AVD 関連の更新情報](https://azure.microsoft.com/ja-jp/updates/?category=windows-virtual-desktop)
 
 [AVD 関連のロードマップ情報](https://www.microsoft.com/ja-jp/microsoft-365/roadmap?filters=Windows%20Virtual%20Desktop)
+
+[Windows 365 Enterprise documentation](https://docs.microsoft.com/ja-jp/windows-365/)
 
 <!---
 
