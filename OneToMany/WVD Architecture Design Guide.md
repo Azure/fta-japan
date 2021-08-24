@@ -240,6 +240,7 @@ https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-enable-
 
 [Azure Firewall Premium プレビューの機能](https://docs.microsoft.com/ja-jp/azure/firewall/premium-features)
 
+[Azure Virtual Desktop のセキュリティに関するベスト プラクティス](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/security-guide#azure-virtual-desktop-security-best-practices)
 
 [AVD および FSLogix 関連の各種公開情報](https://jpwinsup.github.io/blog/2020/11/05/RemoteDesktopService/WVD/wvd-fslogix-useful-links/) (日本マイクロソフト サポートチームによる Blog)
 
