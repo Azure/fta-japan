@@ -229,9 +229,9 @@ https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-enable-
 
 ### 6.2 Azure Monitor Workbook によるモニタリング
 
-上述したログ情報を Azure Monitor (LogAnalytics ワークスペース) に送信してあることが前提ですが、Azure Monitor の Workbook (ブック) 機能を使用して収集したログ情報を簡単にダッシュボード化して監視することができます。具体的な設定内容は以下のドキュメントに纏められています（日本語のドキュメントにはプレビューの記載がありますが、実際には一般利用可能な状態です）。
+上述したログ情報を Azure Monitor (LogAnalytics ワークスペース) に送信してあることが前提ですが、Azure Monitor の Workbook (ブック) 機能を使用して収集したログ情報を簡単にダッシュボード化して監視することができます。具体的な設定内容は以下のドキュメントに纏められています。
 
-[Windows Virtual Desktop 向けの Azure Monitor を使用してデプロイを監視する (プレビュー)](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/azure-monitor)
+[Windows Virtual Desktop 向けの Azure Monitor を使用してデプロイを監視する](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/azure-monitor)
 
 なお、以前は以下のドキュメントで紹介されているように github に公開されたテンプレートをインポートすることで、Azure Monitor Workbook を使用した監視機能が提供されていましたが、現在は Azure Portal に統合された上記の方法に置き換わっています。
 
