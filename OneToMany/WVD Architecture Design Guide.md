@@ -245,7 +245,7 @@ https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-enable-
 
 [接続時に仮想マシンを起動 (プレビュー)](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/start-virtual-machine-connect)
 
-
+<br>
 
 ### 6.3 参考リンク情報
 
