@@ -228,6 +228,7 @@ https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-enable-
 [Azure Automation を使用してセッション ホストをスケーリングする](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/set-up-scaling-script)
 
 ### 6.2 Azure Monitor Workbook によるモニタリング
+
 上述したログ情報を Azure Monitor (LogAnalytics ワークスペース) に送信してあることが前提ですが、Azure Monitor の Workbook (ブック) 機能を使用して収集したログ情報を簡単にダッシュボード化して監視することができます。具体的な設定内容は以下のドキュメントに纏められています（日本語のドキュメントにはプレビューの記載がありますが、実際には一般利用可能な状態です）。
 
 [Windows Virtual Desktop 向けの Azure Monitor を使用してデプロイを監視する (プレビュー)](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/azure-monitor)
@@ -235,6 +236,16 @@ https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-enable-
 なお、以前は以下のドキュメントで紹介されているように github に公開されたテンプレートをインポートすることで、Azure Monitor Workbook を使用した監視機能が提供されていましたが、現在は Azure Portal に統合された上記の方法に置き換わっています。
 
 [Proactively monitor ARM-based Windows Virtual Desktop with Azure Log Analytics and Azure Monitor](https://techcommunity.microsoft.com/t5/windows-it-pro-blog/proactively-monitor-arm-based-windows-virtual-desktop-with-azure/ba-p/1508735)
+
+### 6.3 Start Virtual Machine (VM) on Connect
+
+この機能は電源管理に関するもので、ユーザーが仮想マシンに接続しようとしたタイミングで停止済み（割り当て解除）であった仮想マシンを自動的に立ち上げることができます。この機能がない場合、ユーザーが接続しようとしたタイミングで対象となる仮想マシンが停止していると接続処理はエラーで終了します。利用シナリオとしては、上述した "スケーリング ツール" や仮想マシンの自動シャットダウンの機能などを使って、夜間や週末に使用していない仮想マシンを自動的にシャットダウン（割り当て解除）する運用とセットで使用し、ユーザーが使用しない時間帯には可能な限り仮想マシンを停止することでコストを最適化します。
+
+有効化のための手順は以下に纏められています（2021/8/25 現在、日本語のドキュメントにはプレビューの記載がありますが実際には既に一般提供されています）。個人用、プール用の両方のシナリオで利用可能です。
+
+[接続時に仮想マシンを起動 (プレビュー)](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/start-virtual-machine-connect)
+
+
 
 ### 6.3 参考リンク情報
 
