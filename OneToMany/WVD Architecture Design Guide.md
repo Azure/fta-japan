@@ -163,6 +163,11 @@ Azure で仮想マシンを動作させるには仮想ネットワーク (Vnet) 
 Azure Firewall の機能は Standard と Premium によって異なります。Standard はネットワークのアクセス制御を行うためのほとんどの機能を利用することができます。Azure ネットワークとの通信対象を IP、ポートや FQDN で制限したり、あらかじめ用意されているタグを制限に使用することができます。また、脅威インテリジェンスによる通信対象の脅威検知を行うことができます。
 Premium ではより柔軟な URL による制御が可能になる他、TLS のインスペクションを実施することができるため、HTTPS によって暗号化された通信の内容に対する脅威検知を行うことができます。
 
+Azure Firewall の通信やセキュリティ イベントは Azure Monitor ログに記録されるため、任意の監視ソリューションと連携することができます。
+
+
+![networkdesign1](images/allazf.png)
+
 [Azure Firewall の機能](https://docs.microsoft.com/ja-jp/azure/firewall/features)
 - FQDN フィルタリング
 - ネットワーク トラフィックの フィルタリング
@@ -182,7 +187,7 @@ Premium ではより柔軟な URL による制御が可能になる他、TLS の
 - URL フィルタリング
 - Web カテゴリ (URL ベース)
 
-![networkdesign1](images/allazf.png)
+
 
 
 <br>
