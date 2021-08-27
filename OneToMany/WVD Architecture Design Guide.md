@@ -27,6 +27,9 @@ AVD は Microsoft Azure 上で動作する仮想デスクトップを提供す�
 - Azure サブスクリプション
 - (適切なライセンス（https://azure.microsoft.com/ja-jp/pricing/details/virtual-desktop ))
 
+>**(注意)** 実際には現在パブリック プレビューとして利用可能な Azure AD Join によるセッションホストの管理を使用すると、技術的には Azure AD テナントと Azure サブスクリプションのみで AVD を利用することができます。この機能が一般公開された後、このドキュメントもそれに沿って更新予定です。
+
+
 AVD は以下の図のイメージで Azure サブスクリプションの Vnet 内に展開した VM に AVD Agent をインストールし、VDI として利用します。AVD を展開する際に必要となるコンポーネントについてご説明します。
 
 ![overalldesign](images/overalldesign1.png)
@@ -81,7 +84,11 @@ RDS 型では複数ユーザーによる同時ログインを実現するため�
 
 ### FSLogix によるプロファイル管理
 主に Windows 10 Multisession OS に対する付加価値を与える機能として、従来の RDS ソリューションで使用されていたリモート ユーザー プロファイルは、FSLogix という Microsoft が買収した製品によって置き換わりました。Windows 10 Multisession を使用する際には必ず FSLogix を使わなければならないということではありませんが、パフォーマンスや信頼性に優れ、また GPO による細かな管理も可能であることから、仮想マシン共有型（プール型）で AVD を利用する際には利用が推奨されています。
-  
+
+FSLogix 利用時にはユーザー プロファイルは外部ストレージ（ファイルサーバー）に格納され、ユーザーのログイン時に SMB プロトコルによってマウントされます。外部ストレージのオプションとしては Azure NetApp Files, Azure Files, 記憶域スペースダイレクト (Windows Server 上のファイル サーバー) の3つがあり、それぞれの特徴については以下のドキュメントに纏められています。
+
+[Azure Virtual Desktop の FSLogix プロファイル コンテナーのストレージ オプション](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/store-fslogix-profile)
+
 <br>
 
 ## 3. ネットワーク要件
@@ -111,7 +118,7 @@ AVD コントロールプレーンへの接続時には Azure AD での認証と
 ![windows10evd](images/network-3.png)
 
 ### 3.4. セッションホストからインターネットへの接続
-こちらは AVD 特有という意味ではありませんが、ユーザーがセッションホストに接続した後のインターネット接続に対する考慮が必要です。既定では Azure Virtual Network (Vnet) からインターネットに向けた通信は許可されており、監視等もされていないため、必要に応じてアクセスを制限したリプロキシ サーバーや Azure Firewall を経由させるなどの考慮が必要になります。こちらは AVD セッションホストに限らず、Virtual Machine を Azure 上にデプロイする際に一般的に考慮する必要があるものになります。
+こちらは AVD 特有という意味ではありませんが、ユーザーがセッションホストに接続した後のインターネット接続に対する考慮が必要です。既定では Azure Virtual Network (Vnet) からインターネットに向けた通信は許可されており、監視等もされていないため、必要に応じてアクセスを制限したりプロキシ サーバーや Azure Firewall を経由させるなどの考慮が必要になります。こちらは AVD セッションホストに限らず、Virtual Machine を Azure 上にデプロイする際に一般的に考慮する必要があるものになります。
 
 ![windows10evd](images/network-4.png)
 
@@ -263,13 +270,24 @@ https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-enable-
 [Azure Automation を使用してセッション ホストをスケーリングする](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/set-up-scaling-script)
 
 ### 6.2 Azure Monitor Workbook によるモニタリング
-上述したログ情報を Azure Monitor (LogAnalytics ワークスペース) に送信してあることが前提ですが、Azure Monitor の Workbook (ブック) 機能を使用して収集したログ情報を簡単にダッシュボード化して監視することができます。具体的な設定内容は以下のドキュメントに纏められています（日本語のドキュメントにはプレビューの記載がありますが、実際には一般利用可能な状態です）。
 
-[Windows Virtual Desktop 向けの Azure Monitor を使用してデプロイを監視する (プレビュー)](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/azure-monitor)
+上述したログ情報を Azure Monitor (LogAnalytics ワークスペース) に送信してあることが前提ですが、Azure Monitor の Workbook (ブック) 機能を使用して収集したログ情報を簡単にダッシュボード化して監視することができます。正しく構成することで接続済みのセッション数や接続時のエラーなどのホストプールに直接関係する情報のほか、セッションホスト VM の CPU 使用率等のパフォーマンス情報や問題発生時のトラブル シューティングに役立つ特定のイベントログの有無を確認できます。具体的な設定内容は以下のドキュメントに纏められています。
 
-なお、以前は以下のドキュメントで紹介されているように github に公開されたテンプレートをインポートすることで、Azure Monitor Workbook を使用した監視機能が提供されていましたが、現在は Azure Portal に統合された上記の方法に置き換わっています。
+[Windows Virtual Desktop 向けの Azure Monitor を使用してデプロイを監視する](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/azure-monitor)
 
-[Proactively monitor ARM-based Windows Virtual Desktop with Azure Log Analytics and Azure Monitor](https://techcommunity.microsoft.com/t5/windows-it-pro-blog/proactively-monitor-arm-based-windows-virtual-desktop-with-azure/ba-p/1508735)
+>**(注意)** なお、以前は以下のドキュメントで紹介されているように github に公開されたテンプレートをインポートすることで、Azure Monitor Workbook を使用した監視機能が提供されていましたが、現在は Azure Portal に統合された上記の方法に置き換わっています。
+>
+>[Proactively monitor ARM-based Windows Virtual Desktop with Azure Log Analytics and Azure Monitor](https://techcommunity.microsoft.com/t5/windows-it-pro-blog/proactively-monitor-arm-based-windows-virtual-desktop-with-azure/ba-p/1508735)
+
+### 6.3 Start Virtual Machine (VM) on Connect
+
+この機能は電源管理に関するもので、ユーザーが仮想マシンに接続しようとしたタイミングで停止済み（割り当て解除）であった仮想マシンを自動的に立ち上げることができます。この機能がない場合、ユーザーが接続しようとしたタイミングで対象となる仮想マシンが停止していると接続処理はエラーで終了します。利用シナリオとしては、上述した "スケーリング ツール" や仮想マシンの自動シャットダウンの機能などを使って、夜間や週末に使用していない仮想マシンを自動的にシャットダウン（割り当て解除）する運用とセットで使用し、ユーザーが使用しない時間帯には可能な限り仮想マシンを停止することでコストを最適化します。
+
+有効化のための手順は以下に纏められています（2021/8/25 現在、日本語のドキュメントにはプレビューの記載がありますが実際には既に一般提供されています）。個人用、プール用の両方のシナリオで利用可能です。
+
+[接続時に仮想マシンを起動 (プレビュー)](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/start-virtual-machine-connect)
+
+<br>
 
 ### 6.3 参考リンク情報
 
