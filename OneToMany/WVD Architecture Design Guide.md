@@ -233,9 +233,9 @@ https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-enable-
 
 [Windows Virtual Desktop 向けの Azure Monitor を使用してデプロイを監視する](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/azure-monitor)
 
-なお、以前は以下のドキュメントで紹介されているように github に公開されたテンプレートをインポートすることで、Azure Monitor Workbook を使用した監視機能が提供されていましたが、現在は Azure Portal に統合された上記の方法に置き換わっています。
-
-[Proactively monitor ARM-based Windows Virtual Desktop with Azure Log Analytics and Azure Monitor](https://techcommunity.microsoft.com/t5/windows-it-pro-blog/proactively-monitor-arm-based-windows-virtual-desktop-with-azure/ba-p/1508735)
+>[!NOTE]
+>なお、以前は以下のドキュメントで紹介されているように github に公開されたテンプレートをインポートすることで、Azure Monitor Workbook を使用した監視機能が提供されていましたが、現在は Azure Portal >に統合された上記の方法に置き換わっています。
+>[Proactively monitor ARM-based Windows Virtual Desktop with Azure Log Analytics and Azure Monitor](https://techcommunity.microsoft.com/t5/windows-it-pro-blog/proactively-monitor-arm-based-windows-virtual-desktop-with-azure/ba-p/1508735)
 
 ### 6.3 Start Virtual Machine (VM) on Connect
 
