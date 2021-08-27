@@ -142,7 +142,7 @@ Azure で仮想マシンを動作させるには仮想ネットワーク (Vnet) 
 
 そこで複数の仮想ネットワークを相互に接続し、システム毎の境界を仮想ネットワーク単位で分離する構成を取ることが、拡張性や柔軟性の観点で推奨されています。この構成は複数のシステムから共通して利用される Vnet を中心に一つだけ配置し、システム単位で作成した Vnet は中心の Vnet から車輪のスポークのように複数配置することからハブ & スポーク モデルと呼ばれています。
 
-スポーク Vnet 同士は既定では互いに通信できないためフェイル セーフであり、セキュリティ境界が分かれた新たなシステムを追加したい場合にもスポーク Vnet をハブに繋げればよく、将来に向けて拡張しやすい構成となります。
+スポーク Vnet 同士は既定では互いに通信できないためセグメント間の分離が容易です。また、セキュリティ境界が分かれた新たなシステムを追加したい場合にもスポーク Vnet をハブに繋げればよく、将来に向けて拡張しやすい構成となります。
 
 <!--
 また、必須ではありませんが、ハブ Vnet にはインターネットとのセキュリティ境界となる Azure Firewall が配置されるケースが多数あります。スポーク内の各 VM がインターネットに通信する際に Azure Firewall を経由させるようにすることで Azure Firewall が DMZ として機能し、クライアントが外部に接続する際の通信を Azure Firewall で一元的に管理することが可能になります。
@@ -291,7 +291,7 @@ https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-enable-
 
 ### 6.3 参考リンク情報
 
-[Azure Firewall Premium プレビューの機能](https://docs.microsoft.com/ja-jp/azure/firewall/premium-features)
+
 
 [Azure Virtual Desktop のセキュリティに関するベスト プラクティス](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/security-guide#azure-virtual-desktop-security-best-practices)
 
@@ -303,7 +303,7 @@ https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-enable-
 
 [AVD 関連のロードマップ情報](https://www.microsoft.com/ja-jp/microsoft-365/roadmap?filters=Windows%20Virtual%20Desktop)
 
-[Windows 365 Enterprise documentation](https://docs.microsoft.com/ja-jp/windows-365/)
+
 
 
 
