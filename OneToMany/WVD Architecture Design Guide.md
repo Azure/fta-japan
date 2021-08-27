@@ -135,9 +135,11 @@ Azure で仮想マシンを動作させるには仮想ネットワーク (Vnet) 
 
 そこで複数の仮想ネットワークを相互に接続し、システム毎の境界を仮想ネットワーク単位で分離する構成を取ることが、拡張性や柔軟性の観点で推奨されています。この構成は複数のシステムから共通して利用される Vnet を中心に一つだけ配置し、システム単位で作成した Vnet は中心の Vnet から車輪のスポークのように複数配置することからハブ & スポーク モデルと呼ばれています。
 
-スポーク Vnet 同士は既定では互いに通信できないため、システム毎のセキュリティ境界が分かりやすいことや、新たにセキュリティ境界を分けてシステムを追加したい場合にもスポーク Vnet をハブに繋げればよく、将来に向けた拡張性もある構成となります。
+スポーク Vnet 同士は既定では互いに通信できないためフェイル セーフであり、セキュリティ境界が分かれた新たなシステムを追加したい場合にもスポーク Vnet をハブに繋げればよく、将来に向けて拡張しやすい構成となります。
 
+<!--
 また、必須ではありませんが、ハブ Vnet にはインターネットとのセキュリティ境界となる Azure Firewall が配置されるケースが多数あります。スポーク内の各 VM がインターネットに通信する際に Azure Firewall を経由させるようにすることで Azure Firewall が DMZ として機能し、クライアントが外部に接続する際の通信を Azure Firewall で一元的に管理することが可能になります。
+-->
 
 ![networkdesign1](images/hubspoke.png)
 
@@ -154,6 +156,39 @@ Azure で仮想マシンを動作させるには仮想ネットワーク (Vnet) 
 何れの通信もプロキシーもしくは Azure Firewall を経由するため、これらの境界で宛先 URL の制御やロギングを行うことができます。
 
 ![networkdesign1](images/porxyandazfw.png)
+
+### 4.3 Azure Firewall による Web アクセスの保護
+上記のオンプレの Web プロキシによるインターネット分離は、オンプレミスと同等のセキュリティを AVD ホストとの通信に対して適用したいという要求に基づくものですが、Azure Firewall のセキュリティ機能によって要求が満たせる場合には、インターネットへのトラフィックを全て Azure Firewall 経由とすることで、オンプレの Web プロキシに依存しない構成をとることができます。
+
+Azure Firewall の機能は Standard と Premium によって異なります。Standard はネットワークのアクセス制御を行うためのほとんどの機能を利用することができます。Azure ネットワークとの通信対象を IP、ポートや FQDN で制限したり、あらかじめ用意されているタグを制限に使用することができます。また、脅威インテリジェンスによる通信対象の脅威検知を行うことができます。
+Premium ではより柔軟な URL による制御が可能になる他、TLS のインスペクションを実施することができるため、HTTPS によって暗号化された通信の内容に対する脅威検知を行うことができます。
+
+Azure Firewall の通信やセキュリティ イベントは Azure Monitor ログに記録されるため、任意の監視ソリューションと連携することができます。
+
+
+![networkdesign1](images/allazf.png)
+
+[Azure Firewall の機能](https://docs.microsoft.com/ja-jp/azure/firewall/features)
+- FQDN フィルタリング
+- ネットワーク トラフィックの フィルタリング
+- FQDN タグ
+- サービス タグ
+- 脅威インテリジェンス
+- DNAT / SNAT
+- Azure Monitor によるログ
+- 強制トンネリング
+- Web カテゴリ (FQDN ベース)
+
+
+[Azure Firewall Premium の機能](https://docs.microsoft.com/ja-jp/azure/firewall/premium-features)
+
+- TLS インスペクション
+- IDPS
+- URL フィルタリング
+- Web カテゴリ (URL ベース)
+
+
+
 
 <br>
 
@@ -251,6 +286,8 @@ https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-enable-
 [AVD 関連のロードマップ情報](https://www.microsoft.com/ja-jp/microsoft-365/roadmap?filters=Windows%20Virtual%20Desktop)
 
 [Windows 365 Enterprise documentation](https://docs.microsoft.com/ja-jp/windows-365/)
+
+
 
 <!---
 
