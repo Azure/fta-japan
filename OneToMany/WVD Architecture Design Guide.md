@@ -89,6 +89,25 @@ FSLogix 利用時にはユーザー プロファイルは外部ストレージ�
 
 [Azure Virtual Desktop の FSLogix プロファイル コンテナーのストレージ オプション](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/store-fslogix-profile)
 
+### (参考) Windows 365 クラウド PC と Avure Virtual Desktop
+2021年8月1日より Windows 365 クラウド PC が利用可能となりました。これはエンタープライズのお客様が Microsoft のクラウド サービスを使用して VDI を実現するための選択肢が AVD と Windows 365 の 2 つになったことを意味しています。ここでは Windows 365 そのものについて深くは触れないものの、正しい認識で AVD の利用を進めてもらうために Windows 365 と AVD でできること／できないことを実践的な観点で少し紹介したいと思います（将来的な機能拡張でその差が縮まる可能性はあります）。
+
+![windows10evd](images/Windows365-AVD.png)
+
+上の図のように、Windows 365 business > Windows 365 Enterpise > AVD の順でユーザーが考慮する必要がある部分が少なくなります。より細かいものでは以下のような違いがあるので、こちらも参考にして頂ければと思います。
+
+|   |  Windows 365 Business  | Windows 365 Enterprise | AVD
+| ---- | ---- | ---- | ---- |
+|コスト|固定料金|固定料金+ネットワーク従量課金|従量課金|
+|ユーザー割り当て|PC 占有|PC 占有|PC 占有 or マルチセッション|
+|カスタム イメージ|利用不可|利用可|利用可|
+|ドメイン参加|Azure AD 参加のみ|Hybrid AAD 参加のみ|Azure AD 参加 or AD DS 参加|
+|ユーザー規模|300人未満|制限なし|制限なし|
+|パフォーマンス|12 種類の SKU から選択|12 種類の SKU から選択|Azure 上で利用可能な VM と Disk から柔軟に選択可|
+|Azure サブスクリプション|不要|必要|必要|
+|監視|MEM|MEM|Azure Monitor|
+|RemoteApp|利用不可|利用不可|利用可|
+
 <br>
 
 ## 3. ネットワーク要件
