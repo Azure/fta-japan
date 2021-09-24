@@ -89,6 +89,8 @@ FSLogix 利用時にはユーザー プロファイルは外部ストレージ�
 
 [Azure Virtual Desktop の FSLogix プロファイル コンテナーのストレージ オプション](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/store-fslogix-profile)
 
+<br>
+
 ### (参考) Windows 365 クラウド PC と Avure Virtual Desktop
 2021年8月1日より Windows 365 クラウド PC が利用可能となりました。これはエンタープライズのお客様が Microsoft のクラウド サービスを使用して VDI を実現するための選択肢が AVD と Windows 365 の 2 つになったことを意味しています。ここでは Windows 365 そのものについて深くは触れないものの、正しい認識で AVD の利用を進めてもらうために Windows 365 と AVD でできること／できないことを実践的な観点で少し紹介したいと思います（将来的な機能拡張でその差が縮まる可能性はあります）。
 
