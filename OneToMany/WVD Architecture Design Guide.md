@@ -98,7 +98,7 @@ FSLogix 利用時にはユーザー プロファイルは外部ストレージ�
 
 上の図のように、Windows 365 business > Windows 365 Enterpise > AVD の順でユーザーが考慮する必要がある部分が少なくなります。より細かいものでは以下のような違いがあるので、こちらも参考にして頂ければと思います。
 
-|　　　　　　　　　　　　|  Windows 365 Business  　　　| Windows 365 Enterprise | AVD
+|　　　　　　　　　　　　|　　Windows 365 Business　　| Windows 365 Enterprise | AVD
 | ---- | ---- | ---- | ---- |
 |コスト|固定料金|固定料金<br>+ネットワーク従量課金|従量課金|
 |ユーザー割り当て|PC 占有|PC 占有|PC 占有 or マルチセッション|
