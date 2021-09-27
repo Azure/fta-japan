@@ -27,6 +27,10 @@ AVD は Microsoft Azure 上で動作する仮想デスクトップを提供す�
 - Azure サブスクリプション
 - (適切なライセンス（https://azure.microsoft.com/ja-jp/pricing/details/virtual-desktop ))
 
+<p stype="backgrould-color:#EDF7FF;">
+実際には現在パブリック プレビューとして利用可能な Azure AD Join によるセッションホストの管理を使用すると、技術的には Azure AD テナントと Azure サブスクリプションのみで AVD を利用することができます。この機能が一般公開された後、このドキュメントもそれに沿って更新予定です。
+</p>
+
 >**(注意)** 実際には現在パブリック プレビューとして利用可能な Azure AD Join によるセッションホストの管理を使用すると、技術的には Azure AD テナントと Azure サブスクリプションのみで AVD を利用することができます。この機能が一般公開された後、このドキュメントもそれに沿って更新予定です。
 
 
@@ -100,7 +104,7 @@ FSLogix 利用時にはユーザー プロファイルは外部ストレージ�
 
 |　　　　　　　　　　　　|　Windows 365 Business　|　Windows 365 Enterprise　| AVD
 | ---- | ---- | ---- | ---- |
-|コスト|固定料金|固定料金<br>+ネットワーク従量課金|従量課金|
+|コスト|固定料金|固定料金<br>+ネットワーク従量課金|従量課金（VM/ディスク/ネットワーク）|
 |ユーザー割り当て|PC 占有|PC 占有|PC 占有 or マルチセッション|
 |カスタム イメージ|利用不可|利用可|利用可|
 |ドメイン参加|Azure AD 参加のみ|Hybrid AAD 参加のみ|Azure AD 参加 or AD DS 参加|
