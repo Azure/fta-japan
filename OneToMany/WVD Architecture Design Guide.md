@@ -27,7 +27,7 @@ AVD は Microsoft Azure 上で動作する仮想デスクトップを提供す�
 - Azure サブスクリプション
 - (適切なライセンス（https://azure.microsoft.com/ja-jp/pricing/details/virtual-desktop ))
 
->**(※1)** Auzre AD Join によるセッションホストの構成が可能になったため、この場合は Active Directory への参加と Auzre AD Connect による ID 同期は必衰ありません。
+>**(※1)** Auzre AD Join によるセッションホストの構成が可能になったため、この場合は Active Directory への参加と Auzre AD Connect による ID 同期は必要ありません。
 
 AVD は以下の図のイメージで Azure サブスクリプションの Vnet 内に展開した VM に AVD Agent をインストールし、VDI として利用します。AVD を展開する際に必要となるコンポーネントについてご説明します。
 
