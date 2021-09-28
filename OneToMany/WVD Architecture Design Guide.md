@@ -21,18 +21,13 @@ FTA (FastTrack for Azure) 組織については[こちら](https://azure.microso
 
 AVD は Microsoft Azure 上で動作する仮想デスクトップを提供するサービスです。AVD を動作させるには最低限以下のコンポーネントが必要です。
 
-- Windows Active Directory 環境（Azure Active Directory Domain Service でも可）
-- Windows Active Directory 環境から Azure AD への同期
+- Windows Active Directory 環境（Azure Active Directory Domain Service でも可）(※1)
+- Windows Active Directory 環境から Azure AD への同期 (※1)
 - Azure AD テナント
 - Azure サブスクリプション
 - (適切なライセンス（https://azure.microsoft.com/ja-jp/pricing/details/virtual-desktop ))
 
-<p stype="backgrould-color:#EDF7FF;">
-実際には現在パブリック プレビューとして利用可能な Azure AD Join によるセッションホストの管理を使用すると、技術的には Azure AD テナントと Azure サブスクリプションのみで AVD を利用することができます。この機能が一般公開された後、このドキュメントもそれに沿って更新予定です。
-</p>
-
->**(注意)** 実際には現在パブリック プレビューとして利用可能な Azure AD Join によるセッションホストの管理を使用すると、技術的には Azure AD テナントと Azure サブスクリプションのみで AVD を利用することができます。この機能が一般公開された後、このドキュメントもそれに沿って更新予定です。
-
+>**(※1)** Auzre AD Join によるセッションホストの構成が可能になったため、この場合は Active Directory への参加と Auzre AD Connect による ID 同期は必衰ありません。
 
 AVD は以下の図のイメージで Azure サブスクリプションの Vnet 内に展開した VM に AVD Agent をインストールし、VDI として利用します。AVD を展開する際に必要となるコンポーネントについてご説明します。
 
@@ -46,7 +41,7 @@ AVD は以下の図のイメージで Azure サブスクリプションの Vnet 
     - Azure の AD サービス (Azure Active Directory Domain Service) を利用
 
 2. Azure AD Connect
-	- AD/DNS から UPN を Azure AD へ同期
+   - AD/DNS から UPN を Azure AD へ同期
 	- 既存で Azure AD Connect を利用している場合は注意が必要
 	- Azure AD Connect は Windows Server に対してソフトウェアをインストールし、構成する
 
@@ -96,11 +91,11 @@ FSLogix 利用時にはユーザー プロファイルは外部ストレージ�
 <br>
 
 ### (参考) Windows 365 クラウド PC と Avure Virtual Desktop
-2021年8月1日より Windows 365 クラウド PC が利用可能となりました。これはエンタープライズのお客様が Microsoft のクラウド サービスを使用して VDI を実現するための選択肢が AVD と Windows 365 の 2 つになったことを意味しています。ここでは Windows 365 そのものについて深くは触れないものの、正しい認識で AVD の利用を進めてもらうために Windows 365 と AVD でできること／できないことを実践的な観点で少し紹介したいと思います（将来的な機能拡張でその差が縮まる可能性はあります）。
+2021年8月より Windows 365 クラウド PC が利用可能となりました。これはエンタープライズのお客様が Microsoft のクラウド サービスを使用して VDI を実現するための選択肢が AVD と Windows 365 の 2 つになったことを意味しています。ここでは Windows 365 そのものについて深くは触れないものの、正しい認識で AVD の利用を進めてもらうために Windows 365 と AVD でできること／できないことを実践的な観点で少し紹介したいと思います（将来的な機能拡張でその差が縮まる可能性はあります）。
 
 ![windows10evd](images/Windows365-AVD.png)
 
-上の図のように、Windows 365 business > Windows 365 Enterpise > AVD の順でユーザーが考慮する必要がある部分が少なくなります。より細かいものでは以下のような違いがあるので、こちらも参考にして頂ければと思います。
+上の図のように、AVD > Windows 365 Enterprise > Windows 365 Business の順でユーザー自身で対応する必要がある部分が多く、Windows 365 のほうが実際に利用するまでの作業は少なく済みます。その一方で、細かな設定はできないことも多く、柔軟性は AVD のほうが高いと言えます。その他、比較検討の際に主に考慮する必要がある点を纏めましたので、こちらも参考にして頂ければと思います。
 
 |　　　　　　　　　　　　|　Windows 365 Business　|　Windows 365 Enterprise　| AVD
 | ---- | ---- | ---- | ---- |
@@ -126,12 +121,12 @@ FSLogix 利用時にはユーザー プロファイルは外部ストレージ�
 以下、具体的な違いを説明してきます。
 
 ###  3.1. オンプレミス Active Directory と Azure Active Directory の同期
-AVD を利用する前提条件として記載したように、AVD は基本的にはオンプレミス Active Directory （もしくは Azure Active Directory Domain Service）と同期された Azure Active Directory が必要になります。これらは基本的には Azure AD Connect によりユーザーが同期されている必要がありますので、同期のためのネットワーク接続が必要です。
+AVD を利用する前提条件として記載したように、AVD は基本的にはオンプレミス Active Directory （もしくは Azure Active Directory Domain Service）と同期された Azure Active Directory が必要になります (ただし、Azure AD Join の構成では必要ない)。これらは基本的には Azure AD Connect によりユーザーが同期されている必要がありますので、同期のためのネットワーク接続が必要です。
 
 ![windows10evd](images/network-1.png)
 
 ### 3.2. クライアントからの接続
-AVD を使用したセッションホストへの接続は AVD コントロール プレーンと呼ばれるインターネットに公開されたエンドポイント経由で実施します。言い換えると、インターネット カフェやスマートフォンなどからもネットワーク的には接続が可能な状態となっているため、必要に応じてパブリック エンドポイントへのアクセスを制限するための考慮が必要になります。
+AVD を使用したセッションホストへの接続は AVD コントロール プレーンと呼ばれるインターネットに公開されたエンドポイント経由で行われます。言い換えると、インターネット カフェやスマートフォンなどからもネットワーク的には到達可能な状態となっているため、必要に応じてパブリック エンドポイントへのアクセスを制限するための考慮が必要になります。
 
 AVD コントロールプレーンへの接続時には Azure AD での認証となるため、Azure AD 側の設定で MFA (Multi Factor Authentication) を導入したり、アクセス可能なソース IP 範囲を限定するような対応が一般的です（これらを利用するには Azure AD 条件付きアクセスという Azure AD Premium で利用できる機能が必要です）。
 
@@ -181,9 +176,9 @@ Azure で仮想マシンを動作させるには仮想ネットワーク (Vnet) 
 
 そのような状況を解決するのがここで紹介する2種類のルートを使ったインターネット分離の構成です。これは、AVD のセッションホストが使用する管理用の通信はオンプレミスを経由させずに Azure Firewall を通して直接 AVD コントロールプレーンに到達させ、インターネットブラウジング等の Web 向けの通信についてはオンプレミスのプロキシーを経由させる構成です。
 
-実現方法としてはインターネット向けの既定のルートを Azure Firewall に向けるようにルートテーブルを上書きし、Web 向けの通信はオンプレミスのプロキシサーバーを経由するように GPO 等でクライアント端末に設定を行います。また、必要に応じて PAC ファイルにより URL 毎の設定も行います。
+実現方法としてはインターネット向けの既定のルートを Azure Firewall に向けるようにルートテーブルを上書きし、Web 向けの通信はオンプレミスのプロキシサーバーを経由するように GPO 等でクライアント端末に設定を行います。また、必要に応じて PAC ファイルにより URL 毎の除外設定も行います。
 
-何れの通信もプロキシーもしくは Azure Firewall を経由するため、これらの境界で宛先 URL の制御やロギングを行うことができます。
+結果として何れの通信もプロキシーもしくは Azure Firewall を経由するため、これらの境界で宛先 URL の制御やロギングを行うことができます。
 
 ![networkdesign1](images/porxyandazfw.png)
 
@@ -233,7 +228,7 @@ AVD に限りませんが、Azure 上の多くのサービスは "診断設定" 
 
 
 ### 5.4 OS
-Windows OS 内のログ、イベントログやパフォーマンスログは、Azure Monitor for VMs という機能と通じて簡単に取得することができます。この機能を有効化すると、Azure VM 内にログ取得のためのエージェントが Windows 上でのサービスとしてインストールされ、定期的にこれらの情報を LogAnalytics ワークスペースに送信します。
+Windows OS 内のログ、イベントログやパフォーマンスログは、Azure Monitor for VMs という機能を通じて簡単に取得することができます。この機能を有効化すると、Azure VM 内にログ取得のためのエージェントが Windows 上でのサービスとしてインストールされ、定期的にこれらの情報を LogAnalytics ワークスペースに送信します。
 
 具体的な設定方法については [Azure Monitor for VMs の有効化の概要](
 https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-enable-overview) を参照してください。また、取得した後の分析に関する情報は [VM 用 Azure Monitor を使用してパフォーマンスをグラフ化する方法](https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-performance) を参照してください。
@@ -271,11 +266,11 @@ https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-enable-
 
 ### 6.3 Start Virtual Machine (VM) on Connect
 
-この機能は電源管理に関するもので、ユーザーが仮想マシンに接続しようとしたタイミングで停止済み（割り当て解除）であった仮想マシンを自動的に立ち上げることができます。この機能がない場合、ユーザーが接続しようとしたタイミングで対象となる仮想マシンが停止していると接続処理はエラーで終了します。利用シナリオとしては、上述した "スケーリング ツール" や仮想マシンの自動シャットダウンの機能などを使って、夜間や週末に使用していない仮想マシンを自動的にシャットダウン（割り当て解除）する運用とセットで使用し、ユーザーが使用しない時間帯には可能な限り仮想マシンを停止することでコストを最適化します。
+この機能は電源管理に関するもので、ユーザーが仮想マシンに接続しようとしたタイミングで停止済み（割り当て解除）であった仮想マシンを自動的に立ち上げることができます。この機能がない場合、ユーザーが接続しようとしたタイミングで対象となる仮想マシンが停止していると接続処理はエラーで終了します。利用シナリオとしては、上述した "スケーリング ツール" や仮想マシンの自動シャットダウンの機能などを使って、夜間や週末に使用していない仮想マシンを自動的にシャットダウン（割り当て解除）する運用とセットで使用し、ユーザーが使用しない時間帯には可能な限り仮想マシンを停止し、必要になったタイミングで起動するように構成することでコストを最適化します。
 
-有効化のための手順は以下に纏められています（2021/8/25 現在、日本語のドキュメントにはプレビューの記載がありますが実際には既に一般提供されています）。個人用、プール用の両方のシナリオで利用可能です。
+有効化のための手順は以下に纏められています。個人用、プール用の両方のシナリオで利用可能です。
 
-[接続時に仮想マシンを起動 (プレビュー)](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/start-virtual-machine-connect)
+[接続時に仮想マシンを起動](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/start-virtual-machine-connect)
 
 <br>
 
