@@ -97,15 +97,15 @@ FSLogix 利用時にはユーザー プロファイルは外部ストレージ�
 
 上の図のように、ユーザー側が管理するコンポーネントは AVD > Windows 365 Enterprise > Windows 365 Business の順で多く、Windows 365 はより少ない手順・工数で展開することができるといえます。一方、AVD はコントロールできる要素が多く、細かな設定を行うことができるため、要件に応じてより柔軟な構成をとることができます。参考として、比較の際に考慮のポイントとなる項目を以下の表にまとめます。
 
-|　　　　　　　　　　　　| AVD |　Windows 365 Business　　　|　　　Windows 365 Enterprise　　　　
+|　　　　　　　　　　　　| AVD |　　　Windows 365 Enterprise　|　Windows 365 Business　　　　　　
 | ---- | ---- | ---- | ---- |
-|コスト|従量課金（VM/ディスク/ネットワーク）|固定料金|固定料金<br>+ネットワーク従量課金|
+|コスト| 従量課金<br>（VM/ディスク/ネットワーク）|固定料金<br>+ネットワーク従量課金|固定料金|
 |ユーザー割り当て|PC 占有 or マルチセッション|PC 占有|PC 占有|
-|カスタム イメージ|利用可|利用不可|利用可|
-|ドメイン参加|Azure AD 参加 or AD DS 参加|Azure AD 参加のみ|Hybrid AAD 参加のみ<br> (Azure AD Join のロードマップ有) |
-|ユーザー規模|制限なし|300人未満|制限なし|
-|パフォーマンス|Azure 上で利用可能な VM と Disk から柔軟に選択可|[W365 用 SKU](https://www.microsoft.com/ja-jp/windows-365/all-pricing) から選択|[W365 用 SKU](https://www.microsoft.com/ja-jp/windows-365/all-pricing) から選択|
-|Azure サブスクリプション|必要|不要|必要|
+|カスタム イメージ|利用可|利用可|利用不可|
+|ドメイン参加|Azure AD 参加 or AD DS 参加|Hybrid AAD 参加のみ<br> (Azure AD Join のロードマップ有) |Azure AD 参加のみ|
+|ユーザー規模|制限なし|制限なし|300人未満|
+|パフォーマンス|Azure 上で利用可能な VM と<br> Disk から柔軟に選択可|[W365 用 SKU](https://www.microsoft.com/ja-jp/windows-365/all-pricing) から選択|[W365 用 SKU](https://www.microsoft.com/ja-jp/windows-365/all-pricing) から選択|
+|Azure サブスクリプション|必要|必要|不要|
 |監視|Azure Monitor|MEM|MEM|
 |RemoteApp|利用可|利用不可|利用不可|
 
