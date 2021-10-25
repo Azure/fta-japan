@@ -97,9 +97,9 @@ FSLogix 利用時にはユーザー プロファイルは外部ストレージ�
 
 上の図のように、ユーザー側が管理するコンポーネントは AVD > Windows 365 Enterprise > Windows 365 Business の順で多く、Windows 365 はより少ない手順・工数で展開することができるといえます。一方、AVD はコントロールできる要素が多く、細かな設定を行うことができるため、要件に応じてより柔軟な構成をとることができます。参考として、比較の際に考慮のポイントとなる項目を以下の表にまとめます。
 
-|　　　　　　　　　　　　| AVD &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |　　　Windows 365 Enterprise　|　Windows 365 Business　　　　　　
+|　　　　　　　　　　　　| &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; AVD &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  | &nbsp; &nbsp; &nbsp; &nbsp; Windows 365 Enterprise　&nbsp; &nbsp; &nbsp; &nbsp; |　Windows 365 Business　　　　　　
 | ---- | ---- | ---- | ---- |
-|コスト| 従量課金<br>VM/ディスク/ネットワーク|固定料金<br>+ネットワーク従量課金|固定料金|
+|コスト| 従量課金<br>(VM/ディスク/ネットワーク)|固定料金<br>+ネットワーク従量課金|固定料金|
 |ユーザー割り当て|PC 占有 or マルチセッション|PC 占有|PC 占有|
 |カスタム イメージ|利用可|利用可|利用不可|
 |ドメイン参加|Azure AD 参加 or AD DS 参加|Hybrid AAD 参加のみ<br> (Azure AD Join のロードマップ有) |Azure AD 参加のみ|
