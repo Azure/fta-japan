@@ -22,7 +22,7 @@
     - Azure PaaS サービスに対する名前解決要求は既定で Public IP に変換されますが、それを Private IP に変換されるように上書きするために必要です。Private Endpoint リソース作成時に既定で作成されます。Private DNS リソースは任意の仮想ネットワーク (VNet) リソースに関連付けることで、その仮想ネットワーク内だけで有効になります。
 
 3. Azure 提供の DNS (168.63.129.16)
-    - Azure 上の VM からの名前解決要求を受け付けるために既定で用意されているサービスです。Azure 内部からのみアクセスでき、オンプレからはアクセスできません。(2) の Private DNS の設定は VM がこの DNS サービス（168.63.129.16）を参照する際にのみ動作します。
+    - Azure 上の VM からの名前解決要求を受け付けるために既定で用意されているサービスです。Azure 内部からのみアクセスでき、オンプレからはアクセスできません。(2) の Private DNS の設定は VNet 内の VM がこの DNS サービス（168.63.129.16）を参照する際にのみ動作します。
 
 3. Azure 上のカスタム DNS サーバー VM (Azure Firewall で代替可能)
     - (2) で Private DNS を紐づけた VNet 内に DNS サーバー VM を配置し、オンプレミス側からフォワードされた名前解決要求を Private IP に解決します。VM を配置しない場合はマネージドな L7 Firewall サービスである Azure Firewall を利用することもできます。その場合は[こちらのドキュメント](https://docs.microsoft.com/ja-jp/azure/firewall/dns-settings#dns-proxy-configuration)に従って設定できます。
