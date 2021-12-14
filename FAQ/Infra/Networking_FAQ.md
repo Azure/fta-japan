@@ -28,7 +28,7 @@
     - (2) で Private DNS を紐づけた VNet 内に配置する DNS サーバーです。オンプレミス側からフォワードされた名前解決要求を受け、 PaaS サービスの FQDN を Private IP に解決するために必要です。VM を配置しない場合はマネージドな Firewall サービスである Azure Firewall で代替することもできます。その場合は[こちらのドキュメント](https://docs.microsoft.com/ja-jp/azure/firewall/dns-settings#dns-proxy-configuration)に従って設定できます。
 
 4. オンプレミス上の DNS サーバー
-    - オンプレミス上で名前解決を行う既存の DNS サーバー対して条件付きフォワーダーの設定が必要です。例えば Blob ストレージ サービスに対して Private Endpint でアクセスしたい場合には上述した図のように "blob.core.windows.net" ゾーンに対する名前解決要求を (4) で設置した Azure 上の DNS サーバーの IP にフォワードするように条件付きフォワーダーの設定を追加する必要があります。これは Private Endpoint を利用したい PaaS サービスの種類毎に追加する必要があります。サービス毎のゾーンの一覧は[こちらのドキュメント](https://docs.microsoft.com/ja-jp/azure/private-link/private-endpoint-dns#azure-services-dns-zone-configuration)に纏められています。
+    - オンプレミス上で名前解決を行う既存の DNS サーバーに対して条件付きフォワーダーの設定が必要です。例えば Blob ストレージ サービスに対して Private Endpint でアクセスしたい場合には上述した図のように "blob.core.windows.net" ゾーンに対する名前解決要求を (4) で設置した Azure 上の DNS サーバーの IP にフォワードするように条件付きフォワーダーの設定を追加する必要があります。これは Private Endpoint を利用したい PaaS サービスの種類毎に追加する必要があります。サービス毎のゾーンの一覧は[こちらのドキュメント](https://docs.microsoft.com/ja-jp/azure/private-link/private-endpoint-dns#azure-services-dns-zone-configuration)に纏められています。
 
 オンプレミスからの名前解決要求はこれら5つの要素が上述した図の番号の順序で連携することで初めて動作します。一度こちらの仕組みができてしまえば、同じ種類の PaaS サービス（2つめ以降の Blob ストレージなど）に対して Private Endpoint リソースを作成した場合でもオンプレミス側での追加の設定なしにそれを利用できるようになります。
 
