@@ -22,13 +22,13 @@
     - Azure PaaS サービスに対する名前解決要求は既定で Public IP に解決されますが、それを Private Endpoint の Private IP に解決するよう上書きするために必要です。Private Endpoint リソース作成時に既定で作成されます。Private DNS リソースは任意の仮想ネットワーク (VNet) リソースに関連付けることで、その仮想ネットワーク内だけで有効になります。
 
 - Azure 提供の DNS (IP アドレス：168.63.129.16)
-    - Azure 上の VM からの名前解決要求を受け付けるために既定で用意されている DNS サービス (固定の IP アドレス) です。Azure VNet からのみアクセスでき、オンプレからはアクセスできません。(2) の Private DNS の設定は VNet 内の VM がこの DNS サービス（168.63.129.16）を参照する際にのみ動作します。このことが、オンプレミスから直接 Private DNS を参照して Private Endpoint の Private IP に解決することができない理由です。
+    - Azure 上の VM からの名前解決要求を受け付けるために既定で用意されている DNS サービス (固定の IP アドレス) です。Azure VNet からのみアクセスでき、オンプレからはアクセスできません。上述した Private DNS リソースへの設定は VNet 内の VM がこの DNS サービス（168.63.129.16）を参照する際にのみ動作します。これがオンプレミスから直接 Private DNS を参照して Private Endpoint の Private IP に解決することができない理由です。
 
 - Azure 上のカスタム DNS サーバー VM (Azure Firewall で代替可能)
-    - (2) で Private DNS を紐づけた VNet 内に配置する DNS サーバーです。オンプレミス側からフォワードされた名前解決要求を受け、 PaaS サービスの FQDN を Private IP に解決するために必要です。VM を配置しない場合はマネージドな Firewall サービスである Azure Firewall で代替することもできます。その場合は[こちらのドキュメント](https://docs.microsoft.com/ja-jp/azure/firewall/dns-settings#dns-proxy-configuration)に従って設定できます。
+    - Private DNS を紐づけた VNet 内に配置する DNS サーバーです。オンプレミス側からフォワードされた名前解決要求を受け、 PaaS サービスの FQDN を Private IP に解決するために必要です。VM を配置しない場合はマネージドな Firewall サービスである Azure Firewall で代替することもできます。その場合は[こちらのドキュメント](https://docs.microsoft.com/ja-jp/azure/firewall/dns-settings#dns-proxy-configuration)に従って設定できます。
 
 - オンプレミス上の DNS サーバー
-    - オンプレミスにある既存の DNS サーバーに条件付きフォワーダーの設定が必要です。例えば Blob ストレージ サービスに対して Private Endpoint でアクセスしたい場合には上述した図のように "blob.core.windows.net" ゾーンに対する名前解決要求を (4) で設置した Azure 上の DNS サーバーの IP にフォワードするように条件付きフォワーダーの設定を追加する必要があります。これは Private Endpoint を利用したい PaaS サービスの種類毎に追加する必要があります。サービス毎のゾーンの一覧は[こちらのドキュメント](https://docs.microsoft.com/ja-jp/azure/private-link/private-endpoint-dns#azure-services-dns-zone-configuration)に纏められています。
+    - オンプレミスにある既存の DNS サーバーに条件付きフォワーダーの設定が必要です。例えば Blob ストレージ サービスに対して Private Endpoint でアクセスしたい場合には上述した図のように "blob.core.windows.net" ゾーンに対する名前解決要求を上述した "Azure 上の カスタム DNS サーバー" の IP にフォワードするように条件付きフォワーダーの設定を追加する必要があります。これは Private Endpoint を利用したい PaaS サービスの種類毎に追加する必要があります。サービス毎のゾーンの一覧は[こちらのドキュメント](https://docs.microsoft.com/ja-jp/azure/private-link/private-endpoint-dns#azure-services-dns-zone-configuration)に纏められています。
 
 オンプレミスからの名前解決要求はこれら5つの要素が上述した図の番号の順序で連携することで初めて動作します。一度こちらの仕組みができてしまえば、同じ種類の PaaS サービス（2つめ以降の Blob ストレージなど）に対して Private Endpoint リソースを作成した場合でもオンプレミス側での追加の設定なしにそれを利用できるようになります。
 
