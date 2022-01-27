@@ -14,7 +14,7 @@
 フィードバックににご協力ください https://aka.ms/ftalive-feedback
 
 Agenda
-1. [はじめに (Microsoft Defender for Cloud の前提条件)](./Pre-requisites.md)
+1. [はじめに](./Pre-requisites.md)
 
 2. [Microsoft Defender for Cloud の紹介 (ポータルのウォークスルー)](https://portal.azure.com/#blade/Microsoft_Azure_Security/SecurityMenuBlade/0)
 

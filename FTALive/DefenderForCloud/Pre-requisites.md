@@ -27,9 +27,9 @@ Microsoft Defender for Cloud の最大のメリットは、['Secure Score'](http
 
 ## クラウド ワークロード保護 (CWP)
 
-Microsoft Defender for Cloud を構成する2 つめの要素は "強化されたセキュリティ" で [Cloud Workload Protection Platform] ツールと呼ばれるものです。
+Microsoft Defender for Cloud を構成する2 つめの要素は "強化されたセキュリティ" で 「クラウド ワークロード 保護 (Cloud Workload Protection)」 ツールと呼ばれるものです。
 
-これは様々なものを指しています。"強化されたセキュリティ" は単一の機能ではなく、異なった種類のリソースを保護するために設計された複数の高度なツールを含んでいます。。Microsoft Defender for Endpoint (Server)による脅威対策と、Just In Time 管理や Adaptive Application Control などの高度なクラウド保護機能が統合されています。複数の異なるセキュリティ機能を統一的に管理する場所を提供し、ハイブリッドクラウドのワークロードに対応する機能を提供します。また、Microsoft Defender for Cloud のベースラインによるチェックをさらに拡張し、ISO 27001 や CIS ベンチマークといったコンプライアンスや業界標準を使用してワークロードのセキュリティ状態を機能も "強化されたセキュリティ" に含まれます。
+これは様々なものを指しています。"強化されたセキュリティ" は単一の機能ではなく、異なった種類のリソースを保護するために設計された複数の高度なツールを含んでいます。。Microsoft Defender for Endpoint (Server)による脅威対策と、Just In Time 管理や Adaptive Application Control などの高度なクラウド保護機能が統合されています。複数の異なるセキュリティ機能を統一的に管理する場所を提供し、ハイブリッドクラウドのワークロードに対応する機能を提供します。また、Microsoft Defender for Cloud のベースラインによるチェックをさらに拡張し、ISO 27001 や CIS ベンチマークといったコンプライアンスや業界標準を使用してワークロードのセキュリティ状態をチェックする機能も "強化されたセキュリティ" に含まれます。
 
 
 ## Azure Policy とは?
