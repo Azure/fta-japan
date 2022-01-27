@@ -8,7 +8,7 @@
 **セッション内のご質問** いつでも自由にチャットウィンドウに入力してください。なお、投稿した質問は参加者に公開されます。
 
 
-**スライドはありません** PowerPoint は使いません。この情報は新しい情報が反映するため随時更新します。
+**スライドはありません** PowerPoint は使いません。この情報は新しい情報を反映するため随時更新します。
 
 
 フィードバックににご協力ください : [フィードバックへのリンク](https://forms.office.com/pages/responsepage.aspx?id=v4j5cvGGr0GRqy180BHbR-1grBxe5HxDlnMndilNCKBURUU2OTc5R1NRWE03RFpWV0RRRThHUVc1Wi4u)
