@@ -1,6 +1,20 @@
 #### [prev](./Pre-requisites.md) | [home](./welcome.md) 
 # 展開前の考慮ポイント
 
+## 用語の定義 -  Defender for XX について
+
+Defender for Cloud
+
+Defender for Server
+
+Defender for Endpoint for Server
+
+
+Microsoft Derfender アンチマルウェア
+
+
+
+
 ## Defender for Cloud の検出項目について
 [Azure セキュリティ ベンチマーク](https://docs.microsoft.com/ja-jp/security/benchmark/azure/)  
 Defender for Cloud は既定として Azure セキュリティ ベンチマークを使用してワークロードの評価を行います。Azure セキュリティ ベンチマークには ネットワーク、ID 管理、特権アクセス、ログと脅威検出などにカテゴリ分けされたセキュリティ コントロールと、Azure リソースごと考慮すべき個別のセキュリティ コントロールが記載されたセキュリティ ベースラインで構成されています。セキュリティ ベースラインに記載されている一部のセキュリティ コントロールには Defender for Cloud が使用する Azure Policy との対応が記載されています。  
