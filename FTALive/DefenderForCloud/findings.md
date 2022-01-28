@@ -1,19 +1,6 @@
 #### [prev](./Pre-requisites.md) | [home](./welcome.md) 
 # 展開前の考慮ポイント
 
-## 用語の定義 -  Defender for XX について
-
-Defender for Cloud
-
-Defender for Server
-
-Defender for Endpoint for Server
-
-
-Microsoft Derfender アンチマルウェア
-
-
-
 
 ## Defender for Cloud の検出項目について
 [Azure セキュリティ ベンチマーク](https://docs.microsoft.com/ja-jp/security/benchmark/azure/)  
@@ -21,6 +8,12 @@ Defender for Cloud は既定として Azure セキュリティ ベンチマー�
 
 重要な点として Defender for Cloud の全ての推奨事項に対応することで、セキュリティ ベースラインに記載された全ての推奨項目が充足されるわけではありません。よりセキュアな環境のためには Defender for Cloud の推奨事項を自動化されたベースラインとして活用しながら、各リソースのセキュリティ ベースラインを個別に理解し、必要なセキュリティ コントロールを実装します。
 
+## セキュア スコアの有効化
+[セキュリティ ポリシー、イニシアチブ、および推奨事項とは](https://docs.microsoft.com/ja-jp/azure/defender-for-cloud/security-policy-concept)  
+Defender for Cloud によるセキュリティ態勢の評価は Azure Policy のイニシアチブ "Azure セキュリティ ベンチマーク" の割り当てによって有効になります。もしセキュア スコアが表示されていない場合、Defender for Cloud の **[環境設定]** から現在のサブスクリプションを選択し、ポリシー タブで **[既定のイニシアチブ]** が有効化されていることを確認してください。管理グループで有効化すると管理グループに属する全てのサブスクリプションでセキュア スコアが有効になります。ルート管理グループで有効化した場合にはテナント全体の全てのサブスクリプションでセキュア スコアが計算されるようになります。  
+ポリシーによるスキャンは定期的に実行されますが、クラウド コンソールで Start-AzPolicyComplianceScan を実行することでを開始することができます。スキャンの完了と結果の表示にはしばらく時間がかかるためご注意ください。
+
+![イニシアチブの有効化](./images/enabledefenderforcloud.png)
 
 ## サブスクリプションの分割について 
 [Microsoft Defender for Cloud の強化されたセキュリティ機能](https://docs.microsoft.com/ja-jp/azure/defender-for-cloud/enhanced-security-features-overview#can-i-enable-microsoft-defender-for-servers-on-a-subset-of-servers-in-my-subscription)  
