@@ -27,7 +27,7 @@ AVD は Microsoft Azure 上で動作する仮想デスクトップを提供す�
 - Azure サブスクリプション
 - (適切なライセンス（https://azure.microsoft.com/ja-jp/pricing/details/virtual-desktop ))
 
->**(※1)** Auzre AD Join によるセッションホストの構成が可能になったため、この場合は Active Directory への参加と Auzre AD Connect による ID 同期は必要ありません。
+>**(※1)** Azure AD Join によるセッションホストの構成が可能になったため、この場合は Active Directory への参加と Azure AD Connect による ID 同期は必要ありません。
 
 AVD は以下の図のイメージで Azure サブスクリプションの Vnet 内に展開した VM に AVD Agent をインストールし、VDI として利用します。AVD を展開する際に必要となるコンポーネントについてご説明します。
 
@@ -225,7 +225,7 @@ Azure Firewall の通信やセキュリティ イベントは Azure Monitor ロ�
 
 Azure でのログ取得は Azure Monitor というサービスが担う形となっており、AVD はもちろん、その他の Azure 上の PaaS サービス (App Service 等) や IaaS サービスを使う場合でも基本的には Azure Monitor によるロギングや監視を行うことになります。ちなみに "Azure Monitor" という用語は Azure 上でのモニタリング機能を提供する広義の用語としても使用されますが、多くのケースではその実態は LogAnalytics ワークスペースというログ取得／分析サービスによって行われます。
 
-誤解を恐れずに言えば AVD の文脈では Azure Monitor ≒ LogAnalaytics だと思って頂いて問題ありません。
+誤解を恐れずに言えば AVD の文脈では Azure Monitor ≒ LogAnalytics だと思って頂いて問題ありません。
 
 Azure Monitor (LogAnalytics) では AVD 関連の情報だけなく、Azure AD でのユーザー認証情報や Azure サブスクリプション内でのユーザー操作、AVD 内部の OS のパフォーマンスログや、カスタマイズされたログの取得をすることができますが、既定では取得はされません。AVD を使う上では必要に応じてこれらのログを取得する設定を行う必要があります。
 
@@ -255,7 +255,7 @@ AVD ホストプールを含む Azure リソースは Azure サブスクリプ�
 ![networkdesign1](images/monitor-azuresubscription.png)
 
 ### 5.3 Azure リソース
-AVD に限りませんが、Azure 上の多くのサービスは "診断設定" から LogAnaltyics ワークスペースにログを送信する設定を行うことができます。AVD のそのようなサービスの一つで、AVD ホストプールに対するユーザーのログイン操作のログや、エラーが発生した際のログを取得することができます。これらのログは既定では Azure 上で取得されないため、明示的にログを取得する設定を行っておく必要があります。
+AVD に限りませんが、Azure 上の多くのサービスは "診断設定" から LogAnalytics ワークスペースにログを送信する設定を行うことができます。AVD のそのようなサービスの一つで、AVD ホストプールに対するユーザーのログイン操作のログや、エラーが発生した際のログを取得することができます。これらのログは既定では Azure 上で取得されないため、明示的にログを取得する設定を行っておく必要があります。
 
 具体的な設定方法については [診断機能に Log Analytics を使用する](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/diagnostics-log-analytics) を参照してください。このドキュメントにはログを取得した後にログをクエリーするサンプルも紹介されています。
 
