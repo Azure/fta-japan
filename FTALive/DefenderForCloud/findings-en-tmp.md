@@ -10,11 +10,11 @@ By default, Defender for Cloud evaluates workloads using Azure security benchmar
 It is important to note that not all of the recommendations in the security baseline will be satisfied by meeting all of Defender for Cloud's recommendations. For a more secure environment, use the Defender for Cloud recommendations as an automated baseline, but understand the security baselines for each resource individually and implement the necessary security controls.
 
 ## Enable Secure Score
-What are [security policies, initiatives, and recommendations](https://docs.microsoft.com/ja-jp/azure/defender-for-cloud/security-policy-concept)  
+[What are security policies, initiatives, and recommendations](https://docs.microsoft.com/ja-jp/azure/defender-for-cloud/security-policy-concept)  
 The security posture assessment by Defender for Cloud is enabled by the assignment of the Azure Policy initiative "Azure Security Benchmark". If you do not see a secure score, go to **[Preferences]** in Defender for Cloud, select your current subscription, and from the Policy tab, make sure **[Default Initiative]** is assigned. Once assigned to a management group, Secure Score will be enabled for all subscriptions belonging to the management group. If enabled for the root administrative group, Secure Score will be calculated for all subscriptions in the entire tenant.
 Scans by policy are performed periodically, but can be initiated by running Start-AzPolicyComplianceScan in the Cloud Console. Please note that it will take some time for the scan to complete and the results to be displayed.
 
-! [Enable Initiative](. /images/enabledefenderforcloud.png)
+![Enable Initiative](./images/enabledefenderforcloud.png)
 
 ## About Subscription Splitting
 [Microsoft Defender for Cloud の強化されたセキュリティ機能](https://docs.microsoft.com/ja-jp/azure/defender-for-cloud/enhanced-security-features-overview#can-i-enable-microsoft-defender-for-servers-on-a-subset-of-servers-in-my-subscription)  
@@ -31,7 +31,7 @@ The enhanced security features of Microsoft defender for Cloud are enabled for e
 It is recommended that as few Log Analytics workspaces as possible be used for security monitoring, often one workspace per tenant.
 Consider splitting the workspace if there are compliance requirements, such as data storage locations, or if significant costs are incurred in data-to-data communication.
 If you wish to separate workspaces by access rights, consider whether you can substitute "resource context" access rights or "table-level Azure RBAC" instead of separate workspaces.  
-- [Control access using Azure permissions](https://docs.microsoft.com/ja-jp/azure/azure-monitor/logs/manage-access#manage-access-using-azure- permissions)
+- [Control access using Azure permissions](https://docs.microsoft.com/ja-jp/azure/azure-monitor/logs/manage-access#manage-access-using-azure-permissions)
 - [Azure RBAC at table level](https://docs.microsoft.com/ja-jp/azure/azure-monitor/logs/manage-access#table-level-azure-rbac)
 
 
@@ -42,8 +42,8 @@ Defender for Cloud uses the Log Analytics agent to gather information inside VMs
 These agents can be installed simultaneously, so you can use the Log Analytics agent for Defender for Cloud functionality and the Azure Monitor agent for collecting performance and event logs in the VMs. The configuration can be made in such a way as to
 
 [Azure Monitor Agent Overview](https://docs.microsoft.com/ja-jp/azure/azure-monitor/agents/agents-overview)
->Citation:
->Log Analytics Agent is used to
+>Citation:  
+> Log Analytics Agent is used to
 >- Collect log and performance data from Azure virtual or hybrid machines hosted outside of Azure.
 >- Send data to the Log Analytics workspace to take advantage of features supported by Azure Monitor logs, such as log queries.
 >- Use VM insights, which can monitor a machine at large and its dependencies on its processes, other resources and external processes.
@@ -54,7 +54,7 @@ These agents can be installed simultaneously, so you can use the Log Analytics a
 
 
 ### Azure Monitor Agent for Windows Features
-||Azure Monitor Agent || Diagnostic Extensions (WAD) || Log Analytics Agent || Dependency Agent
+||Azure Monitor Agent | Diagnostic Extensions (WAD) | Log Analytics Agent | Dependency Agent
 | ---- | ---- | ---- | ---- | ---- |
 |Azure<br>Other Cloud (Azure Arc)<br>On-Premise (Azure Arc)|Azure |Azure<br>Other Cloud<br>On-Premise|Azure<br>Other Cloud<br>On-Premise|Azure
 |None|None|None|Log Analytics agent required||
@@ -62,7 +62,7 @@ These agents can be installed simultaneously, so you can use the Log Analytics a
 |Azure Monitor logs<br>Azure Monitor metric|Azure Storage<br>Azure Monitor metric<br>Event hubs|Azure Monitor logs|Azure Monitor logs (Log Analytics Agent)
 |Log Analytics<br>Metrics Explorer|Metrics Explorer|VM insights <br>Log Analytics<br>Azure Automation<br>Microsoft Defender for Cloud<br>Microsoft Sentinel|VM insights<br>Services Map|
 
-
+  
 
 
 
@@ -77,13 +77,13 @@ Posture Management in Microsoft Defender for Cloud can measure the security stat
 - Multiple owners must be assigned to a subscription
 - Subscriptions require up to 3 owners to be named
 
-Administrative accounts with high privileges are prime attack targets and must be properly protected; Microsoft Defender for Cloud provides [Azure RBAC best practices](https://docs.microsoft.com/ja-jp/ azure/role-based-access-control/best-practices) to verify the subscription owner's account. Assigning multiple owners is recommended as a precaution in case of problems with a particular administrative account, but too many is considered a risk. Also, password-only authentication is not secure, so setting up MFA is recommended.
+Administrative accounts with high privileges are prime attack targets and must be properly protected; Microsoft Defender for Cloud provides [Azure RBAC best practices](https://docs.microsoft.com/ja-jp/azure/role-based-access-control/best-practices) to verify the subscription owner's account. Assigning multiple owners is recommended as a precaution in case of problems with a particular administrative account, but too many is considered a risk. Also, password-only authentication is not secure, so setting up MFA is recommended.
 
 > [Azure AD security prescriptive value set](https://docs.microsoft.com/ja-jp/azure/active-directory/fundamentals/concept-) even if you don't have a license such as Azure AD Premium fundamentals-security-defaults) can be enabled to use multifactor with mobile apps.
 >If you have an Azure AD Premium license, you can use more flexible conditional access (Azure AD Premium P1) or Azure AD Privilege Identity Management (Azure AD Premium P2), which allows temporary privilege escalation. The following is an example of a user-friendly system.
 
 
-[特権アクセス: 戦略](https://docs.microsoft.com/ja-jp/security/compass/privileged-access-strategy)
+[Privileged Access: Strategies](https://docs.microsoft.com/ja-jp/security/compass/privileged-access-strategy)
 ![](https://docs.microsoft.com/ja-jp/security/compass/media/overview/end-to-end-approach.png)
 Protecting privileged access has traditionally been an important issue, and Microsoft provides comprehensive guidance on privilege management covering on-premise and cloud.
 
@@ -207,7 +207,7 @@ Azure DDoS Protection is available in Basic and Standard, and Basic automaticall
 Azure DDoS Protection uses adaptive tuning to automatically analyze traffic to specific services and adjust thresholds, providing better protection for applications. If the nature of your organization or application requires you to anticipate targeted DDoS attacks as a threat, Azure DDoS Protection Standard.
 ![Azure DDoS Protection](./images/ddosprotection.png)
 
-Azure DDoS Protection Standard [Simulation Testing with BreakingPoint](https://docs.microsoft.com/ja-jp/azure/ddos-protection/test-through- simulations).
+Azure DDoS Protection Standard [Simulation Testing with BreakingPoint](https://docs.microsoft.com/ja-jp/azure/ddos-protection/test-through-simulations).
 
 [Ref: Testing through Simulation](https://docs.microsoft.com/ja-jp/azure/ddos-protection/test-through-simulations)
 
