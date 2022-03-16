@@ -45,7 +45,7 @@ Azure Policy は、セキュリティ標準による評価を実施し、大規�
 
 ### Microsoft Defender for Server
 サーバー向け CWP 機能で、Microsoft Defender for Cloud の一部です。  
-Microsoft Defender for Endpoint が提供するアンチマルウェア機能と EDR 機能に加えて、Just-in-Time VM アクセス、Adaptive Application Contol など複数の機能を含みます。
+Microsoft Defender for Endpoint と統合された EDR 機能に加えて、Just-in-Time VM アクセス、Adaptive Application Contol など複数の機能を含みます。
 一部の機能に制限がありますが、Azure 上の VM だけでなく、他クラウドの VM や、オンプレミスの仮想 / 物理で動作するサーバー OS も保護することができます。
 >Microsoft Defender for Endpoint をサーバー OS で動かすことを Microsoft Defender for Server と呼ぶわけではありません。
 
