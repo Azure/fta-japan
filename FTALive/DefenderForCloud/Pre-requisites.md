@@ -53,6 +53,8 @@ Microsoft Defender for Endpoint と統合された EDR 機能に加えて、Just
 EDR 機能です。エンタープライズネットワークによる高度な脅威の防止、検出、調査、および応答を支援します。
 アンチマルウェア機能は次の項目の Microsoft Defender ウイルス対策 を使用しますが、サードパーティのアンチ マルウェアと組み合わせることもできます。
 
+> Microsoft Defender for Endpoint は Microsoft Defender for Cloud に統合されていて、 Microsoft Defender for Server の機能の一部として使われます。
+
 [Microsoft Defender for Endpoint Plan 1 and Plan 2](https://docs.microsoft.com/ja-jp/microsoft-365/security/defender-endpoint/defender-endpoint-plan-1-2?view=o365-worldwide)
 
 ### Microsoft Defender ウイルス対策
