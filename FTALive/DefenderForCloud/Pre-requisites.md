@@ -37,7 +37,7 @@ Microsoft Defender for Cloud を構成する2 つめの要素は "強化され�
 Azure Policy は、セキュリティ標準による評価を実施し、大規模な環境でもコンプライアンス評価を自動的に行うことができる。ビジネスルールを Azure Policy として定義すると、Azure Policy がリソースのプロパティを定義されたビジネスルールと比較して、全体の状態を把握することができると考えてください。様々なリソースに対して許可する構成、許可しない構成、自動的な監査、許可しない構成のブロックなどを行うことができます。
 
 
-## 関連する Microsoft Defender の概要
+## 関連する Microsoft Defender
 
 ### Microsoft Defender for Cloud
 上記の通り Azure が提供する CSPM と CWP の機能です。  
