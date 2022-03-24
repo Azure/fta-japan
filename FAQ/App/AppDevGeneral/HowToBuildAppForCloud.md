@@ -16,7 +16,7 @@ Azure アーキテクチャセンター というドキュメントがあり、�
 9. アプリケーションデリバリ、デプロイの計画に合わせた設計（[変更を見込んだ設計 - Azure Application Architecture Guide | Microsoft Docs](https://docs.microsoft.com/ja-jp/azure/architecture/guide/design-principles/design-for-evolution)）
 10. ビジネス要件に合わせた構成、構築（[ビジネス ニーズに合わせた構築 - Azure Application Architecture Guide | Microsoft Docs](https://docs.microsoft.com/ja-jp/azure/architecture/guide/design-principles/build-for-business)）
 
-特に前回のミーティング中で、言及したかったのが、#1と#5の項目です。基本的にAzure 自体が仮想基盤、ストレージ、ネットワークなどの共有基盤の上で実行されるため、一つのお客様がリソースを占有しないように、リミットやクオーターの設定がしてあります。そのため、リミットやクオーターを把握しておくことはもちろんのこと、それらに引っかかった場合でもアプリケーション上で正しくエラーハンドリングをすることが大事です。また、場合によっては、HTTP の Response Code を見て、リトライの仕組み（サーキットブレイカーやバルクヘッドの実装パターン）をアプリケーションに組み込んでおくのが良いでしょう。
+特に重要な項目が、#1と#5の項目です。基本的にAzure 自体が仮想基盤、ストレージ、ネットワークなどの共有基盤の上で実行されるため、一つのお客様がリソースを占有しないように、リミットやクオーターの設定がしてあります。そのため、リミットやクオーターを把握しておくことはもちろんのこと、それらに引っかかった場合でもアプリケーション上で正しくエラーハンドリングをすることが大事です。また、場合によっては、HTTP の Response Code を見て、リトライの仕組み（サーキットブレイカーやバルクヘッドの実装パターン）をアプリケーションに組み込んでおくのが良いでしょう。
 
 これらの具体的な実装パターンについては、[クラウド設計パターン - Azure Architecture Center | Microsoft Docs](https://docs.microsoft.com/ja-jp/azure/architecture/patterns/) に例が挙げられています。デザインパターンといえば、GoFパターン（[デザインパターン (ソフトウェア) - Wikipedia](https://ja.wikipedia.org/wiki/%E3%83%87%E3%82%B6%E3%82%A4%E3%83%B3%E3%83%91%E3%82%BF%E3%83%BC%E3%83%B3_(%E3%82%BD%E3%83%95%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A2))）のようなものが有名ですが、それらの思想と先にあげた`Twelve-factor App`やMartin Fawlar（[martinfowler.com](https://martinfowler.com/)）によってまとめられたの思想がクラウド設計パターンに反映されています。
 
