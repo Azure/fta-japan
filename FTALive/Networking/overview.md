@@ -247,6 +247,35 @@ Azure と Azure 外のネットワークを接続する方法としては、主�
 
 #### VPN Gateway
 
+Azure のネットワークとオンプレミスを含めた Azure 外のネットワークを接続するために必要なリソースが VPN Gateway です。VPN Gateway は、主に 2 つの回線を接続する機能があります。
+1 つ目はインターネット回線を介した VPN、2 つ目はサービス プロバイダーが提供する ExpressRoute 回線です。また、VPN にも接続方式の種類があり、ネットワーク機器と接続しネットワーク全体を接続する Site-to-Site と、特定の端末と接続する Point-to-Site があります。
+
+いずれの方法でも、VPN Gateway を展開して接続します(ExpressRoute のみを使う場合でも必要なリソースです)。
+
+以下に VPN Gateway の特徴を紹介します。
+
+- VPN Gateway は特定のリージョンに展開する
+- VPN 接続と ExpressRoute 接続でそれぞれ別のゲートウェイを展開する
+  - VPN Gateway の作成時にゲートウェイの種類(VPN もしくは ExpressRoute)を選択
+- `GatewaySubnet` という名前の専用のサブネットに展開する
+  - サブネットのサイズは、`/27` 以上のアドレス空間を推奨
+- スループットや機能に応じて適切な SKU を選択する
+  - VPN 接続と ExpressRoute 接続で SKU が異なる
+  - Basic SKU は本番環境では非推奨
+  - 参考: [VPN のゲートウェイの SKU](https://docs.microsoft.com/ja-jp/azure/vpn-gateway/vpn-gateway-about-vpn-gateway-settings#gwsku)
+  - 参考: [ExpressRoute のゲートウェイの SKU](https://docs.microsoft.com/ja-jp/azure/expressroute/expressroute-about-virtual-network-gateways#gwsku)
+- VPN 接続の可用性を高めるためにアクティブ/アクティブ接続を採用する
+  - 参考: [高可用性のクロスプレミス接続および VNet 間接続](https://docs.microsoft.com/ja-jp/azure/vpn-gateway/vpn-gateway-highlyavailable)
+- オンプレミスの接続デバイスは十分に検証する
+  - 検証済みデバイスの使用を前提とする
+  - 参考: [検証済みの VPN デバイスとデバイス構成ガイド](https://docs.microsoft.com/ja-jp/azure/vpn-gateway/vpn-gateway-about-vpn-devices#devicetable)
+
+上記で紹介した内容はごく一部の特徴・機能です。VPN Gateway を使用したオンプレミスとの接続には、オンプレミスのネットワーク構成や使用しているデバイス、Azure へ接続するネットワークの要件、可用性の要件等さまざまな要素があります。実際に設計・構築する際は要件に応じて使用する機能や設定があるため、ドキュメントを十分に確認し理解したうえで利用しましょう。
+
+|:question: Tips: 仮想ネットワーク間の接続は ピアリングか VPN Gateway か|
+|:------------------------------------------|
+|Azure の仮想ネットワーク間の接続の方法として、VPN Gateway を使用することもできます。つまり、双方の仮想ネットワークに VPN Gateway を展開し、IP Sec で接続をする方法です。また、別の方法として仮想ネットワークのピアリングがあります。ピアリングは VPN Gateway の展開は不要です。仮想ネットワーク間の接続でどちらの方法が良いか議論になることがありますが、現在ではまず始めにピアリングをご検討ください。理由として、VPN Gateway の方法ではゲートウェイのリソースを展開する必要があり、ゲートウェイリソースを介さないことによりゲートウェイの制限(帯域幅等)にしばられること、パブリック IP アドレスが必要になること、セットアップに時間がかかること、専用のサブネットが必要になること等が挙げられます。ただし、ピアリングで実現できないこととして、BGP によるネットワークの推移性があります。これによりピアリングのようにフルメッシュの構成にしなくても複数の仮想ネットワークを接続でき、管理が容易になるというメリットがあります。要件に応じて適切な接続方法をご検討ください。<br>参考: [仮想ネットワーク ピアリングと VPN ゲートウェイのいずれかを選択](https://docs.microsoft.com/ja-jp/azure/architecture/reference-architectures/hybrid-networking/vnet-peering)|
+
 #### ExpressRoute
 
 
