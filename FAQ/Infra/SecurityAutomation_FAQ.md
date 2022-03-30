@@ -112,7 +112,7 @@ Logic Apps を保存し、任意の分析ルールから起動すると、Functi
 ![Action Functions](./images/soar-logicapps-result.png)
 
 
-認証を持たないアクセスは拒否されるため、インターネット上から匿名でアクセスすることはできません。先の PowerShell のコマンドは Function の結果を返すことがなくなります。結果は Function App の認証の設定によって変わり、既定では別の Microsoft サイトにリダイレクトされます。
+認証を持たないアクセスは拒否されるため、インターネット上から匿名でアクセスすることはできません。Function の URL は処理結果を返すことがなくなります。応答は Function App の `認証` の設定によって異なり、既定では別の HTTP 302 で Microsoft サイトにリダイレクトされます。HTTP 401 や HTTP 403 のエラーコードを設定することもできます。
 
 ```
 PS > Invoke-RestMethod -Method Get -Uri https://<関数アプリ名>.azurewebsites.net/api/<新しい関数>
