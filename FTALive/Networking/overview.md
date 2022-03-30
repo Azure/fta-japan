@@ -142,6 +142,7 @@ Azure のさまざまなリソースに対してインターネットからア�
 - Public IP Address は特定のリージョンに展開する
 - Standard と Basic がある
 - ゾーン冗長に対応しており、ゾーン冗長は Standard のみ利用できる
+- DNS ラベルをつけることができる
 - ゾーン冗長ではない Public IP Address をゾーン冗長の Application Gateway や仮想マシン等のサービスに関連付けることはできない
 
 |:question: Tips: 仮想マシンからインターネットへ送信接続(アウトバウンド)する方法|
@@ -278,7 +279,7 @@ Azure のネットワークとオンプレミスを含めた Azure 外のネッ�
 
 #### ExpressRoute
 
-ExpressRoute はサービスプロバイダーの回線を閉域網として使用するサービスです(Azure において ExpressRoute と言った場合、このサービス自体の名前や回線のリソースを指すことがあります)。ExpressRoute を使用するにはまずはサービスプロバイダーとの契約が必要です。以下のドキュメントにサービスプロバイダーの一覧が記載されています。
+ExpressRoute はサービスプロバイダーの回線を閉域網として使用するサービスです。ExpressRoute を使用するにはまずはサービスプロバイダーとの契約が必要です。以下のドキュメントにサービスプロバイダーの一覧が記載されています。
 
 - [ExpressRoute 接続パートナーとピアリングの場所](https://docs.microsoft.com/ja-jp/azure/expressroute/expressroute-locations)
 
@@ -312,7 +313,29 @@ BGP によるルーティングの制御は、特にサービスプロバイダ�
 
 ### 2.2.4 Security
 
+Azure のネットワークをセキュアにするために Azure ではさまざまなサービスが提供されています。セキュリティはネットワークだけでなくサービスごとの機能や認証にも関係してくるため、ここではネットワークの構成に特に関係するサービスを取り上げます。
+
 #### Azure Firewall
+
+Azure Firewall は IDP/IDS を備えた L7 のファイアウォールサービスです。L7 によるフィルタリングによって FQDN・URL フィルタリングや Web カテゴリフィルタリングが可能です。また、HTTP/HTTPS (Web トラフィック) 以外のトラフィックのフィルタリングも対応しています。
+
+Azure Firewall はいわゆる透過プロキシとして動作します。Azure Firewall を利用するには UDR 等を利用し、Azure Firewall へトラフィックをルーティングします。
+
+以下に Azure Firewall の特徴を紹介します。
+
+- Azure Firewall は仮想ネットワークのサブネットに展開する
+  - `AzureFirewallSubnet` という名前の専用のサブネットに展開
+  - アドレス空間は `/26` を確保
+- 可用性ゾーンに展開できる
+- Standard と Premium の SKU がある
+  - それぞれのフィルタリング機能については以下ドキュメントを参照
+  - 参考: [Azure Firewall Standard の機能](https://docs.microsoft.com/ja-jp/azure/firewall/features)
+  - 参考: [Azure Firewall Premium の機能](https://docs.microsoft.com/ja-jp/azure/firewall/premium-features)
+- 自動的にスケールアウト・スケールインを行う
+- DNAT 機能によりフロントエンドの IP アドレスとバックエンドの IP アドレスを関連付けられる
+- Firewall Policy / Azure Firewall Manager ポリシーを使用して複数の Azure Firewall を統合的に管理できる
+
+Azure Firewall はハブアンドスポーク構成を展開する上でセキュアな構成をするための重要なサービスです。ハブネットワークに Azure Firewallを展開することでスポーク間のトラフィック、インターネットからの送受信トラフィック、オンプレミスへのトラフィックを制御・検査できます。
 
 ### 2.2.5 Integration
 
