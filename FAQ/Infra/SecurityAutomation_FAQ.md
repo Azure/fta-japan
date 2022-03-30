@@ -16,7 +16,7 @@ Sentinel のプレイブックで使用する Logic App の基本的な作り方
 
 ## プレイブックで Function を使用する
 
-従量課金プランで作成されたサーバレスの Function を Logic Apps から呼び出します。
+従量課金プランで作成したサーバーレスの Function を Logic Apps から呼び出します。
 ここでは以下の構成で作成した Function を呼び出し、Managed ID によるアクセス制限を行います。  
 > ※ Managed ID による認証が全てのセキュリティ要件を満たすことを意味するものではありません。ネットワーク機能や他のワークロードを組み合わせることで多層的な制御を追加することができますが、幅広いトピックに触れる必要があるためここでは扱いません。
 
@@ -38,7 +38,7 @@ Function App の設定
 - 監視
     - Application Insights を有効にする：任意
 - タグ
-    - 既定
+    - 任意
 
 - Function の設定
     - 開発環境：ポータルでの開発
@@ -46,7 +46,7 @@ Function App の設定
     - 新しい関数：任意
     - Authorization level: Anonymous
 
-作成した直後の Function は認証を必要としないためインターネット上からアクセスすることができます。PowerShell で以下のコマンドを実行するとステータス コードは 200 でアクセスに成功します。
+この設定で作成した Function は認証を必要としないためインターネットからアクセスすることができます。PowerShell で以下のコマンドを実行するとステータス コードは 200 でアクセスに成功します。
 
 ```
 PS> Invoke-RestMethod -Method Get -Uri https://<関数アプリ名>.azurewebsites.net/api/<新しい関数>
@@ -61,7 +61,7 @@ Function に対して Managed ID で認証を行うために、Logic Apps で Ma
 
 ![Managed Identity](./images/soar-logicapps-identity.png)
 
-Managed ID を設定すると Azure AD のエンタープライズ アプリケーションに Logic Apps の名前に対応する Managed ID が作成されます。`フィルタで マネージド ID` を選択すると Managed ID が表示されます。
+Managed ID を設定すると Azure AD のエンタープライズ アプリケーションに Logic Apps の名前に対応する Managed ID が作成されます。`フィルタ` で `マネージド ID` を選択すると Managed ID が表示されます。
 
 ![Enterprise Application](./images/soar-logicapps-identity-app.png)
 
