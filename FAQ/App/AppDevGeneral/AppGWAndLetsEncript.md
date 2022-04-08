@@ -87,10 +87,10 @@ Let's Encript では、ACME（アクミー）プロトコルを使ってドメ�
 1. Listeners を選択  
 ![image018](./AppGWAsset/Pasted%20image%2020220329105537.png)
 
-1. Add listener を選択  
+2. Add listener を選択  
 ![image019](./AppGWAsset/Pasted%20image%2020220329105558.png)
 
-1. 設定を入れる、Addを押下  
+3. 設定を入れる、Addを押下  
 ![image020](./AppGWAsset/Pasted%20image%2020220329105730.png)
 
 #### WSL/Linux/Mac の場合
