@@ -109,6 +109,8 @@ Azure 上に仮想マシンを展開する場合、必ずユーザーが定義�
   - 既定の DNS サーバーの IP アドレスは`168.63.129.16`
   - Active Directory へのドメイン参加等要件に応じて独自の DNS サーバーを展開することも可能
 
+![VNet](images/vnet.png)
+
 また、仮想マシンを展開する場合、NIC(ネットワーク インターフェース)も必要なため、併せてその特徴を紹介します。
 
 - Azure ネットワークの DHCP のしくみにより自動的にプライベート IP アドレスが割り当てられる
@@ -145,6 +147,8 @@ Network Security Group(NSG)を使うと、L4 のファイアウォールを設�
   - 例) IP アドレスが特定されていない Windows Update へのアウトバウンド通信をサービスタグで許可することが可能
 - Windows のラインセスサーバーへの通信は NSG によって拒否されることはない
 
+![NSG](images/network-security-group-interaction.png)
+
 </details>
 
 
@@ -178,7 +182,12 @@ Azure のさまざまなリソースに対してインターネットからア�
 1. 既定の接続  
    Public IP Address やロード バランサー等のバックエンドにない仮想マシンの場合であってもインターネットへの接続が可能です。これは、Azure によって管理される Public IP Address によって送信接続が自動的に設定されるためです。従って、送信元の IP アドレスはランダムとなり、ポートも最大 1024 ポートまでと限定的な性能が提供されます。
 
+![NAT](images/flow-direction4.png)
+
 どの方法が最も適しているかは、要件によって異なるため一概にお勧めをお伝えすることはできません。さまざまな送信接続の方法があるということを理解したうえで適切な方法を検討してください。
+
+- 参考: [NAT ゲートウェイを使用して仮想ネットワークを設計する](https://docs.microsoft.com/ja-jp/azure/virtual-network/nat-gateway/nat-gateway-resource)
+- 参考: [Azure NAT ゲートウェイの Azure Well-Architected Framework のレビュー](https://docs.microsoft.com/ja-jp/azure/architecture/networking/guide/well-architected-network-address-translation-gateway)
 
 </details>
 
@@ -270,6 +279,8 @@ Application Gateway を含め、HTTP トラフィックを扱う多くの場合�
 
 ハイブリッドに関する各サービスの紹介の前にオンプレミスとのネットワーク接続のパターンをいくつか紹介します。
 
+![Hybrid network](images/connect-onprem.png)
+
 Azure と Azure 外のネットワークを接続する方法としては、主にインターネットを介す方法と閉域網を利用する方法があります。インターネットを介す方法はいわゆる VPN を使用して、Azure のゲートウェイと接続します。一方で閉域網を利用する方法は、サービスプロバイダーが提供するネットワークを使用し、インターネットを介さない方法です。
 
 一般的にインターネットは不安定な回線であり、セキュリティやレイテンシーの観点で特にエンタープライズの環境では避けられるケースが多い接続方式です。一方で閉域網を使用する方法は、ユーザーとサービスプロバイダー、またサービスプロバイダーと Microsoft のデータセンターの距離が近く、プロバイダーによって管理されているネットワークです。そのため、インターネットに比べ高品質なネットワークが提供されており、エンタープライズではよく使われている接続方式です。
@@ -321,6 +332,8 @@ ExpressRoute はサービスプロバイダーの回線を閉域網として使�
 
 - [ExpressRoute 接続パートナーとピアリングの場所](https://docs.microsoft.com/ja-jp/azure/expressroute/expressroute-locations)
 
+![ER](images/expressroute-basic.png)
+
 以下に ExpressRoute の特徴を紹介します。
 
 - BGP によりルーティングを制御する
@@ -328,6 +341,7 @@ ExpressRoute はサービスプロバイダーの回線を閉域網として使�
 - ExpressRoute には Microsoft ピアリングと プライベート ピアリングの2種類がある
   - プライベート ピアリングは、ユーザーの仮想ネットワークへ閉域接続するために使用
   - Microsoft ピアリングは、Azure の PaaS リソース(グローバル IP アドレスを持つサービス)へ閉域接続するために使用
+  - 参考: [ExpressRoute 回線とピアリング](https://docs.microsoft.com/ja-jp/azure/expressroute/expressroute-circuit-peerings)
 - サービスプロバイダーのサービス提供形態として L3 プロバイダーと L2 プロバイダーがある
   - L2 プロバイダーは回線を提供。BGP の設定やルーター運用はユーザーが実施
   - L3 プロバイダーは回線のみでなく BGP の設定やルーター運用を含めプロバイダーがサービスを提供
@@ -344,6 +358,8 @@ ExpressRoute を理解するコツは、サービスプロバイダーの存在�
 サービスプロバイダーは、各プロバイダーによってサービス内容や管理方法が異なるため、要件に合った機能が利用できるか確認します。また、VPN 接続にはないプロバイダーの設備や Microsoft Enterprise Edge(MSEE) が存在するため、監視やトラブルシューティング時に意識する必要があります。
 
 BGP によるルーティングの制御は、特にサービスプロバイダーとして L2 プロバイダーを採用する際に考慮が必要です。つまり、BGP の設定やルーターの運用をユーザー自身が行うこととなるため十分に知識のあるネットワークエンジニアの支援が必要です。同様に、オンプレミスネットワークの設計ポリシーや構成を把握しておく必要があります。複数の拠点間接続や冗長性を考慮した構成になっている等構成が複雑な場合、ExpressRoute の接続による影響を十分考慮しておく必要があります。
+
+![ER topology](images/er-topology.png)
 
 </details>
 
@@ -377,6 +393,8 @@ Azure のネットワークをセキュアにするために Azure ではさま�
 Azure Firewall は IDP/IDS を備えた L7 のファイアウォールサービスです。L7 によるフィルタリングによって FQDN・URL フィルタリングや Web カテゴリフィルタリングが可能です。また、HTTP/HTTPS (Web トラフィック) 以外のトラフィックのフィルタリングも対応しています。
 
 Azure Firewall はいわゆる透過プロキシとして動作します。Azure Firewall を利用するには UDR 等を利用し、Azure Firewall へトラフィックをルーティングします。
+
+![AzFW](images/azfw.png)
 
 以下に Azure Firewall の特徴を紹介します。
 
