@@ -171,8 +171,6 @@ Azure のネットワークに関するリソースは、展開するリソー�
 - 参考:[Azure リソースの効果的な整理](https://docs.microsoft.com/ja-jp/azure/cloud-adoption-framework/ready/azure-setup-guide/organize-resources)
 - 参考:[名前付け規則を定義する](https://docs.microsoft.com/ja-jp/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming)
 
-### 自動化
-
 |:question: Tips: リソースの展開を自動化する|
 |:------------------------------------------|
 |Azure のリソースの展開はポータルから行う方法が一番手軽な方法です。しかし、ポータルからの展開は、1 つ 1 つ手作業でリソースを作成していく必要があり時間がかかります。検証環境と本番サブスクリプション等複数のサブスクリプションへの展開や、複数のネットワークの展開、設定を間違えてしまった場合の再展開等を考え、可能な限り自動化をしておくことをお勧めします。Azure には組込みでテンプレート機能が提供されており、簡単にコード化できます。ただし、初めてコード化に取り組む場合学習コストがかかることは避けられないため、設計の初期段階でリソース展開の自動化を検討しておきましょう。|
