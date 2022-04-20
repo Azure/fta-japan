@@ -68,19 +68,6 @@ Virtual WAN を利用すると、仮想ネットワークの推移的な接続�
 
 ![](../images/global-reach-topology.png)
 
-### IP アドレス空間の決定
-
-オンプレミスや複数の仮想ネットワーク間を接続する場合、IP アドレス空間が重複しないように意識しておきます。重複した IP アドレス空間を持つネットワークを VPN 等の方法では接続できません。それぞれのリソースが必要とする IP アドレスや将来的な拡張性を考慮して重複がなくかつ十分な大きさの IP アドレス空間を確保します。ただし、セキュリティの観点としてセグメント化を考えた場合、関連のないリソースを 1 つの仮想ネットワークやサブネットに同居させることはお勧めできないため、適度な単位でアドレス空間を分割します。
-
-以下は Azure のリソースで必要なアドレス空間の一例です。
-
-|リソース|必要なアドレス空間|備考|
-|:-----|:-----|:------|
-|VPN Gatway|/27 以上|[ドキュメント](https://docs.microsoft.com/ja-jp/azure/vpn-gateway/vpn-gateway-vpn-faq#do-i-need-a-gatewaysubnet)|
-|Azure Firewall|/26|[ドキュメント](https://docs.microsoft.com/ja-jp/azure/firewall/firewall-faq#azure-firewall----26---------------------)|
-|Azure Bastion|/26 以上|[ドキュメント](https://docs.microsoft.com/ja-jp/azure/bastion/configuration-settings#subnet)|
-|Application Gateway|/24|[ドキュメント](https://docs.microsoft.com/ja-jp/azure/application-gateway/configuration-infrastructure#size-of-the-subnet)|
-
 ## 3.2. 接続方法の検討
 
 トポロジを検討したうえで、具体的にどのようなサービスを利用してネットワークの接続性を確保するかを検討します。
@@ -98,6 +85,19 @@ Virtual WAN を利用すると、仮想ネットワークの推移的な接続�
 |東西|複数ネットワークの接続|Virtual WAN / ピアリング / VPN Gateway|Azure のネットワーク間の接続はほとんどの場合、ピアリングもしくは Virtual WAN で実現できます。**ハブアンドスポーク**構成を採用する場合、ハブとなる仮想ネットワークに Azure Firewall や ExpressRoute 等の共通のリソースを展開し、各スポークの通信をハブで制御できる構成を取ります。|
 |南北|オンプレミスとの接続|VPN Gateway(Site-to-Site/Point-to-Site) / ExpressRoute|オンプレミスとの接続が必要な場合、VPN Gateway もしくは ExpressRoute を使用します。特定の端末と VPN Gateway を接続できる Point-to-Site を利用することもできます。ExpressRoute のフェールオーバー先として VPN を使用する場合、両方のゲートウェイを展開します。|
 |東西南北|Azure サービスとの接続|プライベート エンドポイント / サービス エンドポイント|PaaS との接続をセキュアにするために、サービス ピアリングもしくはプライベート エンドポイントを利用します。プライベート エンドポイントを利用すると、プライベート IP アドレスで PaaS リソースにアクセスが可能になります。よりセキュアな方法としてプライベート エンドポイントを活用できますが、対応していない PaaS リソースもあり、その場合代替手段を利用する必要があります。|
+
+### IP アドレス空間の決定
+
+オンプレミスや複数の仮想ネットワーク間を接続する場合、IP アドレス空間が重複しないように意識しておきます。重複した IP アドレス空間を持つネットワークを VPN 等の方法では接続できません。それぞれのリソースが必要とする IP アドレスや将来的な拡張性を考慮して重複がなくかつ十分な大きさの IP アドレス空間を確保します。ただし、セキュリティの観点としてセグメント化を考えた場合、関連のないリソースを 1 つの仮想ネットワークやサブネットに同居させることはお勧めできないため、適度な単位でアドレス空間を分割します。
+
+以下は Azure のリソースで必要なアドレス空間の一例です。
+
+|リソース|必要なアドレス空間|備考|
+|:-----|:-----|:------|
+|VPN Gatway|/27 以上|[ドキュメント](https://docs.microsoft.com/ja-jp/azure/vpn-gateway/vpn-gateway-vpn-faq#do-i-need-a-gatewaysubnet)|
+|Azure Firewall|/26|[ドキュメント](https://docs.microsoft.com/ja-jp/azure/firewall/firewall-faq#azure-firewall----26---------------------)|
+|Azure Bastion|/26 以上|[ドキュメント](https://docs.microsoft.com/ja-jp/azure/bastion/configuration-settings#subnet)|
+|Application Gateway|/24|[ドキュメント](https://docs.microsoft.com/ja-jp/azure/application-gateway/configuration-infrastructure#size-of-the-subnet)|
 
 ### 名前解決の提供
 
