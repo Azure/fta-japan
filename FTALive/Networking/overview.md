@@ -1,3 +1,5 @@
+Azure Networking - ハイブリッドネットワーク編 # **[prev](why.md)** | **[home](./core/README.md)**  | **[next](./core/hybrid-network.md)**
+
 # 2. Azure Networking の全体像と機能概要
 
 ## 2.1 Azure Network の全体像
@@ -437,6 +439,8 @@ Azure Bastion には `Basic` と `Standard` の2 つの SKU があります。`B
 
 - 参照: [Azure Bastion とは](https://docs.microsoft.com/ja-jp/azure/bastion/bastion-overview)
 
+![Bastion](./images/bastion.png)
+
 </details>
 
 #### Network Watcher
@@ -454,4 +458,6 @@ Network Watcher は Azure のネットワークに関するサービスに対し
 
 - 参考: [Traffic Analytics](https://docs.microsoft.com/ja-jp/azure/network-watcher/traffic-analytics)
 
+![Traffic Analytics](./images/traffic-analytics-1.png)
+![Traffic Analytics](./images/traffic-analytics-2.png)
 </details>
