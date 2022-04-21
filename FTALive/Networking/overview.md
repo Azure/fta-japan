@@ -188,6 +188,7 @@ Azure のさまざまなリソースに対してインターネットからア�
 
 どの方法が最も適しているかは、要件によって異なるため一概にお勧めをお伝えすることはできません。さまざまな送信接続の方法があるということを理解したうえで適切な方法を検討してください。
 
+- 参考: [送信接続での送信元ネットワーク アドレス変換 (SNAT)を使用する](https://docs.microsoft.com/ja-jp/azure/load-balancer/load-balancer-outbound-connections)
 - 参考: [NAT ゲートウェイを使用して仮想ネットワークを設計する](https://docs.microsoft.com/ja-jp/azure/virtual-network/nat-gateway/nat-gateway-resource)
 - 参考: [Azure NAT ゲートウェイの Azure Well-Architected Framework のレビュー](https://docs.microsoft.com/ja-jp/azure/architecture/networking/guide/well-architected-network-address-translation-gateway)
 
