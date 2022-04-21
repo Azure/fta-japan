@@ -1845,8 +1845,8 @@ rules:
     pattern:  /コンポネント/
   - expected: コントローラ
     pattern:  /コントローラー/
-  - expected: サーバ
-    pattern:  /サーバー/
+  - expected: サーバー
+    pattern:  /サーバ([^ー])/
   - expected: サーブレット
     pattern:
       - Servlet
@@ -1957,8 +1957,8 @@ rules:
     pattern:  /デバック/
   - expected: デバッガ
     pattern:  /デバッガー/
-  - expected: デフォルト
-    pattern:  /既定|ディフォルト|デフォールト/
+  - expected: 既定
+    pattern:  /デフォルト|ディフォルト|デフォールト/
   - expected: デプロイ
     pattern:  /デプロイメント/
   - expected: デリバリ
@@ -1999,8 +1999,8 @@ rules:
     pattern:  /バラエティー/
   - expected: パラメータ
     pattern:  /パラメタ|パラメーター/
-  - expected: バランサ
-    pattern:  /バランサー/
+  - expected: バランサー
+    pattern:  /バランサ([^ー])/
   - expected: ハンドラ
     pattern:  /ハンドラー/
   - expected: ビューア
@@ -2066,8 +2066,8 @@ rules:
     pattern:  /プロシージャー/
   - expected: ブロードキャストレシーバ
     pattern:  /\bBroadcast receiver\b/
-  - expected: プロバイダ
-    pattern:  /プロバイダー/
+  - expected: プロバイダ-
+    pattern:  /プロバイダ([^ー])/
   - expected: ペアプログラミング$1
     pattern:  /ペアプロ([^グ])/
   - expected: ベンダー
@@ -2151,8 +2151,8 @@ rules:
     pattern:  /リファラー/
   - expected: リポジトリ
     pattern:  /リポジトリー|レポジトリ|レポジトリー/
-  - expected: ルータ
-    pattern:  /ルーター/
+  - expected: ルーター
+    pattern:  /ルータ([^ー])/
   - expected: レイヤ
     pattern:  /(プ)?レイヤー/
     regexpMustEmpty: $1
