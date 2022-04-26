@@ -44,10 +44,26 @@ Azure Policy は、セキュリティ標準による評価を実施し、大規�
 過去には Azure Security Center や、Azure Defender (CWP 機能) と呼ばれていました。
 
 ### Microsoft Defender for Server
-サーバー向け CWP 機能で、Microsoft Defender for Cloud の一部です。  
-Microsoft Defender for Endpoint と統合された EDR 機能に加えて、Just-in-Time VM アクセス、Adaptive Application Contol など複数の機能を含みます。
-一部の機能に制限がありますが、Azure 上の VM だけでなく、他クラウドの VM や、オンプレミスの仮想 / 物理で動作するサーバー OS も保護することができます。
->Microsoft Defender for Endpoint をサーバー OS で動かすことを Microsoft Defender for Server と呼ぶわけではありません。
+Microsoft Defender for Cloud のサーバー向け CWP 機能です。
+2022 年 4 月から Plan 1 と Plan 2 の２つの価格体系で提供されるようになりました。従来の Microsoft Defender for Servers はプラン 2 に該当します。
+- Microsoft Defender for Servers プラン 1
+    - Microsoft Defender for Endpoint の自動展開、時間単位の課金
+- Microsoft Defender for Servers プラン 2
+    - (Plan 1 に加えて)
+    - 500 MB / 日のログ分析が含まれる (全ノードの平均)
+    - 規制コンプライアンス
+    - Just-In-Time VM アクセス
+    - Adaptive Application Control 
+    - ファイル整合性の監視  
+    など
+
+プランの違いの詳細：  
+[Microsoft Defender for Servers の概要](https://docs.microsoft.com/ja-jp/azure/defender-for-cloud/defender-for-servers-introduction)
+
+[Microsoft Defender for Servers の価格](https://azure.microsoft.com/ja-jp/pricing/details/defender-for-cloud/)
+
+
+>Microsoft Defender for Endpoint をサーバー OS で動かすことだけを Microsoft Defender for Server と呼ぶわけではありません。
 
 ### Microsoft Defender for Endpoint
 EDR 機能です。エンタープライズネットワークによる高度な脅威の防止、検出、調査、および応答を支援します。
