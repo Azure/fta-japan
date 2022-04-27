@@ -69,16 +69,23 @@ Microsoft Defender for Cloud のサーバー向け CWP 機能です。
 EDR 機能です。エンタープライズネットワークによる高度な脅威の防止、検出、調査、および応答を支援します。
 アンチマルウェア機能は次の項目の Microsoft Defender ウイルス対策 を使用しますが、サードパーティのアンチ マルウェアと組み合わせることもできます。
 
-> Microsoft Defender for Endpoint は Microsoft Defender for Cloud に統合されていて、 Microsoft Defender for Server の機能の一部として使われます。
+
+> Microsoft Defender for Endpoint は Microsoft Defender for Cloud に統合されていて、 Microsoft Defender for Server の機能の一部として使われます。既に Defender for Ednpoint のライセンスをお持ちの場合には割引を受けることができます。  
+
 
 [Microsoft Defender for Endpoint Plan 1 and Plan 2](https://docs.microsoft.com/ja-jp/microsoft-365/security/defender-endpoint/defender-endpoint-plan-1-2?view=o365-worldwide)
 
+[Microsoft Defender for Endpoint のライセンスが既にある場合、Defender for Servers の割引を受けることはできますか?](https://docs.microsoft.com/ja-jp/azure/defender-for-cloud/enhanced-security-features-overview#if-i-already-have-a-license-for-microsoft-defender-for-endpoint-can-i-get-a-discount-for-defender-for-servers)
+
 ### Microsoft Defender ウイルス対策
 Windows にビルトインされているアンチマルウェア機能です。 定義ファイルに基づいたマルウェアの検出や、一部挙動検知などの機能を備えています。
-Azure の標準イメージから作成された Windows OS では既定で有効化されています。
-> ウィルス対策だけを使用したい場合、Microsoft Defender for Server や Defender for Endpoint を有効化する必要はありません。
+Azure の標準イメージから作成された Windows OS では既定で有効化されています。Defender for Endpoint を使わずに集中管理を行うためには Microsoft Endpoint Manager (MEM : クライアント OSの管理) や Microsoft Endpoint Configuration Manager (MECM) を使用することができます。
 
-[Windows の Microsoft Defender ウイルス対策](https://docs.microsoft.com/ja-jp/microsoft-365/security/defender-endpoint/microsoft-defender-antivirus-windows?view=o365-worldwide)
+[Windows の Microsoft Defender ウイルス対策](https://docs.microsoft.com/ja-jp/microsoft-365/security/defender-endpoint/microsoft-defender-antivirus-windows?view=o365-worldwide)  
+[MEM : Microsoft エンドポイント マネージャーの概要](https://docs.microsoft.com/ja-jp/mem/endpoint-manager-overview)  
+[MECM : Configuration Manager とは](https://docs.microsoft.com/ja-jp/mem/configmgr/core/understand/introduction)
+
+> ウィルス対策だけを使用したい場合、Microsoft Defender for Server や Defender for Endpoint を有効化する必要はありません。
 
 
 
