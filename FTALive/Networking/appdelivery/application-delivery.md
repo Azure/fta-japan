@@ -272,7 +272,7 @@ Azure のネットワークに関するリソースは、展開するリソー�
 
 ## 参考ドキュメント
 
-- [Azure アプリケーションの 10 の設計原則](Azure アプリケーションの 10 の設計原則)
+- [Azure アプリケーションの 10 の設計原則](https://docs.microsoft.com/ja-jp/azure/architecture/guide/design-principles/)
 - [負荷分散のオプション](https://docs.microsoft.com/ja-jp/azure/architecture/guide/technology-choices/load-balancing-overview)
 - [アプリケーション配信の計画](https://docs.microsoft.com/ja-jp/azure/cloud-adoption-framework/ready/azure-best-practices/plan-for-app-delivery)
 - [クラウド監視ガイド: サービス レベルの目標](https://docs.microsoft.com/ja-jp/azure/cloud-adoption-framework/manage/monitor/service-level-objectives)
