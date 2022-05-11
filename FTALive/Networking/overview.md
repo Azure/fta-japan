@@ -422,7 +422,7 @@ Traffic Manager は DNS ベースの負荷分散サービスです。DNS ベー�
 
 またよくある誤解ですが、**クライアントからの通信を Traffic Manager が処理することはありません**。Traffic Manager はあくまでもクライアントからの通信開始時の名前解決において負荷分散をすることを目的としており、クライアントとエンドポイントは直接通信します。従ってエンドポイント側でのフィルターや、パフォーマンス/地理的なルーティングを使用する場合にクライアントの位置(名前解決の実行元)を意識しておく必要があります。
 
-![](../images/../Networking/images/trafficmanager-access.png)
+![](./images/trafficmanager-access.png)
 
 以下に Traffic Manager の特徴を紹介します。
 
@@ -449,7 +449,7 @@ Traffic Manager は DNS ベースの負荷分散サービスです。DNS ベー�
   - DNS の TTL
 
 以下はフェールオーバー時の動作を表した図です。
-![](../images/../Networking/images/trafficmanager.png)
+![](./images/trafficmanager.png)
 
 </details>
 
