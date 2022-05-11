@@ -9,7 +9,7 @@
 
 **スライドはありません** - PowerPoint は使いません。この情報は新しい情報を反映するため随時更新します。
 
-フィードバックにご協力ください : [フィードバックへのリンク](https://www.microsoft.com)
+フィードバックにご協力ください : [フィードバックへのリンク](https://forms.office.com/r/1LJkCpy2sF)
 
 ## アジェンダ
 1. [なぜ Azure Networking を理解しなければいけないか](../why.md)
