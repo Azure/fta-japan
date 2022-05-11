@@ -52,7 +52,7 @@ flowchart LR
 
 社内からのアクセスのみなど一部の限定されたユーザーを対象にするのか、もしくはインターネットに公開され不特定のユーザーを対象にするのかを確認します。
 
-社内からの限定されたユーザーからのみアクセスさせたい場合やデータを特定のリージョンに閉じ込める必要がある場合においては、Front Door のようなリージョンを持たない一部のサービスは適さないことがあります。トポロジーの選択によってシステム全体の SLA にも関係する可能性があります。
+社内からの限定されたユーザーからのみアクセスさせたい場合やデータを特定のリージョンに閉じ込める必要がある場合においては、Front Door のようなリージョンを持たない一部のサービスは適さないことがあります。
 
 また、1 つのアプリケーション(システム)を 1 ユーザーのみに利用させるシングルテナント、もしくは複数のユーザーや企業に利用させるマルチテナントのようなアーキテクチャーの違いによって、求められるスケーラビリティやセキュリティ要件が異なることもあります。その要件によりネットワークトポロジーが変わることもあります。
 
@@ -215,6 +215,10 @@ Web アプリケーションに対する受信接続(HTTP)以外の接続があ�
 
 **送信接続** マルウェアの感染等により意図しないデータ流出を防ぐために、送信接続を限定し悪意のある通信をブロックすることは基本的なセキュリティ機能として検討します。また、OS の更新プログラムやミドルウェアを利用する上でインターネットへの接続を必要とする場合があります。多くの場合、サービスを利用するための特定の IP アドレスが明示されていることが少ないため、`NSG` のみでは十分なアクセス制御ができません。送信接続を FQDN や URL で制御するために、`Azure Firewall` を利用することを検討します。
 
+|:question: Tips: "PaaS を利用しているから送信接続のセキュリティの考慮は不要"か|
+|:------------------------------------------|
+|PaaS を利用することで Azure によってリソースが管理されるため送信接続のセキュリティが不要と考えられることがありますがこれは間違いです。PaaS はあくまでもプラットフォーム(OS やネットワーク等) が Azure によって管理されるだけであり、プラットフォームで動作しているプログラムはユーザーが責任を持つ範囲です。OS の脆弱性による影響範囲の限定やセキュリティホールへの対応を加速できる場合はありますがプログラムの脆弱性は IaaS と同様に考える必要があります。PaaS でも IaaS と同様のしくみで送信接続を制御することが出来る場合があります。たとえば App Service や Azure Kubernetes Service は Azure Firewall と組み合わせることができます。<br>参考(App Service): [Azure Firewall を使用して送信トラフィックを制御する](https://docs.microsoft.com/ja-jp/azure/app-service/network-secure-outbound-traffic-azure-firewall)<br>参考(AKS): [Azure Kubernetes Service (AKS) クラスターの保護に Azure Firewall を使用する](https://docs.microsoft.com/ja-jp/azure/architecture/example-scenario/aks-firewall/aks-firewall)<br>参考(AKS): [Azure Kubernetes Service (AKS) でクラスター ノードに対するエグレス トラフィックを制御する](https://docs.microsoft.com/ja-jp/azure/aks/limit-egress-traffic)|
+
 ### セグメント化
 
 セグメント化(セグメンテーション)とは関係するリソースを 1 つにまとめ、境界を作ることで通信の制御を可能とする、ネットワークセキュリティの基本的な考え方です。Azure のネットワークでは、仮想ネットワークがセグメンテーションの最も基本的なリソースです。セグメンテーションのパターンに関しては以下の参考ドキュメントに詳しく記載されています。
@@ -238,6 +242,10 @@ Azure への接続において VPN を使用する場合、IPSec による暗号
 一方で、インターネットとの接続においては、暗号化は必須と考えます。多くのインターネットサービスは、HTTPS による暗号化通信に対応しています。インターネットから受信方向の通信が発生する場合は、`Front Door` や `Application Gateway` を利用します。
 
 HTTPS を利用する場合、特に公的機関で発行された証明書を Azure のサービスに持ち込む場合においては、証明書の更新を忘れないように注意します。
+
+|:question: Tips: TLS のバージョンと暗号スイート|
+|:------------------------------------------|
+|TLS(SSL) にはバージョンがあり、 1.0 や 1.1 は脆弱性のあるバージョンとして各社の OS やブラウザでサポートがされなくなっています。アプリケーション配信においては、アクセス元のデバイスやブラウザが特定できないことも多いため、システムで利用する TLS のバージョンを考慮する必要があります。また、TLS にはバージョンだけでなく、利用できる暗号スイートの概念があります。暗号スイートは TLS のコネクションの初期フェーズでネゴシエーションされ、クライアントとサーバーで利用できるものが採用されます。古い携帯端末等では、TLS 1.2 は利用できるものの対応している暗号スイートが少ないことがあり、Azure のサービスへ接続ができないことも考えられます。要件定義・設計フェーズにおいてはシステムで対応する OS やブラウザのバージョンの仕様を策定し、テストフェーズで想定の動作になっていることを確認します。|
 
 ### 監視
 
@@ -264,11 +272,7 @@ Azure のネットワークに関するリソースは、展開するリソー�
 
 ## 参考ドキュメント
 
+- [Azure アプリケーションの 10 の設計原則](Azure アプリケーションの 10 の設計原則)
 - [負荷分散のオプション](https://docs.microsoft.com/ja-jp/azure/architecture/guide/technology-choices/load-balancing-overview)
 - [アプリケーション配信の計画](https://docs.microsoft.com/ja-jp/azure/cloud-adoption-framework/ready/azure-best-practices/plan-for-app-delivery)
-- [マルチリージョン n 層アプリケーション](https://docs.microsoft.com/ja-jp/azure/architecture/reference-architectures/n-tier/multi-region-sql-server)
-- [Traffic Manager と Application Gateway を使用したマルチリージョンの負荷分散](https://docs.microsoft.com/ja-jp/azure/architecture/high-availability/reference-architecture-traffic-manager-application-gateway)
-- [HA/DR 用に構築された多階層 Web アプリケーション](https://docs.microsoft.com/ja-jp/azure/architecture/example-scenario/infrastructure/multi-tier-app-disaster-recovery)
-- [Azure のマルチテナント SaaS](https://docs.microsoft.com/ja-jp/azure/architecture/example-scenario/multi-saas/multitenant-saas)
-- [PaaS データストアへのプライベート接続を使用したネットワーク強化 Web アプリケーション](https://docs.microsoft.com/ja-jp/azure/architecture/example-scenario/security/hardened-web-app)
 - [クラウド監視ガイド: サービス レベルの目標](https://docs.microsoft.com/ja-jp/azure/cloud-adoption-framework/manage/monitor/service-level-objectives)

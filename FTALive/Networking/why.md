@@ -1,4 +1,5 @@
-Azure Networking - ハイブリッドネットワーク編 # **[home](./core/README.md)**  | **[next](./overview.md)**
+Azure Networking - ハイブリッドネットワーク編 # **[home](./core/README.md)**  | **[next](./overview.md)**  
+Azure Networking - アプリケーション配信編 # **[home](./appdelivery/README.md)**  | **[next](./overview.md)**
 
 
 # 1. なぜ Azure Networking を理解しなければいけないのか

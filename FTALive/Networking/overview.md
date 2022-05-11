@@ -1,4 +1,5 @@
-Azure Networking - ハイブリッドネットワーク編 # **[prev](why.md)** | **[home](./core/README.md)**  | **[next](./core/hybrid-network.md)**
+Azure Networking - ハイブリッドネットワーク編 # **[prev](why.md)** | **[home](./core/README.md)**  | **[next](./core/hybrid-network.md)**  
+Azure Networking - アプリケーション配信編 # **[prev](why.md)** | **[home](./appdelivery/README.md)**  | **[next](./appdelivery/application-delivery.md)**
 
 # 2. Azure Networking の全体像と機能概要
 
@@ -230,7 +231,7 @@ Azure の Load Balancer に関する詳細な技術情報は論文で公開さ�
 - インバウンド NAT 規則を構成すると DNAT ができる
   - Load Balancer のフロントエンドの IP アドレスとバックエンドサーバーを紐づけられる
 - 送信規則を構成すると SNAT のルールを構成でき、外部へのアウトバウンドを行える
-- Cross-region Load Balancer を用いるとリージョンをまたいだ L4 の負荷分散ができる(2022/3現在プレビュー)
+- Cross-region Load Balancer を用いるとリージョンをまたいだ L4 の負荷分散ができる(2022/4現在プレビュー)
 
 </details>
 
@@ -377,12 +378,80 @@ Virtual WAN は、Azure のさまざまなネットワークサービスを接�
 
 </details>
 
-<!--
 ### 2.2.3 Global
 
-*作成中*
+#### Front Door
 
--->
+<details>
+  <summary>解説を開く</summary>
+
+Front Door はレイヤー 7 で HTTP/HTTPS を処理するグローバルサービスです。HTTP/HTTPS 通信をバックエンドのサービスへ負荷分散するために用いられるサービスです。リージョンを持たないため、災害対策としてリージョン間の冗長化や負荷分散で利用できます。Front Door は Azure ネットワークのエッジで動作するサービスであり、エニーキャストのしくみでアクセス元のネットワークに最も近い Azure データセンターへ接続されます。
+
+また、新しい Front Door は、従来の Microsoft の Azure CDN と クラシックの Front Door を統合したサービスであり、従来の CDN の代替サービスとしても利用できます。
+
+![](https://docs.microsoft.com/ja-jp/azure/frontdoor/media/tier-comparison/architecture.png)
+
+以下に Front Door の特徴を紹介します。
+
+- Front Door は特定のリージョンを持たない
+  - 展開されるリソース グループのリージョンにメタデータを持つ
+- 3 つの SKU がある
+  - Standard / Premium / クラシック
+  - 参考: [レベル間の機能の比較](https://docs.microsoft.com/ja-jp/azure/frontdoor/standard-premium/tier-comparison#feature-comparison-between-tiers)
+- WAF 機能がある(Premium/クラシック)
+- SSL オフロードが利用できる
+- URL ベースのルーティング、複数サイトのホスティングができる
+- Cookie ベースのセッション アフィニティ機能が利用できる
+- HTTP ヘッダー、 URL の書き換えができる
+- プライベート リンクが利用できる(Premium)
+- キャッシュ機能を利用できる
+- bot 保護機能を利用できる
+
+|:question: Tips: 特定の Front Door からのアクセスのみにロックダウンする|
+|:------------------------------------------|
+|Front Door はグローバルリソースであることから Front Door の IP アドレスは全ユーザーで共通です。`AzureFrontDoor.Backend` サービス タグで Front Door からのアクセス元を限定したうえで、ヘッダーに含まれる `X-Azure-FDID` で Front Door の ID を指定する必要があります。<br>参考: [バックエンドへのアクセスを Azure Front Door のみにロックダウンするにはどうしたらよいですか?](https://docs.microsoft.com/ja-jp/azure/frontdoor/front-door-faq#--------------azure-front-door-------------------------)|
+
+</details>
+
+#### Traffic Manager
+
+<details>
+  <summary>解説を開く</summary>
+
+Traffic Manager は DNS ベースの負荷分散サービスです。DNS ベースであるため、HTTP 以外のプロトコルであってもエンドポイントに対する負荷分散が可能です。ただし、インターネット上から名前解決やエンドポイントに対するアクセス可能なサービスが対象であり、仮想ネットワーク内部のリソースへの負荷分散には別のサービスを利用する必要があります。
+
+またよくある誤解ですが、**クライアントからの通信を Traffic Manager が処理することはありません**。Traffic Manager はあくまでもクライアントからの通信開始時の名前解決において負荷分散をすることを目的としており、クライアントとエンドポイントは直接通信します。従ってエンドポイント側でのフィルターや、パフォーマンス/地理的なルーティングを使用する場合にクライアントの位置(名前解決の実行元)を意識しておく必要があります。
+
+![](../images/../Networking/images/trafficmanager-access.png)
+
+以下に Traffic Manager の特徴を紹介します。
+
+- Traffic Manager は特定のリージョンを持たない
+- 負荷分散には複数の方法がある
+  - パフォーマンス
+  - 重み付け
+  - 優先度
+  - 地域
+  - 複数値
+  - サブネット
+- エンドポイントとして以下が指定可能
+  - Azure のサービス
+  - 外部エンドポイント
+  - Traffic Manager
+- Real User Measurements が利用できる
+  - Web サイトに JavaScript を埋め込むことでエンドユーザーの位置に応じたトラフィックルーティングが行われる
+- フェールオーバーにかかる時間は以下の設定によって変化する
+  - プローブ間隔
+    - 通常のプローブ間隔: 30 秒
+    - 高速プローブ間隔: 10 秒
+  - 許容されるエラー数
+  - タイムアウト値
+  - DNS の TTL
+
+以下はフェールオーバー時の動作を表した図です。
+![](../images/../Networking/images/trafficmanager.png)
+
+</details>
 
 ### 2.2.4 Security
 
