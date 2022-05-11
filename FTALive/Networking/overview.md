@@ -1,4 +1,3 @@
-Azure Networking - ハイブリッドネットワーク編 # **[prev](why.md)** | **[home](./core/README.md)**  | **[next](./core/hybrid-network.md)**  
 Azure Networking - アプリケーション配信編 # **[prev](why.md)** | **[home](./appdelivery/README.md)**  | **[next](./appdelivery/application-delivery.md)**
 
 # 2. Azure Networking の全体像と機能概要
