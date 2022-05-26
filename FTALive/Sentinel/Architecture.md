@@ -1,10 +1,4 @@
-#### [home](./welcome.md)  | [next](./.md)
-
-<!-- 
-持って帰るもの
-・実装の時に考える要件にはどんなものがあるか、適切なアーキテクチャを選択することができる
-・セキュリティ監視に必要な情報にはどんなものがあるか、適切に分析を行うことができる
--->
+#### [home](./welcome.md) 
 
 
 # Microsoft Sentinel アーキテクチャの計画
@@ -284,7 +278,5 @@ TTP が提供する攻撃のテクニックを参照することで攻撃の具�
 # 参考リンク
 
 [Microsoft Cybersecurity リファレンス アーキテクチャ](https://docs.microsoft.com/ja-jp/security/cybersecurity-reference-architecture/mcra)
-
-
 
 [Azure Data Explorerのクエリを記述する(KQL)](https://docs.microsoft.com/ja-jp/azure/data-explorer/write-queries)

@@ -10,7 +10,7 @@
 * SIEM (ログの収集と分析) の考え方
 * SOAR (オートメーション) の考え方
 
-## Go Do
+## リソース
 
 Learn - [Azure Sentinel Ninja Training](https://techcommunity.microsoft.com/t5/azure-sentinel/become-an-azure-sentinel-ninja-the-complete-level-400-training/ba-p/1246310)
 
