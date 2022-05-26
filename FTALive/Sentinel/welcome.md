@@ -1,4 +1,4 @@
-# Welcome to the FastTrack for Azure - Microsoft Defender for Cloud
+# Welcome to the FastTrack for Azure - Microsoft Sentinel
 ## まもなくセッションを開始しますのでしばらくお待ちください
 
 #### [home](./welcome.md)  | [next](./Architecture.md)
