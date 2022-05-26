@@ -77,8 +77,6 @@ Microsoft Sentinel を使用する際には Log Analytics に対するコスト�
 次のドキュメントに Microsoft Sentinel でコストを削減する方法が記載されています。  
 [Microsoft Sentinel のコストを削減する](https://docs.microsoft.com/ja-jp/azure/sentinel/billing-reduce-costs)
 
-## アーキテクチャの例
-
 
 # Microsoft Sentinel の SIEM 機能
 
