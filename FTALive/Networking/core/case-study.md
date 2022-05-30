@@ -1,4 +1,4 @@
-Azure Networking - ハイブリッドネットワーク編 # **[prev](./hybrid-network.md)** | **[home](./README.md)**
+Azure Networking #1 - Azure ネットワークの基礎とハイブリッドネットワークの設計・展開 # **[prev](./hybrid-network.md)** | **[home](./README.md)**
 
 # 4. ネットワークアーキテクチャー事例
 
