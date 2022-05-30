@@ -1,4 +1,4 @@
-Azure Networking - アプリケーション配信編 # **[home](./appdelivery/README.md)**  | **[next](./overview.md)**
+Azure Networking #1 - Azure ネットワークの基礎とハイブリッドネットワークの設計・展開 # **[home](./core/README.md)**  | **[next](./overview.md)**
 
 
 # 1. なぜ Azure Networking を理解しなければいけないのか

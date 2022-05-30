@@ -1,4 +1,4 @@
-# Welcome to the FastTrack for Azure - Azure Networking - ハイブリッドネットワーク編
+# Welcome to the FastTrack for Azure - Azure Networking #1 - Azure ネットワークの基礎とハイブリッドネットワークの設計・展開
 
 ## まもなくセッションを開始しますのでしばらくお待ちください
 
