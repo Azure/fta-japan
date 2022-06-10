@@ -90,7 +90,7 @@ FSLogix 利用時にはユーザー プロファイルは外部ストレージ�
 
 <br>
 
-### (参考) Windows 365 クラウド PC と Avure Virtual Desktop
+### (参考) Windows 365 クラウド PC と Azure Virtual Desktop
 2021年8月より Windows 365 クラウド PC が利用可能となりました。これはエンタープライズのお客様が Microsoft のクラウド サービスを使用して VDI を実現するための選択肢が AVD と Windows 365 の 2 つになったことを意味しています。ここでは Windows 365 そのものについて深くは触れないものの、正しい認識で AVD の利用を進めてもらうために Windows 365 と AVD でできること／できないことを実践的な観点で少し紹介したいと思います（将来的な機能拡張でその差が縮まる可能性はあります）。
 
 ![windows10evd](images/Windows365-AVD.png)
@@ -102,7 +102,7 @@ FSLogix 利用時にはユーザー プロファイルは外部ストレージ�
 |コスト| 従量課金<br>(VM/ディスク/ネットワーク)|固定料金<br>+ネットワーク従量課金|固定料金|
 |ユーザー割り当て|PC 占有 or マルチセッション|PC 占有|PC 占有|
 |カスタム イメージ|利用可|利用可|利用不可|
-|ドメイン参加|Azure AD 参加 or AD DS 参加|Hybrid AAD 参加のみ<br> (Azure AD Join のロードマップ有) |Azure AD 参加のみ|
+|ドメイン参加|Azure AD 参加 or AD DS 参加|Hybrid AAD 参加 or Azure AD 参加 |Azure AD 参加のみ|
 |ユーザー規模|制限なし|制限なし|300人未満|
 |パフォーマンス|Azure 上で利用可能な VM と<br> Disk から柔軟に選択可|[W365 用 SKU](https://www.microsoft.com/ja-jp/windows-365/all-pricing) から選択|[W365 用 SKU](https://www.microsoft.com/ja-jp/windows-365/all-pricing) から選択|
 |Azure サブスクリプション|必要|必要|不要|
@@ -333,22 +333,4 @@ AVD に接続するクライアント デバイス側で、ソフトウェア �
 
 [AVD 関連のロードマップ情報](https://www.microsoft.com/ja-jp/microsoft-365/roadmap?filters=Windows%20Virtual%20Desktop)
 
-
-
-
-
-<!---
-
-7.	WVD  ID Security (Optional) 
-  i.	Azure AD Conditional Access (Azure AD Premium) 
-  ii.	Intune 
-  iii.	MDATP
-8.	WVD Image management (Optional) 
-  i.	Capture images 
-  ii.	Shared Image Gallery 
-9.	WVD Misc (Optional)
-  i.	vCPU Quota
-  ii.	Scale limit (https://docs.microsoft.com/ja-jp/azure/architecture/example-scenario/wvd/windows-virtual-desktop)
-
--->
 
