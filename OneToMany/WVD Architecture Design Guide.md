@@ -13,7 +13,7 @@ FTA (FastTrack for Azure) 組織については[こちら](https://azure.microso
 3. ネットワーク要件
 4. デザイン パターン
 5. ログとモニタリング
-6. 各種ツール
+6. 各種ツールや機能
 
 <br>
 
@@ -121,24 +121,24 @@ FSLogix 利用時にはユーザー プロファイルは外部ストレージ�
 以下、具体的な違いを説明してきます。
 
 ###  3.1. オンプレミス Active Directory と Azure Active Directory の同期
-AVD を利用する前提条件として記載したように、AVD は基本的にはオンプレミス Active Directory （もしくは Azure Active Directory Domain Service）と同期された Azure Active Directory が必要になります (ただし、Azure AD Join の構成では必要ない)。これらは基本的には Azure AD Connect によりユーザーが同期されている必要がありますので、同期のためのネットワーク接続が必要です。
+AVD を利用する前提条件として記載したように、AVD は基本的にはオンプレミス Active Directory （もしくは Azure Active Directory Domain Service）と同期された Azure Active Directory が必要になります (ただし、Azure AD Join の構成では必要ない)。これらは基本的には Azure AD Connect によりユーザーが同期されている必要がありますので、同期のためのネットワーク接続 (0) が必要です。
 
 ![windows10evd](images/network-1.png)
 
 ### 3.2. クライアントからの接続
-AVD を使用したセッションホストへの接続は AVD コントロール プレーンと呼ばれるインターネットに公開されたエンドポイント経由で行われます。言い換えると、インターネット カフェやスマートフォンなどからもネットワーク的には到達可能な状態となっているため、必要に応じてパブリック エンドポイントへのアクセスを制限するための考慮が必要になります。
+AVD を使用したセッションホストへの接続は AVD コントロール プレーンと呼ばれるインターネットに公開されたエンドポイント経由で行われます。AVD コントロールプレーンへの接続時には Azure AD による認証が必要となるため、接続元デバイスからは AVD コントロールプレーン (1)、および Azure AD (2) の両方と通信できる必要があります。言い換えるとインターネット カフェやスマートフォンなどからもネットワーク的には到達可能な状態となっているため、必要に応じてパブリック エンドポイントへのアクセスを制限するための考慮が必要になります。
 
 AVD コントロールプレーンへの接続時には Azure AD での認証となるため、Azure AD 側の設定で MFA (Multi Factor Authentication) を導入したり、アクセス可能なソース IP 範囲を限定するような対応が一般的です（これらを利用するには Azure AD 条件付きアクセスという Azure AD Premium で利用できる機能が必要です）。
 
 ![windows10evd](images/network-2.png)
 
 ### 3.3. セッションホストと AVD コントロール プレーン間の接続
-ユーザーが管理する Azure Virtual Network 内のセッションホストとパブリックなエンドポイントを持つコントロールプレーン間のネットワーク接続が必要です。細かい内容は [こちら](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/safe-url-list) を参照してもらえればと思いますが、具体的にはクライアントとの画面転送のためのトラフィックや、必要なエージェントをダウンロードしたり更新したりするための通信となります。また、必要な URL に正しくアクセスできているか確認するための [チェック ツール](https://docs.microsoft.com/en-us/azure/virtual-desktop/safe-url-list#required-url-check-tool) も利用可能です。
+ユーザーが管理する Azure Virtual Network 内のセッションホストとパブリックなエンドポイントを持つコントロールプレーン間のネットワーク接続 (3) が必要です。細かい内容は [こちら](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/safe-url-list#azure-public-cloud) を参照してもらえればと思いますが、具体的にはクライアントとの画面転送のためのトラフィックや、必要なエージェントをダウンロードしたり更新したりするための通信となります。また、必要な URL に正しくアクセスできているか確認するための [チェック ツール](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/safe-url-list#required-url-check-tool) も利用可能です。
 
 ![windows10evd](images/network-3.png)
 
 ### 3.4. セッションホストからインターネットへの接続
-こちらは AVD 特有という意味ではありませんが、ユーザーがセッションホストに接続した後のインターネット接続に対する考慮が必要です。既定では Azure Virtual Network (Vnet) からインターネットに向けた通信は許可されており、監視等もされていないため、必要に応じてアクセスを制限したりプロキシ サーバーや Azure Firewall を経由させるなどの考慮が必要になります。こちらは AVD セッションホストに限らず、Virtual Machine を Azure 上にデプロイする際に一般的に考慮する必要があるものになります。
+こちらは AVD 特有という意味ではありませんが、ユーザーがセッションホストに接続した後のインターネット接続 (4) に対する考慮が必要です。既定では Azure Virtual Network (Vnet) に展開した仮想マシンからインターネットに向けた通信は許可されており、監視等もされていないため、必要に応じてアクセスを制限したりプロキシ サーバーや Azure Firewall を経由させるなどの考慮が必要になります。これは AVD セッションホストに限らず、Virtual Machine を Azure 上にデプロイする際に一般的に考慮する必要があるものになります。
 
 ![windows10evd](images/network-4.png)
 
@@ -146,13 +146,13 @@ AVD コントロールプレーンへの接続時には Azure AD での認証と
 
 ## 4. デザイン パターン
 
-ここでは上述したような基礎的な AVD の概要が押さえられていることを前提として、一般的なエンタープライズ環境で AVD を利用する場合によく採用される実践的な構成例を紹介します。
+この章では上述したような基礎的な AVD の概要が押さえられていることを前提として、一般的なエンタープライズ環境で AVD を利用する場合によく採用される実践的な構成例を紹介します。
 
 まずは以下の全体像をご覧ください。
 
 ![networkdesign1](images/NetworkDesign1.png)
 
-ここには Azure を使ったハイブリッド クラウド環境におけるベストプラクティスが採用されています。具体的には以下のようなものです。これから一つずつ詳しく見ていきます。
+ここでは Azure を使ったハイブリッド クラウド環境におけるベストプラクティスが採用されています。具体的には以下のようなものです。これから一つずつ詳しく見ていきます。
 
 - ハブ & スポークモデル
 - 2種類のルートを使ったインターネット分離
@@ -162,11 +162,9 @@ Azure で仮想マシンを動作させるには仮想ネットワーク (Vnet) 
 
 そこで複数の仮想ネットワークを相互に接続し、システム毎の境界を仮想ネットワーク単位で分離する構成を取ることが、拡張性や柔軟性の観点で推奨されています。この構成は複数のシステムから共通して利用される Vnet を中心に一つだけ配置し、システム単位で作成した Vnet は中心の Vnet から車輪のスポークのように複数配置することからハブ & スポーク モデルと呼ばれています。
 
-スポーク Vnet 同士は既定では互いに通信できないためセグメント間の分離が容易です。また、セキュリティ境界が分かれた新たなシステムを追加したい場合にもスポーク Vnet をハブに繋げればよく、将来に向けて拡張しやすい構成となります。
+スポーク Vnet 同士は既定では互いに通信できないためセグメント間の分離が容易です。また、セキュリティ境界が分かれた新たなシステムを追加したい場合にも既存の Vnet に直接手を加えることなくスポーク Vnet をハブに繋げればよいため、将来に向けて拡張しやすい構成となります。
 
-<!--
-また、必須ではありませんが、ハブ Vnet にはインターネットとのセキュリティ境界となる Azure Firewall が配置されるケースが多数あります。スポーク内の各 VM がインターネットに通信する際に Azure Firewall を経由させるようにすることで Azure Firewall が DMZ として機能し、クライアントが外部に接続する際の通信を Azure Firewall で一元的に管理することが可能になります。
--->
+また、詳しくは後述しますがハブ Vnet にはインターネットとのセキュリティ境界となる Azure Firewall を配置するケースが多く見られます。スポーク内の各 VM がインターネットに通信する際に Azure Firewall を経由させるようにすることで Azure Firewall が DMZ として機能し、クライアントが外部に接続する際の通信を Azure Firewall で一元的に管理することが可能になります。
 
 ![networkdesign1](images/hubspoke.png)
 
@@ -176,11 +174,11 @@ Azure で仮想マシンを動作させるには仮想ネットワーク (Vnet) 
 
 ただし、この構成を取ってしまうと AVD のセッションホストが行う画面転送などの管理用の通信もオンプレミスを経由してしまうため、AVD に接続できないなどの問題が発生したり、デスクトップ操作時の遅延やネットワーク帯域の圧迫に繋がります。
 
-そのような状況を解決するのがここで紹介する2種類のルートを使ったインターネット分離の構成です。これは、AVD のセッションホストが使用する管理用の通信はオンプレミスを経由させずに Azure Firewall を通して直接 AVD コントロールプレーンに到達させ、インターネットブラウジング等の Web 向けの通信についてはオンプレミスのプロキシーを経由させる構成です。
+そのような状況を解決するのがここで紹介する2種類のルートを使ったインターネット分離の構成です。これは、AVD のセッションホストが使用する管理用の通信はオンプレミスを経由させずに Azure から直接 AVD コントロールプレーンに到達させ、インターネットブラウジング等の Web 向けの通信についてはオンプレミスのプロキシーを経由させる構成です。
 
-実現方法としてはインターネット向けの既定のルートを Azure Firewall に向けるようにルートテーブルを上書きし、Web 向けの通信はオンプレミスのプロキシサーバーを経由するように GPO 等でクライアント端末に設定を行います。また、必要に応じて PAC ファイルにより URL 毎の除外設定も行います。
+実現方法としてはインターネット向けの既定のルートを Azure Firewall に向けるようにルートテーブル (Azure が提供する "ルート テーブル" リソースを利用) を上書きし、Web 向けの通信はオンプレミスのプロキシサーバーを経由するように GPO 等でクライアント端末に設定を行います。また、必要に応じて PAC ファイルにより URL 毎の除外設定も行います。
 
-結果として何れの通信もプロキシーもしくは Azure Firewall を経由するため、これらの境界で宛先 URL の制御やロギングを行うことができます。
+結果として全てのインターネット向けの通信はプロキシーもしくは Azure Firewall を経由するため、これらの境界で宛先 URL の制御やロギングを行うことができます。
 
 ![networkdesign1](images/porxyandazfw.png)
 
@@ -227,7 +225,7 @@ Azure でのログ取得は Azure Monitor というサービスが担う形と�
 
 誤解を恐れずに言えば AVD の文脈では Azure Monitor ≒ LogAnalytics だと思って頂いて問題ありません。
 
-Azure Monitor (LogAnalytics) では AVD 関連の情報だけなく、Azure AD でのユーザー認証情報や Azure サブスクリプション内でのユーザー操作、AVD 内部の OS のパフォーマンスログや、カスタマイズされたログの取得をすることができますが、既定では取得はされません。AVD を使う上では必要に応じてこれらのログを取得する設定を行う必要があります。
+Azure Monitor (LogAnalytics) では AVD 関連の情報だけなく、Azure AD でのユーザー認証情報や Azure サブスクリプション内でのユーザー操作、AVD 内部の OS のパフォーマンスログや、カスタマイズされたログの取得をすることができますが、既定では取得されないものも多数あります。AVD を利用する上では必要に応じてこれらのログを取得する設定を行う必要があります。
 
 以下が取得を検討すべきログの一覧になります。これから一つずつ紹介していきます。
 
@@ -255,7 +253,7 @@ AVD ホストプールを含む Azure リソースは Azure サブスクリプ�
 ![networkdesign1](images/monitor-azuresubscription.png)
 
 ### 5.3 Azure リソース
-AVD に限りませんが、Azure 上の多くのサービスは "診断設定" から LogAnalytics ワークスペースにログを送信する設定を行うことができます。AVD のそのようなサービスの一つで、AVD ホストプールに対するユーザーのログイン操作のログや、エラーが発生した際のログを取得することができます。これらのログは既定では Azure 上で取得されないため、明示的にログを取得する設定を行っておく必要があります。
+AVD に限りませんが、Azure 上の多くのサービスは "診断設定" から LogAnalytics ワークスペースにログを送信する設定を行うことができます。AVD もそのようなサービスの一つで、AVD ホストプールに対するユーザーのログイン操作のログや、エラーが発生した際のログを取得することができます。これらのログは既定では Azure 上で取得されないため、明示的にログを取得する設定を行っておく必要があります。
 
 具体的な設定方法については [診断機能に Log Analytics を使用する](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/diagnostics-log-analytics) を参照してください。このドキュメントにはログを取得した後にログをクエリーするサンプルも紹介されています。
 
@@ -263,23 +261,23 @@ AVD に限りませんが、Azure 上の多くのサービスは "診断設定" 
 
 
 ### 5.4 OS
-Windows OS 内のログ、イベントログやパフォーマンスログは、Azure Monitor for VMs という機能を通じて簡単に取得することができます。この機能を有効化すると、Azure VM 内にログ取得のためのエージェントが Windows 上でのサービスとしてインストールされ、定期的にこれらの情報を LogAnalytics ワークスペースに送信します。
+Windows OS 内のログ、イベントログやパフォーマンスログは、VM insights という機能を通じて簡単に取得することができます。この機能を有効化すると、Azure VM 内にログ取得のためのエージェントが Windows 上でのサービスとしてインストールされ、定期的にこれらの情報を LogAnalytics ワークスペースに送信します。
 
-具体的な設定方法については [Azure Monitor for VMs の有効化の概要](
-https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-enable-overview) を参照してください。また、取得した後の分析に関する情報は [VM 用 Azure Monitor を使用してパフォーマンスをグラフ化する方法](https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-performance) を参照してください。
+具体的な設定方法については [VM insights の有効化の概要](
+https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-enable-overview) を参照してください。また、取得した後の分析に関する情報は [VM insights を使用してパフォーマンスをグラフ化する方法](https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-performance) を参照してください。
 
 ![networkdesign1](images/monitor-os.png)
 
 
 ### 5.5 アプリケーション
-サードパーティ製の製品等のログについても、場合によっては Azure Monitor で分析することができます。Azure Monitor (LogAnalytics) にはカスタムログ取得機能があり、テキストベースのログについては Azure に送信することができます。具体的な設定方法は以下の [Azure Monitor で Log Analytics エージェントを使用してカスタム ログを収集する](https://docs.microsoft.com/ja-jp/azure/azure-monitor/platform/data-sources-custom-logs) を参照してください。
+イベントログ以外のサードパーティ製の製品等のログについても、場合によっては Azure Monitor で分析することができます。Azure Monitor (LogAnalytics) にはカスタムログ取得機能があり、テキストベースのログについては Azure に送信することができます。具体的な設定方法は以下の [Azure Monitor で Log Analytics エージェントを使用してカスタム ログを収集する](https://docs.microsoft.com/ja-jp/azure/azure-monitor/platform/data-sources-custom-logs) を参照してください。
 
 ![networkdesign1](images/monitor-application.png)
 
 
 <br>
 
-## 6. 各種ツール
+## 6. 各種ツールや機能
 
 ここでは Microsoft Native AVD を利用する上で役立つツールやリンク情報をご紹介します。
 
@@ -288,6 +286,9 @@ https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-enable-
 基本的にはプール型の AVD を利用する場合特有のものですが、セッションホスト仮想マシンをコストパフォーマンスを意識して効率よく使用するためには、ピーク時間／オフピーク時間を定義して、トータルの仮想マシン台数を増減させる対応が必要です。この作業を自動化するツールがここで紹介するスケーリングツールとなります。使用方法は以下のドキュメントに纏められています。
 
 [Azure Automation を使用してセッション ホストをスケーリングする](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/set-up-scaling-script)
+
+また、より新しい機能として Azure Automation や LogicApp に依存せずに、より簡単な操作で設定可能な仕組みがプレビュー公開中ではありますが利用可能です。
+[Azure Virtual Desktop ホスト プールの自動スケーリング (プレビュー)](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/autoscale-scaling-plan)
 
 ### 6.2 Azure Monitor Workbook によるモニタリング
 
@@ -313,11 +314,19 @@ AVD に接続するクライアント デバイス側で、ソフトウェア �
 
 [画面キャプチャ保護](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/screen-capture-protection)
 
-### 6.5 RDP Shortpath
+### 6.5 RDP ShortPath (マネージド ネットワーク／パブリック ネットワーク)
 
-3章で記載したように、クライアントからセッションホストへの画面転送による通信は "クライアント デバイス" -> "AVD コントロールプレーン" -> "セッションホスト" という経路を辿ります。RDP Shortpath を使用すると、クライアント デバイスは "AVD コントロールプレーン" をスキップして直接セッションホストと UDP プロトコルにより通信できるようになるため、応答性がより向上します。ただし、前提条件としてクライアント デバイスが社内イントラネットに配置されている場合など、セッションホストとネットワーク的に直接通信できることが必須となります。また、セッションホストの振り分けや認証処理のためにクライアント デバイスから AVD コントロールプレーンへの通信経路は引き続き必要になります。
+**マネージド ネットワーク**
+
+3章で説明したように、クライアントからセッションホストへの画面転送による通信は "クライアント デバイス" -> "AVD コントロールプレーン" -> "セッションホスト" という経路となり、中間の "AVD コントロール プレーン" を経由することで画面操作の応答性に影響する場合があります。RDP ShortPath を使用すると、クライアント デバイスは "AVD コントロールプレーン" をスキップして直接セッションホストと UDP プロトコルにより通信できるようになるため、応答性が向上します。ただし、前提条件としてクライアント デバイスが社内イントラネットに配置されている場合など、セッションホストとネットワーク的に直接通信できることが必須となります。また、セッションホストの振り分けや認証処理のためにクライアント デバイスから AVD コントロールプレーンへの通信経路は引き続き必要になり、ネットワーク要件が緩和されるわけではありません。
 
 [Azure Virtual Desktop マネージド ネットワーク用 RDP Shortpath](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/shortpath)
+
+**パブリック ネットワーク (プレビュー)**
+
+上述したマネージド ネットワーク向けの RDP ShortPath と同じようにクライアントデバイスとセッションホストとの画面転送の通信を UDP プロトコルを使用して直接可能として応答性を向上させる機能ですが、通信経路がインターネット経由となるため追加のネットワーク セキュリティに対する考慮が必要になります。具体的な通信要件や機能の詳細については以下のドキュメントを参照ください。
+
+[パブリック ネットワーク用 Azure Virtual Desktop RDP Shortpath (プレビュー)](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/shortpath-public#network-configuration)
 
 <br>
 
