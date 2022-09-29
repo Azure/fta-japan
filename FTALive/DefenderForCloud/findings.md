@@ -37,32 +37,10 @@ Microsoft defender for Cloud の強化されたセキュリティ機能はサブ
   
 
 ## エージェントの構成について
-Defender for Cloud は VM の内部の情報を Log Analytics エージェントを使用して情報を収集するため、一部の推奨項目を利用するためには Log Analytics エージェントのインストールが必要になります。Azure Monitor エージェントが VM に関する情報を収集するための新しい仕組みとしてリリースされていますが、現時点では Azure Monitor エージェントは Defender for Cloud には対応していません。
+Defender for Cloud は VM の内部の情報を Log Analytics エージェントを使用して情報を収集するため、一部の推奨項目を利用するためには Log Analytics エージェントのインストールが必要になります。Azure Monitor エージェントが VM に関する情報を収集するための新しい仕組みとしてリリースされています。Defender for Cloud に対しては現在パブリック プレビューでの昨日サポートが提供されています。
 これらのエージェントは同時にインストールすることができるため、Defender for Cloud の機能を利用するために Log Analytics エージェントを使用し、VM 内のパフォーマンスやイベント ログを収集するためには Azure Monitor エージェントを使用する、といった構成をとることができます。
 
 [Azure Monitor エージェントの概要](https://docs.microsoft.com/ja-jp/azure/azure-monitor/agents/agents-overview)
->引用:  
->Log Analytics エージェントは、次のような場合に使用します。
->- Azure の外部でホストされている Azure 仮想マシンまたはハイブリッド マシンから、ログとパフォーマンス データを収集する。
->- データを Log Analytics ワークスペースに送信して、ログ クエリなど、Azure Monitor ログでサポートされている機能を活用する。
->- マシンを大規模に監視し、そのプロセスや他のリソースおよび外部プロセスに対する依存関係を監視できる、VM insights を使用する。
->- Microsoft Defender for Cloud または Microsoft Sentinel を利用してマシンのセキュリティを管理します。
->- マシンを大規模に監視し、そのプロセスや他のリソースおよび外部プロセスに対する依存関係を監視できる、VM insights を使用する。
->- さまざまなソリューションを使用して、特定のサービスまたはアプリケーションを監視する。  
-> 
-
-
-### Azure Monitor Windows 用エージェントの機能
-||Azure Monitor エージェント| 診断拡張機能 (WAD) | Log Analyticsエージェント | 依存関係エージェント|
-| ---- | ---- | ---- | ---- | ---- |
-|サポートされている環境|Azure<br>その他のクラウド(Azure Arc)<br>オンプレミス (Azure Arc)|Azure |Azure<br>その他のクラウド<br>オンプレミス|Azure<br>その他のクラウド<br>オンプレミス|
-|エージェントの要件    |なし|なし|なし|Log Analytics エージェントが必要|                               
-|収集されるデータ	|イベント ログ<br>パフォーマンス|イベント ログ<br>ETW イベント<br>パフォーマンス<br>ファイル ベース ログ<br>IIS ログ<br>.NET アプリ ログ<br>クラッシュ ダンプ<br>エージェント診断ログ|イベント ログ<br>パフォーマンス<br>ファイル ベース ログ<br>IIS ログ<br>分析情報とソリューション<br>その他のサービス|プロセスの依存関係<br>ネットワーク接続のメトリック|
-|送信されるデータ	|Azure Monitor ログ<br>Azure Monitor メトリック|Azure Storage<br>Azure Monitor メトリック<br>イベント ハブ|Azure Monitor ログ|Azure Monitor ログ(Log Analytics エージェント経由)|
-|サービスとfeaturesサポート対象|Log Analytics<br>メトリックス エクスプローラー|メトリックス エクスプローラー|VM insights  <br>Log Analytics<br>Azure Automation<br>Microsoft Defender for Cloud<br>Microsoft Sentinel|VM insights<br>サービス マップ|
-
-
-
 
 
 # 推奨事項の解説
