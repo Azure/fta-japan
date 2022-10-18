@@ -133,7 +133,6 @@ AVD コントロールプレーンへの接続時には Azure AD での認証と
 ![windows10evd](images/network-2.png)
 
 ### 3.3. セッションホストと AVD コントロール プレーン間の接続
-ユーザーが管理する Azure Virtual Network 内のセッションホストとパブリックなエンドポイントを持つコントロールプレーン間のネットワーク接続 (3) が必要です。細かい内容は [こちら](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/safe-url-list#azure-public-cloud) を参照してもらえればと思いますが、具体的にはクライアントとの画面転送のためのトラフィックや、必要なエージェントをダウンロードしたり更新したりするための通信となります。また、必要な URL に正しくアクセスできているか確認するための [チェック ツール](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/safe-url-list#required-url-check-tool) も利用可能です。
 ユーザーが管理する Azure Virtual Network 内のセッションホストとパブリックなエンドポイントを持つコントロールプレーン間のネットワーク接続 (3) が必要です。細かい内容は [こちら](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/safe-url-list#azure-public-cloud) を参照してもらえればと思いますが、具体的にはクライアントとの画面転送のためのトラフィックや、必要なエージェントをダウンロードしたり更新したりするための通信となります。また、必要な URL に正しくアクセスできているか確認するための [必要な URL チェック ツール](https://learn.microsoft.com/ja-jp/azure/virtual-desktop/required-url-check-tool) も利用可能です。
 
 ![windows10evd](images/network-3.png)
@@ -288,9 +287,9 @@ https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-enable-
 
 [Azure Virtual Desktop の自動スケーリング プランを作成する](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/autoscale-scaling-plan)
 
-なお、上述したスケーリング プランは2022年7月ごろに一般提供が開始された機能であり、従来は Azure Automation と LogicApp を組み合わせてこれを実現していました。今から AVD の利用を開始するのであれば基本的にはポータルに統合されたスケーリング プランを利用すればよいかと思います。
-
-[Azure Virtual Desktop 用に Azure Automation と Azure Logic Apps を使用してスケーリング ツールを設定する](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/set-up-scaling-script)
+>**(注意)** なお、上述したスケーリング プランは2022年7月ごろに一般提供が開始された機能であり、従来は Azure Automation と LogicApp を組み合わせてこれを実現していました。今から AVD の利用を開始するのであれば基本的にはポータルに統合されたスケーリング プランを利用すればよいかと思います。
+>
+>[Azure Virtual Desktop 用に Azure Automation と Azure Logic Apps を使用してスケーリング ツールを設定する](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/set-up-scaling-script)
 
 <br>
 
