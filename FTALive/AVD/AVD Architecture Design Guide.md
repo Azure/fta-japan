@@ -284,14 +284,10 @@ https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-enable-
 
 ### 6.1 スケーリングツール
 
-基本的にはプール型の AVD を利用する場合特有のものですが、セッションホスト仮想マシンをコストパフォーマンスを意識して効率よく使用するためには、ピーク時間／オフピーク時間を定義して、トータルの仮想マシン台数を増減させる対応が必要です。この作業を自動化するツールがここで紹介するスケーリングツールとなります。使用方法は以下のドキュメントに纏められています。
 ここで紹介するのはプール型の AVD を利用する場合特有のものですが、セッションホスト仮想マシンをコストパフォーマンスを意識して効率よく使用するためには、ピーク時間／オフピーク時間を定義して、トータルの仮想マシン台数を増減させる対応が必要です。この作業を自動化するのがここで紹介するスケーリング プランという機能です。
 
-[Azure Automation を使用してセッション ホストをスケーリングする](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/set-up-scaling-script)
 [Azure Virtual Desktop の自動スケーリング プランを作成する](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/autoscale-scaling-plan)
 
-また、より新しい機能として Azure Automation や LogicApp に依存せずに、より簡単な操作で設定可能な仕組みがプレビュー公開中ではありますが利用可能です。
-[Azure Virtual Desktop ホスト プールの自動スケーリング (プレビュー)](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/autoscale-scaling-plan)
 なお、上述したスケーリング プランは2022年7月ごろに一般提供が開始された機能であり、従来は Azure Automation と LogicApp を組み合わせてこれを実現していました。今から AVD の利用を開始するのであれば基本的にはポータルに統合されたスケーリング プランを利用すればよいかと思います。
 
 [Azure Virtual Desktop 用に Azure Automation と Azure Logic Apps を使用してスケーリング ツールを設定する](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/set-up-scaling-script)
@@ -316,7 +312,6 @@ https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-enable-
 
 有効化のための手順は以下に纏められています。個人用、プール用の両方のシナリオで利用可能です。
 
-[接続時に仮想マシンを起動](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/start-virtual-machine-connect)
 [Start VM on Connect を設定する](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/start-virtual-machine-connect)
 
 <br>
@@ -335,14 +330,10 @@ AVD に接続するクライアント デバイス側で、ソフトウェア �
 
 3章で説明したように、クライアントからセッションホストへの画面転送による通信は "クライアント デバイス" -> "AVD コントロールプレーン" -> "セッションホスト" という経路となり、中間の "AVD コントロール プレーン" を経由することで画面操作の応答性に影響する場合があります。RDP ShortPath を使用すると、クライアント デバイスは "AVD コントロールプレーン" をスキップして直接セッションホストと UDP プロトコルにより通信できるようになるため、応答性が向上します。ただし、前提条件としてクライアント デバイスが社内イントラネットに配置されている場合など、セッションホストとネットワーク的に直接通信できることが必須となります。また、セッションホストの振り分けや認証処理のためにクライアント デバイスから AVD コントロールプレーンへの通信経路は引き続き必要になり、ネットワーク要件が緩和されるわけではありません。
 
-[Azure Virtual Desktop マネージド ネットワーク用 RDP Shortpath](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/shortpath)
-
-**パブリック ネットワーク (プレビュー)**
 **パブリック ネットワーク**
 
 上述したマネージド ネットワーク向けの RDP ShortPath と同じようにクライアントデバイスとセッションホストとの画面転送の通信を UDP プロトコルを使用して直接可能として応答性を向上させる機能ですが、通信経路がインターネット経由となるため追加のネットワーク セキュリティに対する考慮が必要になります。具体的な通信要件や機能の詳細については以下のドキュメントを参照ください。
 
-[パブリック ネットワーク用 Azure Virtual Desktop RDP Shortpath (プレビュー)](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/shortpath-public#network-configuration)
 [Azure Virtual Desktop の RDP Shortpath](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/shortpath-public#network-configuration)
 
 <br>
