@@ -340,7 +340,7 @@ AVD に接続するクライアント デバイス側で、ソフトウェア �
 
 ### 6.6 参考リンク情報
 
-[New ways to optimize flexibility, improve security, and reduce costs with Azure Virtual Desktop](https://techcommunity.microsoft.com/t5/azure-virtual-desktop-blog/new-ways-to-optimize-flexibility-improve-security-and-reduce/ba-p/3650895) (Ignite 2022 付近のタイミングでリリースされた機能の一覧がよくまとまっています。以下は特に重要と思われる機能です)
+[New ways to optimize flexibility, improve security, and reduce costs with Azure Virtual Desktop](https://techcommunity.microsoft.com/t5/azure-virtual-desktop-blog/new-ways-to-optimize-flexibility-improve-security-and-reduce/ba-p/3650895) (Ignite 2022 付近のタイミングでアナウンスされた機能の一覧がよくまとまっています。以下は特に重要と思われる機能です)
 
 - [Azure Virtual Desktop 用にシングル サインオンを構成する](https://learn.microsoft.com/ja-jp/azure/virtual-desktop/configure-single-sign-on) (パブリック プレビュー)
 - [Azure Files と Azure Active Directory を使用してプロファイル コンテナーを作成する (プレビュー)](https://learn.microsoft.com/ja-jp/azure/virtual-desktop/create-profile-container-azure-ad)
