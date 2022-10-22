@@ -41,40 +41,42 @@
 
 The following concepts and structure are a simplified version from **[Cloud Adoption Framework: Compare common cloud operating models](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/operating-model/compare)**
 
-### Operating Models
+下記のコンセプトと構成は、**[Cloud Adoption Framework: Compare common cloud operating models](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/operating-model/compare)** の簡略バージョンです
 
-- Decentralized Operations
-- Centralized Operations
-- Enterprise Operations
+### Operating Models 運用モデル
 
-#### Concerns
+- Decentralized Operations 非中央集権的運用
+- Centralized Operations 中央集権的運用
+- Enterprise Operations エンタープライズの運用
 
-- Workload 
-- Platform 
-- Landing Zone 
-- Cloud Foundation
+#### Concerns 注意点
 
-#### Diagram
+- Workload ワークロード
+- Platform プラットフォーム
+- Landing Zone ランディングゾーン
+- Cloud Foundation クラウドの基本
 
-Example Implementation of above concepts with Azure Kubernetes Service (AKS) as Application Platform
+#### Diagram 構成図
 
-![CI/CD Separations of Concerns](../../../images/cicd-separation-of-concerns.png)
+上記のコンセプトの実装例（アプリケーションプラットフォームとしてのAKS）
 
+![CI/CD Separations of Concerns](../images/cicd-separation-of-concerns.png)
 
-## Reference Links
+## Reference Links 参照リンク
 
-Important Links
+Important Links 重要なリンク
 
-- [Azure Architecture Center >  Reference Architecture > Secure AKS Baseline](https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/containers/aks/secure-baseline-aks)
+- [Azure Architecture Center >  Reference Architecture > Secure AKS Baseline](https://docs.microsoft.com/azure/architecture/reference-architectures/containers/aks/secure-baseline-aks)
 
-Miscellaneous links from 23 August 2022 session 
+Miscellaneous links その他雑多なリンク
 
-- Ingress Controllers
+- Ingress Controllers イングレスコントローラー
   - [Traefik (open source)](https://doc.traefik.io/traefik/providers/kubernetes-ingress/)
   - [nginx (open source)](https://kubernetes.github.io/ingress-nginx/)
   - [App Gateway Ingress Controller (MSFT)](https://docs.microsoft.com/en-us/azure/application-gateway/ingress-controller-overview)
-- Demo Related Terraform Files
+- Demo Related Terraform Files デモ関連の Terraform ファイル
   - [shared infra](https://github.com/julie-ng/cloudkube-shared-infra) for Azure DNS, Role Assignments for TLS Certificates in Key Vault 
+  　
   - [workload infrastructure.tf](https://github.com/julie-ng/cloud-architecture-review/blob/main/infrastructure.tf) meant to be run by admin (Julie) to
     - create workload specific Azure Container Registry (ACR)
     - give cluster kubelets pull access to our ACR

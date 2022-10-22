@@ -2,10 +2,8 @@ Part 1 of 6 | [セキュリティベストプラクティス &rarr;](./2-securit
 
 # ネットワーク
 
-> **メモ**   
+> **メモ**
 > _この配布資料は、事前に用意されており、実際のセッションの内容とは、議論によって異なる可能性があります_
-
-## 概要
 
 ### 概念
 
@@ -44,6 +42,6 @@ AKSノードリソースグループに独自の名前を付けたい場合。�
 - [ロードバランサー](https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer)
 - [エクスターナルネーム](https://kubernetes.io/docs/concepts/services-networking/service/#externalname)
 
-#### クラスターにはどのネットワークモデルがありますか？
+### クラスターにはどのネットワークモデルがありますか？
 
 [`az aks show command`](https://docs.microsoft.com/en-us/cli/azure/aks?view=azure-cli-latest#az-aks-show) で見つけることができます。
