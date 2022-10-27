@@ -43,7 +43,7 @@ Microsoft Defender for Cloud を構成する2 つめの要素は "強化され�
 - [Defender for DevOps](https://learn.microsoft.com/ja-jp/azure/defender-for-cloud/defender-for-devops-introduction)
 
 
-[セキュリティ アラート - リファレンス ガイド](https://learn.microsoft.com/ja-jp/azure/defender-for-cloud/alerts-reference)
+アラートの一覧：[セキュリティ アラート - リファレンス ガイド](https://learn.microsoft.com/ja-jp/azure/defender-for-cloud/alerts-reference)
 
 ## Azure Policy とは?
 
