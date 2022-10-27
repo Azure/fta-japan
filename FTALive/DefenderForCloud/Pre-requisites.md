@@ -20,7 +20,9 @@ CSPM の機能は無償の「基本的な CSPM」と有償の「Defender クラ�
 
 Microsoft Defender for Cloud の最大のメリットは、['Secure Score'](https://docs.microsoft.com/en-us/azure/security-center/secure-score-security-controls#security-controls-and-their-recommendations)です。セキュアスコアは、現状を把握し、効果的かつ効率的にセキュリティを向上させることを目的としています。セキュアスコアは、リソースのセキュリティ問題を継続的に評価し、それらを1つのスコアに集約することで、現在のセキュリティ態勢を確認することができます。スコアが高ければ高いほど、特定されたリスクレベルは低くなります。これは、[Microsoft Cloud Security Benchmark](https://docs.microsoft.com/en-us/security/benchmark/azure/baselines/security-center-security-baseline?toc=/azure/security-center/TOC.json)と呼ばれるポリシーによって制御されます。このポリシーは、推奨されるベストプラクティスに基づいて構築され、Center for Internet Security Benchmark の内容も考慮しています。
 
-この機能は 「基本的な CSPM」に含まれており、無償で使用することができます。「Defender クラウド セキュリティ態勢管理 (CSPM)」はこの機能に加えて規制コンプライアンス（ISO 27001 や PCI-DSS などの標準に基づいてリソースの評価を行う機能）や、攻撃パスの分析などさらなる可視性を得るための機能を利用することができます。
+この機能は 「基本的な CSPM」に含まれており、無償で使用することができます。
+
+「Defender クラウド セキュリティ態勢管理 (CSPM)」はこの機能に加えて規制コンプライアンス（ISO 27001 や PCI-DSS などの標準に基づいてリソースの評価を行う機能）や、攻撃パスの分析などさらなる可視性を得るための機能を利用することができます。
 
 [基本的な CSPM と クラウド セキュリティ態勢管理 (CSPM) の機能比較](https://learn.microsoft.com/ja-jp/azure/defender-for-cloud/concept-cloud-security-posture-management)
 
@@ -39,6 +41,9 @@ Microsoft Defender for Cloud を構成する2 つめの要素は "強化され�
 - [Defender for Resource Manager](https://learn.microsoft.com/ja-jp/azure/defender-for-cloud/defender-for-resource-manager-introduction)
 - [Defender for DNS](https://learn.microsoft.com/ja-jp/azure/defender-for-cloud/defender-for-dns-introduction)
 - [Defender for DevOps](https://learn.microsoft.com/ja-jp/azure/defender-for-cloud/defender-for-devops-introduction)
+
+
+[セキュリティ アラート - リファレンス ガイド](https://learn.microsoft.com/ja-jp/azure/defender-for-cloud/alerts-reference)
 
 ## Azure Policy とは?
 
