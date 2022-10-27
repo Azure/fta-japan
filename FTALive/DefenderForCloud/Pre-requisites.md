@@ -6,13 +6,9 @@
 
 Microsoft Defender for Cloud を活用することでクラウド環境の把握とコントロールが可能になります。
 
-
-
 ## クラウド セキュリティ態勢管理 (CSPM)
 
-ここが最も重要な点で、Microsoft Defender for Cloud は、無償で利用できる機能と、有償の "強化されたセキュリティ" の 2つの要素から構成されています。
-
-無償の機能は、「クラウド セキュリティ態勢管理 (Cloud Workload Posture Management)」ツールと呼ばれるもので。サーバー、ストレージ、SQL、ネットワーク、アプリケーション、ワークロードなど、Azureで稼働しているクラウド リソースのセキュリティ状態を確認することができます。
+CSPM の機能は無償の「基本的な CSPM」と有償の「Defender クラウド セキュリティ態勢管理 (CSPM)」の２つのプランが用意されており、サーバー、ストレージ、SQL、ネットワーク、アプリケーション、ワークロードなど、Azureで稼働しているクラウド リソースのセキュリティ状態を確認することができます。
 
 [Microsoft Docs](https://docs.microsoft.com/ja-jp/azure/security-center/security-center-introduction) からの引用 - Microsoft Defender for Cloud は、3 つの緊急性が高いセキュリティの課題を対処します:
 
@@ -22,15 +18,27 @@ Microsoft Defender for Cloud を活用することでクラウド環境の把握
 
 * **セキュリティ スキルの不足** - セキュリティ アラートとアラート システムの数は、環境が保護されているかどうかを確認するために必要な経歴と経験を持つ管理者の数を上回っています。 最近の攻撃の最新情報を把握し続けることは常に課題であり、セキュリティの世界が絶え間なく変化する最前線に立ち続けることは不可能です。
 
-Microsoft Defender for Cloud の最大のメリットは、['Secure Score'](https://docs.microsoft.com/en-us/azure/security-center/secure-score-security-controls#security-controls-and-their-recommendations)です。セキュアスコアは、現状を把握し、効果的かつ効率的にセキュリティを向上させることを目的としています。セキュアスコアは、リソースのセキュリティ問題を継続的に評価し、それらを1つのスコアに集約することで、現在のセキュリティ態勢を確認することができます。スコアが高ければ高いほど、特定されたリスクレベルは低くなります。これは、[Azure Security Benchmark](https://docs.microsoft.com/en-us/security/benchmark/azure/baselines/security-center-security-baseline?toc=/azure/security-center/TOC.json)と呼ばれるポリシーによって制御されます。このポリシーは、推奨されるベストプラクティスに基づいて構築され、Center for Internet Security Benchmark の内容も考慮しています。
+Microsoft Defender for Cloud の最大のメリットは、['Secure Score'](https://docs.microsoft.com/en-us/azure/security-center/secure-score-security-controls#security-controls-and-their-recommendations)です。セキュアスコアは、現状を把握し、効果的かつ効率的にセキュリティを向上させることを目的としています。セキュアスコアは、リソースのセキュリティ問題を継続的に評価し、それらを1つのスコアに集約することで、現在のセキュリティ態勢を確認することができます。スコアが高ければ高いほど、特定されたリスクレベルは低くなります。これは、[Microsoft Cloud Security Benchmark](https://docs.microsoft.com/en-us/security/benchmark/azure/baselines/security-center-security-baseline?toc=/azure/security-center/TOC.json)と呼ばれるポリシーによって制御されます。このポリシーは、推奨されるベストプラクティスに基づいて構築され、Center for Internet Security Benchmark の内容も考慮しています。
 
+この機能は 「基本的な CSPM」に含まれており、無償で使用することができます。「Defender クラウド セキュリティ態勢管理 (CSPM)」はこの機能に加えて規制コンプライアンス（ISO 27001 や PCI-DSS などの標準に基づいてリソースの評価を行う機能）や、攻撃パスの分析などさらなる可視性を得るための機能を利用することができます。
+
+[基本的な CSPM と クラウド セキュリティ態勢管理 (CSPM) の機能比較](https://learn.microsoft.com/ja-jp/azure/defender-for-cloud/concept-cloud-security-posture-management)
 
 ## クラウド ワークロード保護 (CWP)
 
 Microsoft Defender for Cloud を構成する2 つめの要素は "強化されたセキュリティ" で 「クラウド ワークロード 保護 (Cloud Workload Protection)」 ツールと呼ばれるものです。
 
-これは様々なものを指しています。"強化されたセキュリティ" は単一の機能ではなく、異なった種類のリソースを保護するために設計された複数の高度なツールを含んでいます。Microsoft Defender for Endpoint による脅威対策と、Just In Time 管理や Adaptive Application Control などの高度なクラウド保護機能が統合されています。複数の異なるセキュリティ機能を統一的に管理する場所を提供し、ハイブリッドクラウドのワークロードに対応する機能を提供します。また、Microsoft Defender for Cloud のベースラインによるチェックをさらに拡張し、ISO 27001 や CIS ベンチマークといったコンプライアンスや業界標準を使用してワークロードのセキュリティ状態をチェックする機能も "強化されたセキュリティ" に含まれます。
+これは様々なものを指しています。"強化されたセキュリティ" は単一の機能ではなく、異なった種類のリソースを保護するために設計された複数の高度なツールを含んでいます。Microsoft Defender for Endpoint による脅威対策と、Just In Time 管理や Adaptive Application Control などの高度なクラウド保護機能が統合されています。複数の異なるセキュリティ機能を統一的に管理する場所を提供し、ハイブリッドクラウドのワークロードに対応する機能を提供します。
 
+- [Defender for Servers](https://learn.microsoft.com/ja-jp/azure/defender-for-cloud/defender-for-servers-introduction)
+- [Defender for Containers](https://learn.microsoft.com/ja-jp/azure/defender-for-cloud/defender-for-containers-introduction)
+- [データベースの保護](https://learn.microsoft.com/ja-jp/azure/defender-for-cloud/quickstart-enable-database-protections)
+- [Defender for App Service](https://learn.microsoft.com/ja-jp/azure/defender-for-cloud/defender-for-app-service-introduction)
+- [Defender for Storage](https://learn.microsoft.com/ja-jp/azure/defender-for-cloud/defender-for-storage-introduction)
+- [Defender for Key Vault](https://learn.microsoft.com/ja-jp/azure/defender-for-cloud/defender-for-key-vault-introduction)
+- [Defender for Resource Manager](https://learn.microsoft.com/ja-jp/azure/defender-for-cloud/defender-for-resource-manager-introduction)
+- [Defender for DNS](https://learn.microsoft.com/ja-jp/azure/defender-for-cloud/defender-for-dns-introduction)
+- [Defender for DevOps](https://learn.microsoft.com/ja-jp/azure/defender-for-cloud/defender-for-devops-introduction)
 
 ## Azure Policy とは?
 
@@ -50,7 +58,7 @@ Microsoft Defender for Cloud のサーバー向け CWP 機能です。
     - Microsoft Defender for Endpoint の自動展開、時間単位の課金
 - Microsoft Defender for Servers プラン 2
     - (Plan 1 に加えて)
-    - 500 MB / 日のログ分析が含まれる (全ノードの平均)
+    - 500 MB / 日のログ分析が含まれる (全ノードの平均、テーブルの種類に制限がある)
     - 規制コンプライアンス
     - Just-In-Time VM アクセス
     - Adaptive Application Control 
