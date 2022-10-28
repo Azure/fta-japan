@@ -6,7 +6,7 @@
   - [2.1 Azure の監視の全体像](#21-azure-の監視の全体像)
   - [2.2 Azure Monitor の機能](#22-azure-monitor-の機能)
     - [2.2.1 データソース](#221-データソース)
-      - [Application(作成中)](#application作成中)
+      - [Application](#application)
       - [Infrastructure](#infrastructure)
       - [Azure Platform](#azure-platform)
     - [2.2.2 データプラットフォーム](#222-データプラットフォーム)
@@ -101,9 +101,30 @@ Azure Monitor を利用する上で必ず理解しておかなければならな
 
 データソースは Azure Monitor へデータを取り込むための機能群です。Azure のリソースのログやメトリック、OS のイベント ログ等のデータをソースとして収集できます。概要で紹介した図にあるデータソースのカテゴリにもとづいて、データソースの機能を紹介します。
 
-#### Application(作成中)
+#### Application
 
-アプリケーションにコードを埋め込むことで、アプリケーションのログやメトリックを Azure Monitor に送信できます。
+Application の監視は、Application Insights を利用します。Application Insights は Application Performance Management(APM) の一種で、アプリケーションにコードを埋め込むことで、アプリケーションのログやメトリックを Azure Monitor に送信できます。
+
+アプリケーションのコードとして埋め込むことで、例外や依存関係を捕捉し、パフォーマンスの分析や効率的なトラブルシューティングを可能とします。
+
+アプリケーションへの実装方法は言語やフレームワークによって異なります。以下は Node.js での実装例です。HTTP リクエストや例外情報の送信だけであれば以下のコードだけで実装できます。
+
+```js
+let appInsights = require("applicationinsights");
+appInsights.setup("[your connection string]").start();
+```
+
+以下は失敗したリクエストを確認できるダッシュボードです。それぞれのリクエストにかかった時間や例外の種類が確認できます。
+
+![](./images/app-insights-overview-dashboard-04.png)
+
+Application Insights の詳細については以下のドキュメントを参照してください。
+
+[Application Insights の概要](https://learn.microsoft.com/ja-jp/azure/azure-monitor/app/app-insights-overview?tabs=net)
+
+|:question: Tips: クラシック Application Insights のリタイア|
+|:-----------------------------------------|
+|独自のワークスペースを利用していた以前の Application Insights は 2024 年 2 月にリタイアすることが決まっています。Log Analtycs ベースのワークスペースへ移行する必要があります。詳細は以下のドキュメントを参照してください。<br>[ワークスペースベースの Application Insights リソースに移行する](https://learn.microsoft.com/ja-jp/azure/azure-monitor/app/convert-classic-resource)|
 
 #### Infrastructure
 
@@ -496,9 +517,27 @@ Log Analytics ワークスペースは、コンテキストという概念を持
 ![](./images/context-table.png)
 ![](./images/context-image.png)
 
+コンテキストは、Log Analytics のアクセスの仕方に影響します。ワークスペースからアクセスした場合、ワークスペースで持っているすべてのログにアクセスできます。一方でリソースのページからログにアクセスした場合、そのリソースをスコープとしたログのみが表示されます。
+
+![](./images/overview-la-workspace-access.png)
+
 #### ワークスペースコンテキストの権限
 
+ワークスペースコンテキストのアクセス権限は、監視ソリューションの追加や価格レベルの変更等のワークスペース全体にかかわるアクションに影響します。また Log Analytics に関する組み込みの権限として、閲覧者と共同作成者があります。
+
+![](./images/overview-la-workspace-context-1.png)
+![](./images/overview-la-workspace-context-2.png)
+
 #### リソースコンテキストの権限
+
+リソースコンテキストのアクセス権限は、リソース自体へのアクセスがある場合ログの参照が可能です。カスタムロールを作成することでログへのアクセスを制限することも可能です。
+
+![](./images/overview-la-resource-context-2.png)
+![](./images/overview-la-resource-context-1.png)
+
+以下はカスタムロールで細かなアクセス制御を行う例です。
+
+![](./images/overview-la-custom-RBAC.png)
 
 #### 参考ドキュメント
 
