@@ -125,16 +125,6 @@ Azure 上の仮想マシンを監視する場合、観点として仮想マシ�
 
 ![](./images/overview-1.png)
 
-なお、OS のログやメトリックの取得には、エージェントを利用する方法以外に、診断拡張機能を利用する方法もあります。診断拡張機能は、エージェントと別にインストールされる拡張機能で、拡張機能からストレージ アカウントのテーブルや Event Hub にデータが送信できます。以前は OS のメトリックをメトリック エクスプローラーへ送信するために使用されていました。しかしテーブルのメンテナンスが必要なことや簡単にクエリができないことから最近はログとしてのメトリックの収集や、Azure Monitor エージェントによるメトリックの送信が使われています。また、メトリックの保存期間が 14 日と短い点も注意が必要です。
-
-診断拡張機能については以下のドキュメントを参照してください。
-
-[Azure Diagnostics 拡張機能の概要](https://learn.microsoft.com/ja-jp/azure/azure-monitor/agents/diagnostics-extension-overview)
-
-以下の設定より診断拡張機能をインストールできます。
-
-![](./image/../images/overview-vmdiag1.png)
-
 以下に Infrastructure のデータソースの特徴を記述します。
 
 - エージェントは `Azure Monitor エージェント` と `Log Analytics エージェント` の 2 種類
@@ -148,6 +138,16 @@ Azure 上の仮想マシンを監視する場合、観点として仮想マシ�
 - 参考ドキュメント
   - [Azure Monitor エージェントの概要](https://learn.microsoft.com/ja-jp/azure/azure-monitor/agents/agents-overview)
   - [Azure Monitor エージェントを使用して仮想マシンからデータを収集する](https://learn.microsoft.com/ja-jp/azure/azure-monitor/agents/data-collection-rule-azure-monitor-agent?tabs=portal)
+
+なお、OS のログやメトリックの取得には、エージェントを利用する方法以外に、診断拡張機能を利用する方法もあります。診断拡張機能は、エージェントと別にインストールされる拡張機能で、拡張機能からストレージ アカウントのテーブルや Event Hub にデータが送信できます。以前は OS のメトリックをメトリック エクスプローラーへ送信するために使用されていました。しかしテーブルのメンテナンスが必要なことや簡単にクエリができないことから最近はログとしてのメトリックの収集や、Azure Monitor エージェントによるメトリックの送信が使われています。また、メトリックの保存期間が 14 日と短い点も注意が必要です。**すでにレガシーな機能であり、今後は Azure Monitor エージェントを利用することを推奨します。**
+
+診断拡張機能については以下のドキュメントを参照してください。
+
+[Azure Diagnostics 拡張機能の概要](https://learn.microsoft.com/ja-jp/azure/azure-monitor/agents/diagnostics-extension-overview)
+
+以下の設定より診断拡張機能をインストールできます。
+
+![](./image/../images/overview-vmdiag1.png)
 
 #### Azure Platform
 
@@ -438,7 +438,7 @@ AMA はエージェントが再実装され、パフォーマンスが改善さ�
 
 |:question: Tips: Azure Monitor エージェント による Azure Monitor VM Insights|
 |:-----------------------------------------|
-|[Azure Monitor エージェントを使用した Azure Monitor VM insights の有効化 (プレビュー)](https://jpazmon-integ.github.io/blog/LogAnalytics/Azure_Monitor_VM_insights_using_AMA/)|
+|VM Insights は、仮想マシンから追加のメトリックを Log Analytics ワークスペースへ収集し仮想マシンの監視に役立つダッシュボードを提供します。VM Insights も Azure Monitor エージェントで利用できますが、2022 年 11月現在、まだプレビューの機能です。VM Insights とそれ以外のログやメトリックの収集を行う際は、正しく拡張機能がインストールされない等の事象が確認されているため別のデータ収集ルールを用いることが推奨されます。詳細はサポートチームのブログ確認してください。<br>[Azure Monitor エージェントを使用した Azure Monitor VM insights の有効化 (プレビュー)](https://jpazmon-integ.github.io/blog/LogAnalytics/Azure_Monitor_VM_insights_using_AMA/)|
 
 ### Log Analytics ワークスペースの配置
 

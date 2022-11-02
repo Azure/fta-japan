@@ -16,10 +16,10 @@ resource "azurerm_subnet" "web_default" {
   address_prefixes     = ["10.1.0.0/24"]
 }
 resource "azurerm_subnet" "web_appgw" {
-  name                 = "snet-appgw"
-  resource_group_name  = azurerm_resource_group.web.name
-  virtual_network_name = azurerm_virtual_network.web.name
-  address_prefixes     = ["10.1.1.0/24"]
+  name                                      = "snet-appgw"
+  resource_group_name                       = azurerm_resource_group.web.name
+  virtual_network_name                      = azurerm_virtual_network.web.name
+  address_prefixes                          = ["10.1.1.0/24"]
 }
 resource "azurerm_subnet_route_table_association" "web_default_azfw" {
   subnet_id      = azurerm_subnet.web_default.id
@@ -75,12 +75,12 @@ resource "azurerm_public_ip" "appgw" {
 
 # since these variables are re-used - a locals block makes this more maintainable
 locals {
-  backend_address_pool_name_vm   = "${azurerm_virtual_network.web.name}-beap-vm"
-  frontend_port_name             = "${azurerm_virtual_network.web.name}-feport"
-  frontend_ip_configuration_name = "${azurerm_virtual_network.web.name}-feip"
-  http_setting_name              = "${azurerm_virtual_network.web.name}-be-htst"
-  listener_name                  = "${azurerm_virtual_network.web.name}-httplstn"
-  request_routing_rule_name      = "${azurerm_virtual_network.web.name}-rqrt"
+  backend_address_pool_name_vm   = "beap-vm"
+  frontend_port_name             = "feport"
+  frontend_ip_configuration_name = "feip"
+  listener_name                  = "httplstn"
+  request_routing_rule_name      = "rqrt"
+  http_setting_name              = "httpsetting"
 }
 
 resource "azurerm_application_gateway" "web" {

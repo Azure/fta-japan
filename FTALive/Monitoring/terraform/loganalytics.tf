@@ -77,7 +77,8 @@ resource "azurerm_monitor_data_collection_rule" "example" {
         "\\Network Interface(*)\\Packets Sent/sec",
         "\\Network Interface(*)\\Packets Received/sec",
         "\\Network Interface(*)\\Packets Outbound Errors",
-        "\\Network Interface(*)\\Packets Received Errors"
+        "\\Network Interface(*)\\Packets Received Errors",
+        "\\Process(msedge)\\% Processor Time",
       ]
       name = "test-datasource-perfcounter"
     }
