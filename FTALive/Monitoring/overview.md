@@ -13,6 +13,7 @@
     - [コストの表示とアラート](#コストの表示とアラート)
   - [2.4 そのほかのトピック](#24-そのほかのトピック)
     - [Azure Log Analytics エージェントと Azure Monitor エージェント](#azure-log-analytics-エージェントと-azure-monitor-エージェント)
+    - [Log Analytics ワークスペースの配置](#log-analytics-ワークスペースの配置)
     - [Log Analytics ワークスペースの課金と利用状況の分析](#log-analytics-ワークスペースの課金と利用状況の分析)
     - [Log Analytics ワークスペースの権限管理](#log-analytics-ワークスペースの権限管理)
 
@@ -435,6 +436,29 @@ AMA はエージェントが再実装され、パフォーマンスが改善さ�
   - MMA
     - 仮想マシンのログを収集できます。メトリックは収集できません。
 
+|:question: Tips: Azure Monitor エージェント による Azure Monitor VM Insights|
+|:-----------------------------------------|
+|[Azure Monitor エージェントを使用した Azure Monitor VM insights の有効化 (プレビュー)](https://jpazmon-integ.github.io/blog/LogAnalytics/Azure_Monitor_VM_insights_using_AMA/)|
+
+### Log Analytics ワークスペースの配置
+
+Log Analytics ワークスペースは、各リソースのログを収集し検索する境界になります。従ってワークスペースに収集するログのリソースや範囲を検討する必要があります。
+
+管理性や検索性を重視し、1 つのワークスペースにサブスクリプションのすべてのリソースのデータを集約できます。しかし、すべてのログを集約するとデータの管理をしにくくなりクエリに長時間要する可能性があります。
+
+一方で、プロジェクトや環境等ライフサイクルごとにワークスペースを分けることも可能です。ただしワークスペースを跨ってログ検索をする必要がある場合複雑なクエリを記述する必要があります。また、データ利用量に対するコミットメントの適用ができなくなりコストが高くなる可能性もあります。
+
+ワークスペースの分割・展開は以下のポイントを考慮します。
+
+- 運用データとセキュリティデータ
+- Azure テナント
+- リージョン
+- データ所有権
+- 課金
+
+Log Analytics ワークスペースの設計戦略は以下のドキュメントを参照してください。
+
+[Log Analytics ワークスペース アーキテクチャを設計する](https://learn.microsoft.com/ja-jp/azure/azure-monitor/logs/workspace-design#design-criteria)
 
 ### Log Analytics ワークスペースの課金と利用状況の分析
 
