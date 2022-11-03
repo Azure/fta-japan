@@ -16,10 +16,22 @@ resource "azurerm_subnet" "web_default" {
   address_prefixes     = ["10.1.0.0/24"]
 }
 resource "azurerm_subnet" "web_appgw" {
+  depends_on = [
+    azurerm_subnet.web_default,
+  ]
   name                 = "snet-appgw"
   resource_group_name  = azurerm_resource_group.web.name
   virtual_network_name = azurerm_virtual_network.web.name
   address_prefixes     = ["10.1.1.0/24"]
+}
+resource "azurerm_subnet" "web_cms" {
+  depends_on = [
+    azurerm_subnet.web_appgw,
+  ]
+  name                 = "snet-cms"
+  resource_group_name  = azurerm_resource_group.web.name
+  virtual_network_name = azurerm_virtual_network.web.name
+  address_prefixes     = ["10.1.2.0/24"]
 }
 resource "azurerm_subnet_route_table_association" "web_default_azfw" {
   subnet_id      = azurerm_subnet.web_default.id
@@ -59,6 +71,17 @@ packages_upgrade: true
 runcmd:
   - apt install -y nginx
 EOF
+}
+
+module "vm_web_cms_windows" {
+  source              = "./modules/vm-windows-2019"
+  admin_username      = var.admin_username
+  admin_password      = var.admin_password
+  name                = "vmcms"
+  resource_group_name = azurerm_resource_group.web.name
+  location            = azurerm_resource_group.web.location
+  zone                = null
+  subnet_id           = azurerm_subnet.web_cms.id
 }
 
 # --------------------------
@@ -166,4 +189,36 @@ module "appgw_diag" {
   log_analytics_workspace_id = module.la.id
   diagnostic_logs            = data.azurerm_monitor_diagnostic_categories.appgw_diag_category.logs
   retention                  = 30
+}
+
+# --------------------------
+# Application Insights
+# --------------------------
+resource "azurerm_application_insights" "web" {
+  name                = "ai-web"
+  location            = azurerm_resource_group.web.location
+  resource_group_name = azurerm_resource_group.web.name
+  application_type    = "web"
+  workspace_id        = module.la.id
+  disable_ip_masking  = true
+}
+resource "azurerm_application_insights_web_test" "example" {
+  name                    = "test"
+  location                = azurerm_application_insights.web.location
+  resource_group_name     = azurerm_resource_group.web.name
+  application_insights_id = azurerm_application_insights.web.id
+  kind                    = "ping"
+  frequency               = 300
+  timeout                 = 60
+  enabled                 = true
+  geo_locations           = ["us-tx-sn1-azr", "us-il-ch1-azr", "apac-jp-kaw-edge"]
+
+  configuration = <<XML
+<WebTest Name="WebTest1" Id="ABD48585-0831-40CB-9069-682EA6BB3583" Enabled="True" CssProjectStructure="" CssIteration="" Timeout="0" WorkItemIds="" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" Description="" CredentialUserName="" CredentialPassword="" PreAuthenticate="True" Proxy="default" StopOnError="False" RecordedResultFile="" ResultsLocale="">
+  <Items>
+    <Request Method="GET" Guid="a5f10126-e4cd-570d-961c-cea43999a200" Version="1.1" Url="http://${azurerm_public_ip.appgw.ip_address}" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="200" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False" />
+  </Items>
+</WebTest>
+XML
+
 }

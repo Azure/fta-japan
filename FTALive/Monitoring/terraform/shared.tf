@@ -10,6 +10,9 @@ terraform {
       source  = "hashicorp/random"
       version = "~> 3.1"
     }
+    azapi = {
+      source = "azure/azapi"
+    }
   }
 }
 provider "azurerm" {
@@ -20,6 +23,10 @@ provider "azurerm" {
     }
   }
 }
+
+provider "azapi" {
+}
+
 data "http" "my_public_ip" {
   url = "https://ifconfig.me"
 }
@@ -161,14 +168,3 @@ module "vm_jumpbox_shared_windows" {
   subnet_id           = azurerm_subnet.hub_default.id
 }
 
-# --------------------------
-# Application Insights
-# --------------------------
-resource "azurerm_application_insights" "web" {
-  name                = "ai-web"
-  location            = azurerm_resource_group.web.location
-  resource_group_name = azurerm_resource_group.web.name
-  application_type    = "web"
-  workspace_id        = module.la.id
-  disable_ip_masking  = true
-}

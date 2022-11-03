@@ -39,6 +39,9 @@ Azure Monitoring # **[prev](./overview.md)** | **[home](./README.md)**
   - ハブアンドスポーク構成
   - ハブに Azure Firewall と ExpressRoute Gateway を配置
   - 外部との接続が必要なWeb サーバーとそのほかのサーバーは VNet を分割
+  - 各サーバーからの送信接続は Azure Firewall を経由
+
+※シナリオの構成をすぐに試すために、[Terraform](./terraform/)を作成しました。サブスクリプションに展開して設定方法を確認できます。
 
 ## 3.2. 監視の実装例
 

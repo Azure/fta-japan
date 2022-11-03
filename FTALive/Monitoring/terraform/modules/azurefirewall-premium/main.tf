@@ -17,6 +17,13 @@ resource "azurerm_firewall_policy" "example" {
   location            = var.rg.location
   resource_group_name = var.rg.name
   sku                 = var.sku
+
+  dynamic "intrusion_detection" {
+    for_each = var.sku == "Premium" ? [1] : []
+    content {
+      mode = "Deny"
+    }
+  }
 }
 
 resource "azurerm_firewall" "example" {
