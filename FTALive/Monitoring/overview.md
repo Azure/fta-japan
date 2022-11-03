@@ -371,7 +371,7 @@ Azure Monitor のアラートを利用すると、特定のリソースのメト
 ![](./images/overview-insights-erc.png)
 
 
-#### 番外編 : NSG フローログ
+#### 番外編 : NSG フローログ <!--todo: Network Watcher の節にもっていく-->
 
 Azure Monitor の機能ではありませんが、ネットワークフローをキャプチャーできるツールとして、Nework Watcher の NSG フローログがあります。NSG フローログは、NSG 単位で有効化しNSG によって許可・拒否された通信ログを JSON ファイルとしてストレージ アカウントに保存できます。
 
