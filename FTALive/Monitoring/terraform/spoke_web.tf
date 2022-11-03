@@ -16,10 +16,10 @@ resource "azurerm_subnet" "web_default" {
   address_prefixes     = ["10.1.0.0/24"]
 }
 resource "azurerm_subnet" "web_appgw" {
-  name                                      = "snet-appgw"
-  resource_group_name                       = azurerm_resource_group.web.name
-  virtual_network_name                      = azurerm_virtual_network.web.name
-  address_prefixes                          = ["10.1.1.0/24"]
+  name                 = "snet-appgw"
+  resource_group_name  = azurerm_resource_group.web.name
+  virtual_network_name = azurerm_virtual_network.web.name
+  address_prefixes     = ["10.1.1.0/24"]
 }
 resource "azurerm_subnet_route_table_association" "web_default_azfw" {
   subnet_id      = azurerm_subnet.web_default.id
@@ -154,19 +154,16 @@ resource "azurerm_application_gateway" "web" {
     backend_address_pool_name  = local.backend_address_pool_name_vm
     backend_http_settings_name = local.http_setting_name
   }
-  /*
-  url_path_map {
-    name = "my-url-path-map"
-    // path: /
-    default_backend_address_pool_name  = local.backend_address_pool_name_vm
-    default_backend_http_settings_name = local.http_setting_name
-    // path: /staging
-    path_rule {
-      name                       = "my-path-rule"
-      paths                      = ["/staging/*"]
-      backend_address_pool_name  = local.backend_address_pool_name_vm
-      backend_http_settings_name = local.http_setting_name
-    }
-  }
-*/
+}
+data "azurerm_monitor_diagnostic_categories" "appgw_diag_category" {
+  resource_id = azurerm_application_gateway.web.id
+}
+
+module "appgw_diag" {
+  source                     = "./modules/diagnostic_logs"
+  name                       = "diag"
+  target_resource_id         = azurerm_application_gateway.web.id
+  log_analytics_workspace_id = module.la.id
+  diagnostic_logs            = data.azurerm_monitor_diagnostic_categories.appgw_diag_category.logs
+  retention                  = 30
 }

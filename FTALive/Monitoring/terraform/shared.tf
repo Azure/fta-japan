@@ -160,3 +160,15 @@ module "vm_jumpbox_shared_windows" {
   zone                = null
   subnet_id           = azurerm_subnet.hub_default.id
 }
+
+# --------------------------
+# Application Insights
+# --------------------------
+resource "azurerm_application_insights" "web" {
+  name                = "ai-web"
+  location            = azurerm_resource_group.web.location
+  resource_group_name = azurerm_resource_group.web.name
+  application_type    = "web"
+  workspace_id        = module.la.id
+  disable_ip_masking  = true
+}

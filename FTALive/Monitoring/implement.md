@@ -1,3 +1,5 @@
+Azure Monitoring # **[prev](./overview.md)** | **[home](./README.md)** 
+
 # 3. Azure の監視の実装 <!-- no toc -->
 
 本章では、サンプルのシナリオを用意し、Azure の監視を実装する方法を紹介します。
@@ -61,6 +63,8 @@ Azure では、アプリケーションの監視として、Application Insights
 
 可用性テストは、アプリケーションに変更を加えることなく、パフォーマンスやエラーを簡易的にテストできるサービスです。アラートも設定可能です。
 
+可用性テストを使うにあたってアプリケーションにヘルスエンドポイントを実装しておきます。ヘルスエンドポイントにアクセスすると Web サーバーからバックエンドのデータベースへのアクセスまで通しの監視ができます。
+
 ### 仮想マシン
 
 仮想マシンの監視は、Azure Monitor によるメトリックとログをもとに行います。Azure Monitor を利用すると以下の項目を監視できます。
@@ -84,7 +88,31 @@ Azure Monitor エージェントで仮想マシンを監視する為の手順は
 
 ![](./images/imple-dcr.png)
 
-データ収集ルールで必要な設定は`データソース`、`ターゲット`、`リソース`です。`データソース`は、パフォーマンス カウンター、Windows イベント ログ、Linux Syslog があります。それぞれ、収集するカウンターやログの種類、ログレベルを設定します。`ターゲット`は、データの送信先です。メトリックデータベース、Log Anaytics ワークスペースが設定できます。パフォーマンスカウンターを Log Analytics ワークスペースへ送信することでログとしてメトリックを保存ができます。`リソース`は、収集対象の仮想マシンを設定します。
+データ収集ルールで必要な設定は`データソース`、`ターゲット`、`リソース`です。
+
+`データソース`は、パフォーマンス カウンター、Windows イベント ログ、Linux Syslog があります。それぞれ、収集するカウンターやログの種類、ログレベルを設定します。収集するログは Windows イベントの XPath クエリや Syslog のログレベル、ファシリティでフィルタできます。収集するログを限定することで取り込みと保存のコストを抑えることができます。
+
+`ターゲット`は、データの送信先です。メトリックデータベース、Log Anaytics ワークスペースが設定できます。パフォーマンスカウンターを Log Analytics ワークスペースへ送信することでログとしてメトリックを保存ができます。ターゲットは複数指定できます。
+
+データ収集ルールの`データ ソース`から各データソースを追加します。
+
+![](./images/imple-dcr-config.png)
+
+データソースによって、取得するカウンターやログの種類、ログレベルを設定します。
+
+![](./images/imple-dcr-datasource-perf.png)
+![](./images/imple-dcr-datasource-winlog.png)
+![](./images/imple-dcr-datasource-syslog.png)
+![](./images/imple-dcr-datasource-perf-target.png)
+
+以下のようにカウンターをカスタムするとプロセス監視としても利用ができます。以下の例では、`% Processor Time` をカウンターとして追加しています。点線はプロセスが存在しなかった期間です。
+
+![](./images/imple-dcr-datasource-perf-edge.png)
+![](./images/imple-dcr-datasource-perf-edge-metric.png)
+
+`リソース`は、収集対象の仮想マシンを設定します。
+
+![](./images/imple-dcr-resource.png)
 
 データ収集ルールを設定すると、仮想マシンのマネージド ID の有効化と拡張機能としてエージェントがインストールされ、仮想マシンからのデータ収集が開始されます。
 
@@ -98,23 +126,78 @@ Azure Monitor エージェントで仮想マシンを監視する為の手順は
 
 この構成を個々のコンポーネントで監視もできますが、システム全体が稼働しているかどうかを確認するためにはエンドツーエンドの監視が効果的です。
 
-Azure では、Network Watcher の機能の1つとして、接続モニターがあります。接続モニターを使用すると、オンプレミスのサーバーから Azure 上の仮想マシンまでのチェックの失敗率やラウンドトリップ時間を測定できます。
+Azure では、Network Watcher の機能の1つとして、接続モニターがあります。接続モニターを使用すると、オンプレミスのサーバーから Azure 上の仮想マシンまでのチェックの失敗率やラウンドトリップ時間を測定できます。接続モニターを有効にすると仮想マシンに自動的に拡張機能がインストールされます。接続モニターによって収集されたデータは、Log Analytics ワークスペースへ保存されます。
 
-ゲートウェイや ExpressRoute 回線が持っているメトリックを監視することも有効です。
+[Azure portal を使用して接続モニターでモニターを作成する](https://learn.microsoft.com/ja-jp/azure/network-watcher/connection-monitor-create-using-portal?source=recommendations)
+
+以下は接続モニターのダッシュボードです。
+
+![](./images/imple-connmon-create.png)
+
+接続モニターによってテストを行うソースとターゲットの仮想マシンを指定します。
+
+![](./images/imple-connmon-source.png)
+![](./images/imple-connmon-target.png)
+
+テストは、HTTP/TCP/ICMP を選択できます。
+
+![](./images/imple-common-testconfig.png)
+
+テスト グループで複数のテストをまとめることができます。
+
+![](./images/imple-connmon-testgroup.png)
+
+テスト結果は、テスト グループ、ソース、ターゲットごとに詳細に確認できます。
+
+![](./images/imple-connmon-metric.png)
+![](./images/imple-connmon-perf.png)
+
+失敗したテストは失敗状態として表示されます。アラートを設定することで、失敗したテストを通知できます。以下は、Web サーバーをシャットダウンした状態です。
+
+![](./images/imple-connmon-fail.png)
+
+同時に、可用性テストや Application Gateway のメトリックでも失敗状態となります。以下は可用性テストのダッシュボードです。
+
+![](./images/imple-connmon-fail-test.png)
+![](./images/imple-connmon-fail-test2.png)
+
+接続モニターによるエンドツーエンド以外の監視としてゲートウェイや ExpressRoute 回線が持っているメトリックを活用できます。
 
 ### マネージドサービス
 
 マネージドサービスの監視は、診断設定で行います。今回のシナリオでは、Azure Firewall と Application Gateway がマネージドサービスとして存在します。いずれのサービスもデータパスとしてトラフィックを処理するサービスであり、トラフィックを監視する必要があります。
 
-Azure Firewall は、ファイアーウォールを通過したすべてのトラフィックをロギングしているため、ログを分析することで許可されたトラフィック、拒否されたトラフィック、IDPS により検知された悪意のあるトラフィック等を監視できます。また、Azure Firewall のブックを利用するとログからトラフィックの傾向を分析できます。
+#### Azure Firewall
+
+Azure Firewall は、ファイアーウォールを通過したすべてのトラフィックをロギングしているため、ログを分析することで許可されたトラフィック、拒否されたトラフィック、IDPS により検知された悪意のあるトラフィック等を監視できます。
+
+以下は、Azure Firewall の診断設定です。Azure Firewall はリソース固有のテーブルへのエクスポートが可能です。リソース固有のテーブルへデータを保存することで、Policy Analyticsが利用できます。(2022/11現在プレビュー)
+
+![](./images/imple-azfw-diag.png)
+
+以下は Azure Firewall のログを Log Analytics で表示した例です。あらかじめ用意されたクエリを利用することで簡単にログを分析できます。
+
+![](./images/imple-azfw-log.png)
+
+また、Azure Firewall のブックを利用するとログからトラフィックの傾向を分析できます。
 
 [Azure Firewall ブックを使用してログを監視する](https://learn.microsoft.com/ja-jp/azure/firewall/firewall-workbook)
 
-<!--AzFWのメトリック、ログ、ブック-->
+![](./images/imple-azfw-workbook.png)
+
+#### Application Gateway
 
 Application Gateway も同様に、リソースを通過したトラフィックをロギングしています。Application Gateway は HTTP を扱い、コネクションを終端する役割を持っているため、トラブルシューティングの際のログとしても活用できます。また、WAF によって検出されたトラフィックもログに記録されます。
 
-<!--AppGWのメトリック、ログ-->
+以下は Application Gateway のログを Log Analytics で表示した例です。あらかじめ用意されたクエリを利用することで簡単にログを分析できます。
+
+![](./images/imple-appgw-log.png)
+
+Application Gateway はリバースプロキシの特性上、多くのメトリックを持っています。それぞれのメトリックの意味を理解しておく必要があります。以下のドキュメントが参考になります。
+
+[Application Gateway のメトリック](https://learn.microsoft.com/ja-jp/azure/application-gateway/application-gateway-metrics)
+
+![](./images/application-gateway-metrics.png)
 
 ### Azure AD
 
@@ -122,17 +205,22 @@ Azure AD のログはセキュリティ監視としても活用できるサイ�
 
 [Identity Protection とは](https://learn.microsoft.com/ja-jp/azure/active-directory/identity-protection/overview-identity-protection)
 
-Azure AD のログもマネージドサービスと同様に診断設定で Log Analytics ワークスペース等に送信できます。
+Azure AD のログもマネージドサービスと同様に診断設定で Log Analytics ワークスペース等に送信できます。以下は Application Gateway のログを Log Analytics で表示した例です。
 
-<!--todo:診断設定の絵-->
+![](images/imple-aad-log.png)
 
 既定で展開されているワークブックを活用すると、ワークスペースのログが簡単に可視化できます。
+
+![](./images/imple-aad-workbook.png)
 
 ### サブスクリプション
 
 リソースの作成、削除や設定変更の記録としてサブスクリプションのログを保存します。サブスクリプションのログはエラーや障害が発生した場合のトラブルシューティングとしても活用できます。サブスクリプションのログも診断設定から Log Analytics ワークスペースに送信できます。
 
-<!--todo:診断設定の絵-->
+以下は、Azure の管理操作を失敗したユーザーのリストと対象のリソースを表示しています。
+
+![](./images/imple-subscription-log.png)
+
 
 ### コスト
 
@@ -145,3 +233,5 @@ Azure AD のログもマネージドサービスと同様に診断設定で Log 
 ### 正常性アラート
 
 障害やメンテナンスの通知を受け取るために正常性アラートを設定します。ノイズにならないように、利用しているサービスやリージョンに限定して設定します。
+
+![](./images/imple-health-alert.png)

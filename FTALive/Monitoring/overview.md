@@ -1,3 +1,5 @@
+Azure Monitoring # **[prev](./why.md)** | **[home](./README.md)**  | **[next](./implement.md)**
+
 # 2. Azure における監視の全体像と機能概要 <!-- no toc -->
 
 ## 目次 <!-- omit in toc -->
@@ -276,6 +278,40 @@ AzureDiagnostics
 
 - 参考ドキュメント
   - [KUSTO 100+ knocks](http://aka.ms/ftakusto)
+
+#### ブック
+
+個々のリソースのメトリックやログはメトリックエクスプローラーや Log Analytics で可視化できますが、複数のリソースや異なるクエリを同時に確認したいことがあります。ブックを使うと、さまざまなデータの組み合わせや条件を指定して可視化ができます。
+
+以下はブックでできることの一例です。
+
+- 複数のサブスクリプションにまたがった複数の仮想マシンの CPU 使用率やメモリ使用量、ディスク使用率を表示
+- サブスクリプション内の仮想マシンの可用性ゾーンの利用状況の表示
+- Azure Firewall によって拒否されたトラフィックやスループットの表示
+
+以下はデータソースとして利用できる一例です。
+
+- メトリック
+- ログ
+- リソース グラフ
+- JSON
+- カスタム エンドポイント(外部 URL の呼び出し)
+
+また、データの表示だけでなく、リソースの展開やほかのブックの呼び出し等の複雑なアクションを設定できます。
+
+ブックのサンプルは以下の GitHub で公開されています。
+
+[microsoft/Application-Insights-Workbooks](https://github.com/microsoft/Application-Insights-Workbooks)
+
+以下にブックの活用例を紹介します。
+
+![](./images/overview-book-heatmap.png)
+![](./images/overview-book-resiliency.png)
+
+ブックはJSON として保存されているため、既存のブックの取り込みやコピーが簡単に出来ます。以下の画面からブックの JSON を取り込むことができます。
+
+![](./images/overview-book-new.png)
+![](./images/overview-book-new2.png)
 
 #### アラート
 

@@ -23,13 +23,13 @@ resource "azurerm_monitor_data_collection_rule" "example" {
   }
 
   data_flow {
-    streams      = ["Microsoft-Event", "Microsoft-Syslog"]
+    streams      = ["Microsoft-Event", "Microsoft-Syslog", "Microsoft-Perf"]
     destinations = [random_string.uniqstr.result]
   }
 
   data_sources {
     performance_counter {
-      streams                       = ["Microsoft-InsightsMetrics"]
+      streams                       = ["Microsoft-Perf", "Microsoft-InsightsMetrics"]
       sampling_frequency_in_seconds = 10
       counter_specifiers = [
         "\\Processor Information(_Total)\\% Processor Time",
