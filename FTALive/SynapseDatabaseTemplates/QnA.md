@@ -3,10 +3,10 @@
 #### [prev](./demo.md) | [home](./readme.md)
 
 
-## Do you have a question which you didn't cover or answer?
-_Ask it now!_
+## セッション内でカバーされてないトピックがありましたか?
+_是非、ご質問ください!_
 
-## Do you need hands-on experience?
-* [Quickstart: Create a lake database](https://docs.microsoft.com/en-us/azure/synapse-analytics/database-designer/quick-start-create-lake-database)
-## Do you learn more about Azure Synapse database templates?
-* [Learning resources](./learningresources.md)
+## ハンズオンで実際にお試しいただけます!
+* [クイック スタート: データベース テンプレートを利用して新しい Lake データベースを作成する](https://docs.microsoft.com/ja-jp/azure/synapse-analytics/database-designer/quick-start-create-lake-database)
+## もっと Azure Synapse データベース テンプレートの情報が必要でしょうか?
+* [学習のためのリソース](./learningresources.md)

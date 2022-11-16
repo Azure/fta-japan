@@ -1,4 +1,4 @@
-# Learning Resources
+# 学習のためのリソース
 
 #### | [home](./readme.md)  |
 

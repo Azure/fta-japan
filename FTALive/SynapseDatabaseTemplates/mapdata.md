@@ -1,14 +1,14 @@
-# Map Data in Azure Synapse Analytics
+# データ マッピング
 
 #### [prev](./lakedatabase.md) | [home](./readme.md)  | [next](./demo.md)
 
 ## Working with database templates and lake databases
 
-![](/images/databaseTemplates_maptool.png)
-1. Browse database templates
-1. Visually create lake database
-1. Visually create pipeline / data flows 
-1. Cousume data from the Lake database
+![](/FTALive/SynapseDatabaseTemplates/images/databaseTemplates_maptool.png)
+1. データベース テンプレートの選択
+1. Lake データベースの作成
+1. データロード用の パイプライン/DataFlow の作成 
+1. データの活用
 
-## What is the Map data tool?
-* [Map data tool (Preview)](https://docs.microsoft.com/en-us/azure/synapse-analytics/database-designer/overview-map-data)
+## Map data ツールとは
+* [Map data ツール(Preview)](https://docs.microsoft.com/ja-jp/azure/synapse-analytics/database-designer/overview-map-data)

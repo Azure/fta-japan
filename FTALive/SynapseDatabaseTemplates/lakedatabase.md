@@ -1,10 +1,10 @@
-# Understanding Lake database
+# Lake データベースの理解
 
-#### [prev](./introduction.md) | [home](./readme.md)  | [next](./mapdata.md)
+#### [prev](./databasetemplates.md) | [home](./readme.md)  | [next](./mapdata.md)
 
-## What is Lake Database
-The lake database in Azure Synapse Analytics enables customers to bring together database design, meta information about the data that is stored and a possibility to describe how and where the data should be stored. Lake database addresses the challenge of today's data lakes where it is hard to understand how data is structured.
-* [Lake database concepts](https://docs.microsoft.com/en-us/azure/synapse-analytics/database-designer/concepts-lake-database)
-* [Lake database templates](https://docs.microsoft.com/en-us/azure/synapse-analytics/database-designer/concepts-database-templates)
+## Lake データベースとは
+Azure Synapse Analytics のレイク データベースを使用すると、データベースの構造、格納されるデータに関するメタ情報、およびデータを格納する方法と場所の管理が容易になります。 Lake データベースは、データがどのように構造化されているのかを理解することが困難な、今日のデータ レイクの課題に対処します。
+* [Lake データベースの概念](https://docs.microsoft.com/ja-jp/azure/synapse-analytics/database-designer/concepts-lake-database)
+* [Lake データベース テンプレート](https://docs.microsoft.com/ja-jp/azure/synapse-analytics/database-designer/concepts-database-templates)
 
-![](/images/lakedatabase.png)
+![](/FTALive/SynapseDatabaseTemplates/images/lakedatabase.png)

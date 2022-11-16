@@ -1,26 +1,26 @@
-# Welcome to FastTrack for Azure Live - Azure Synapse database templates 
-## We will start 1-2 minutes after the scheduled time to accommodate those still connecting
+# FastTrack for Azure Live - Azure Synapse データベース テンプレート にご参加いただきありがとうございます! 
+## 接続中のお客様を少しお待ちして、1-2 分以内にセッションを開始します
 
-This call will not be recorded due to the wide audience and to encourage questions.
+参加者の皆様にお気兼ねなくディスカッションに参加いただき、またご質問いただけるように本セッションの内容は録音されません。
 
-**Questions?** Feel free to type them in the chat window at any time. Note that questions you post will be public.
+**質問はどうすればよい?** いつでもチャット ウィンドウに入力してください。 (投稿した質問は他の参加者から参照可能なことにご留意してください)
 
-**Slideless** No PowerPoint, we promise! As we update this [content](https://github.com/Azure/FTALive-Sessions/tree/main/content/data/database-templates) you will get the changes straight away.
+**スライドは使いません** パワーポイントは使わずに、随時この [コンテンツ](https://github.com/Azure/fta-japan/tree/synapseDatabaseTemplates/FTALive/SynapseDatabaseTemplates) を更新します。そのため、常に最新版を参照いただけます。
 
-**Feedback** Please give us your feedback on https://aka.ms/ftalive-feedback
+**フィードバック** 本セッションへのフィードバックをお待ちしております https://aka.ms/ftalive-feedback
 
-**Prerequisites**
-You will need:
-* Microsoft Teams desktop client or Teams web client to view presentation.
-* Optional headphones to make it easier to listen to and interact with the presenters.
+**前提条件**
+* Microsoft Teams デスクトップクライアントあるいは Teams web クライアント (セッションに参加するため)
+* (Optional) ヘッドフォン (セッションを聴きやすく、またディスカッションに参加しやすくするため)
 
-# Azure Synapse database templates
+# Azure Synapse データベース テンプレート
 ## Agenda
-The goal of this session is to provide a basic understanding of Azure Synapse database templates, Laka database and Map data tool, concluding session with Q&A..
+このセッションの目的は、Azure Synapse データベース テンプレート、Laka データベース、Map データ ツールの基本的な理解を提供することにあります。
 
-1. [Introduction](./introduction.md)
-1. [Azure Synapse database templates](./databasetemplates.md)
-1. [Lake Database](./lakedatabase.md)
-1. [Map data tool (Preview)](./mapdata.md)
-1. [Demo](./demo.md)
+1. [はじめに](./introduction.md)
+1. [Wrap up - Azure Synapse Analytics](./azuresynapse.md)
+1. [Azure Synapse データベース テンプレート](./databasetemplates.md)
+1. [Lake データベースの理解](./lakedatabase.md)
+1. [データマッピング)](./mapdata.md)
+1. [デモ](./demo.md)
 1. [Q&A](./QnA.md)

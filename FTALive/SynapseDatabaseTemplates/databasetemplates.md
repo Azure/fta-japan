@@ -1,25 +1,24 @@
-# Azure Synapse database templates
+# Azure Synapse データベース テンプレート
 
-#### [prev](./introduction.md) | [home](./readme.md)  | [next](./lakedatabase.md)
+#### [prev](./azuresynapse.md) | [home](./readme.md)  | [next](./lakedatabase.md)
 
-## Data integration and data Standardization efforts of Microsoft
+## Microsoft のデータ統合/標準化への取り組み
 
-Microsoft believes everyone can benefit from opening, sharing, and collaborating around data to make better decisions, improve efficiency. 
+Microsoft は、様々なデータが共有されることにより、より良い意思決定や作業の効率化へとつながるものと考えています。
 
-Microsoft works to facilitate the sharing and use of data.
-Examples of such activities include the following:
+そのような理念のもとに、次のようなデータ統合/標準化活動を行っています:
 
-* [Common Data Model](https://learn.microsoft.com/en-us/common-data-model/#why-use-common-data-model)
+* [Common Data Model](https://learn.microsoft.com/ja-jp/common-data-model/#why-use-common-data-model)
 
 * [Open Data Initiative](https://dynamics.microsoft.com/en-us/open-data-initiative/)
 
 * [Open Manufacturing Platform](https://news.microsoft.com/2019/04/02/microsoft-and-the-bmw-group-launch-the-open-manufacturing-platform/)
 
-## Overview of Azure Synapse database templates
-Azure Synapse database templates enable data integration based on industry standard data models.
-* [What is Azure Synapse database templates](https://learn.microsoft.com/en-us/azure/synapse-analytics/database-designer/overview-database-templates)
+## Azure Synapse データベース テンプレートの概要
+Azure Synapse データベース テンプレートは業界標準データモデルに基づいたデータ統合を可能にします
+* [Azure Synapse データベース テンプレートとは](https://learn.microsoft.com/en-us/azure/synapse-analytics/database-designer/overview-database-templates)
 
-![](/images/databasetemplates.png)
+![](/FTALive/SynapseDatabaseTemplates/images/databasetemplates.png)
 
-## Azure Synapse database templates features
-![](/images/databaseTemplates_features.png)
+## Azure Synapse データベース テンプレートの機能
+![](/FTALive/SynapseDatabaseTemplates/images/databaseTemplates_features.png)
