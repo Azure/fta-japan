@@ -1,0 +1,42 @@
+name: textlint
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'FTALive/Monitoring/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'FTALive/Monitoring/**'
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-attach:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Generate token
+        id: generate_token
+        uses: tibdex/github-app-token@v1
+        with:
+          app_id: ${{ secrets.TSUNOMUR_APP_ID }}
+          private_key: ${{ secrets.TSUNOMUR_PRIVATE_KEY }}
+      - uses: actions/checkout@main
+        with:
+          token: ${{steps.generate_token.outputs.token}}
+      - name: create artifact
+        run: |
+          touch FTALive/Monitoring/${RANDOM}.txt
+      - uses: EndBug/add-and-commit@v9.0.1
+        with:
+          author_name: github-actions
+          author_email: '41898282+github-actions[bot]@users.noreply.github.com'
+          message: Update ARM template and Workbook
+          push: origin main --force --set-upstream
+          add: |
+            FTALive/Monitoring/*.txt
