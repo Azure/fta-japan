@@ -11,8 +11,8 @@ on:
       - 'FTALive/Monitoring/**'
   workflow_dispatch:
 
-permissions:
-  contents: read
+#permissions:
+#  contents: read
 
 jobs:
   build-and-attach:
