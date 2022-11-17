@@ -21,6 +21,6 @@
 1. [Wrap up - Azure Synapse Analytics](./azuresynapse.md)
 1. [Azure Synapse データベース テンプレート](./databasetemplates.md)
 1. [Lake データベースの理解](./lakedatabase.md)
-1. [データマッピング)](./mapdata.md)
+1. [データマッピング](./mapdata.md)
 1. [デモ](./demo.md)
 1. [Q&A](./QnA.md)
