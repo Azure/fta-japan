@@ -16,7 +16,7 @@ Microsoft は、様々なデータが共有されることにより、より良�
 
 ## Azure Synapse データベース テンプレートの概要
 Azure Synapse データベース テンプレートは業界標準データモデルに基づいたデータ統合を可能にします
-* [Azure Synapse データベース テンプレートとは](https://learn.microsoft.com/en-us/azure/synapse-analytics/database-designer/overview-database-templates)
+* [Azure Synapse データベース テンプレートとは](https://learn.microsoft.com/ja-jp/azure/synapse-analytics/database-designer/overview-database-templates)
 
 ![](/FTALive/SynapseDatabaseTemplates/images/databasetemplates.png)
 
