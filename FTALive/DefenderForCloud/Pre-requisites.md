@@ -6,6 +6,9 @@
 
 Microsoft Defender for Cloud を活用することでクラウド環境の把握とコントロールが可能になります。
 
+![Cyber Security Framework](./images/csf.png)
+[NIST Cyber Security Framework](https://www.nist.gov/cyberframework)
+
 ## クラウド セキュリティ態勢管理 (CSPM)
 
 CSPM の機能は無償の「基本的な CSPM」と有償の「Defender クラウド セキュリティ態勢管理 (CSPM)」の２つのプランが用意されており、サーバー、ストレージ、SQL、ネットワーク、アプリケーション、ワークロードなど、Azureで稼働しているクラウド リソースのセキュリティ状態を確認することができます。
@@ -24,7 +27,22 @@ Microsoft Defender for Cloud の最大のメリットは、['Secure Score'](http
 
 「Defender クラウド セキュリティ態勢管理 (CSPM)」はこの機能に加えて規制コンプライアンス（ISO 27001 や PCI-DSS などの標準に基づいてリソースの評価を行う機能）や、攻撃パスの分析などさらなる可視性を得るための機能を利用することができます。
 
-[基本的な CSPM と クラウド セキュリティ態勢管理 (CSPM) の機能比較](https://learn.microsoft.com/ja-jp/azure/defender-for-cloud/concept-cloud-security-posture-management)
+### 基本的な CSPM 機能
+- クラウド リソースのセキュリティ構成の継続的な評価
+- 構成の誤りと弱点を修正するためのセキュリティに関するレコメンデーション
+- セキュリティ スコア
+
+### Defender CSPM 
+有償の CSPM プランです。現在はプレビューのステータスで、無償で利用することができます。
+基本的な CSPM 機能に加えて、以下の機能を利用することができます。
+- [クラウド セキュリティ エクスプローラー](https://learn.microsoft.com/ja-jp/azure/defender-for-cloud/how-to-manage-cloud-security-explorer)
+- [攻撃パス分析](https://learn.microsoft.com/ja-jp/azure/defender-for-cloud/how-to-manage-attack-path)
+- [マシンのエージェントレス スキャン](https://learn.microsoft.com/ja-jp/azure/defender-for-cloud/enable-vulnerability-assessment-agentless)
+- [規制コンプライアンス](https://learn.microsoft.com/ja-jp/azure/defender-for-cloud/regulatory-compliance-dashboard)
+- [ガバナンス ルール](https://learn.microsoft.com/ja-jp/azure/defender-for-cloud/governance-rules)
+
+
+CSPM 機能の一覧：[基本的な CSPM と クラウド セキュリティ態勢管理 (CSPM) の機能比較](https://learn.microsoft.com/ja-jp/azure/defender-for-cloud/concept-cloud-security-posture-management)
 
 ## クラウド ワークロード保護 (CWP)
 
@@ -46,14 +64,12 @@ Microsoft Defender for Cloud を構成する2 つめの要素は "強化され�
 アラートの一覧：[セキュリティ アラート - リファレンス ガイド](https://learn.microsoft.com/ja-jp/azure/defender-for-cloud/alerts-reference)
 
 ## Azure Policy とは?
-
 Azure Policy は、セキュリティ標準による評価を実施し、大規模な環境でもコンプライアンス評価を自動的に行うことができる。ビジネスルールを Azure Policy として定義すると、Azure Policy がリソースのプロパティを定義されたビジネスルールと比較して、全体の状態を把握することができると考えてください。様々なリソースに対して許可する構成、許可しない構成、自動的な監査、許可しない構成のブロックなどを行うことができます。
 
 
-## 関連する Microsoft Defender
-
+## コンピューティングに関連する Microsoft Defender XXX
 ### Microsoft Defender for Cloud
-上記の通り Azure が提供する CSPM と CWP の機能です。  
+上記の通り Azure が提供する CSPM と CWP の機能です。
 過去には Azure Security Center や、Azure Defender (CWP 機能) と呼ばれていました。
 
 ### Microsoft Defender for Server
@@ -96,7 +112,7 @@ Azure の標準イメージから作成された Windows OS では既定で有�
 [MEM : Microsoft エンドポイント マネージャーの概要](https://docs.microsoft.com/ja-jp/mem/endpoint-manager-overview)  
 [MECM : Configuration Manager とは](https://docs.microsoft.com/ja-jp/mem/configmgr/core/understand/introduction)
 
-> ウィルス対策だけを使用したい場合、Microsoft Defender for Server や Defender for Endpoint を有効化する必要はありません。
+> Windows OS でウィルス対策だけを使用したい場合、Microsoft Defender for Server や Defender for Endpoint を有効化する必要はありません。
 
 
 
