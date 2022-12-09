@@ -1,0 +1,18 @@
+{
+    "name": "networking",
+    "version": "1.0.0",
+    "description": "#### **home** | [next](./why.md)",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "lint": "textlint *.md",
+        "lint:fix": "textlint --fix *.md"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "textlint-rule-prh": "^5.3.0",
+        "textlint": "^12.0.2",
+        "textlint-rule-preset-ja-technical-writing": "^7.0.0"
+    }
+}
