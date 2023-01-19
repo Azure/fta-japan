@@ -102,10 +102,10 @@ FSLogix 利用時にはユーザー プロファイルは外部ストレージ�
 |コスト| 従量課金<br>(VM/ディスク/ネットワーク)|固定料金<br>+ネットワーク従量課金|固定料金|
 |ユーザー割り当て|PC 占有 or マルチセッション|PC 占有|PC 占有|
 |カスタム イメージ|利用可|利用可|利用不可|
-|ドメイン参加|Azure AD 参加 or AD DS 参加|Hybrid AAD 参加 or Azure AD 参加 |Azure AD 参加のみ|
+|ドメイン参加|Azure AD 参加 or AD DS 参加<br>or Hybrid AAD 参加|Hybrid AAD 参加 or Azure AD 参加 |Azure AD 参加のみ|
 |ユーザー規模|制限なし|制限なし|300人未満|
 |パフォーマンス|Azure 上で利用可能な VM と<br> Disk から柔軟に選択可|[W365 用 SKU](https://www.microsoft.com/ja-jp/windows-365/all-pricing) から選択|[W365 用 SKU](https://www.microsoft.com/ja-jp/windows-365/all-pricing) から選択|
-|Azure サブスクリプション|必要|必要|不要|
+|Azure サブスクリプション|必要|基本的に必要 (利用しないことも可能) |不要|
 |監視|Azure Monitor|MEM|MEM|
 |RemoteApp|利用可|利用不可|利用不可|
 
@@ -270,7 +270,7 @@ https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-enable-
 
 
 ### 5.5 アプリケーション
-イベントログ以外のサードパーティ製の製品等のログについても、場合によっては Azure Monitor で分析することができます。Azure Monitor (LogAnalytics) にはカスタムログ取得機能があり、テキストベースのログについては Azure に送信することができます。具体的な設定方法は以下の [Azure Monitor で Log Analytics エージェントを使用してカスタム ログを収集する](https://docs.microsoft.com/ja-jp/azure/azure-monitor/platform/data-sources-custom-logs) を参照してください。
+イベントログ以外のサードパーティ製の製品等のログについても、場合によっては Azure Monitor で分析することができます。Azure Monitor (LogAnalytics) にはカスタムログ取得機能があり、テキストベースのログについては Azure に送信することができます。具体的な設定方法は以下の [Azure Monitor エージェントを使用してテキスト ログを収集する](https://learn.microsoft.com/ja-jp/azure/azure-monitor/agents/data-collection-text-log) を参照してください。
 
 ![networkdesign1](images/monitor-application.png)
 
@@ -279,11 +279,11 @@ https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-enable-
 
 ## 6. 各種ツールや機能
 
-ここでは Microsoft Native AVD を利用する上で役立つツールやリンク情報をご紹介します。
+ここでは Microsoft Native AVD を利用する上で特に役立つツールや機能、およびリンク情報をご紹介します。
 
 ### 6.1 スケーリングツール
 
-ここで紹介するのはプール型の AVD を利用する場合特有のものですが、セッションホスト仮想マシンをコストパフォーマンスを意識して効率よく使用するためには、ピーク時間／オフピーク時間を定義して、トータルの仮想マシン台数を増減させる対応が必要です。この作業を自動化するのがここで紹介するスケーリング プランという機能です。
+ここで紹介するのはプール型の AVD を利用する場合特有のものですが、セッションホスト仮想マシンをコストパフォーマンスを意識して効率よく使用するためには、ピーク時間／オフピーク時間を定義して、トータルの仮想マシン台数を増減させる仕組みが必要です。この作業を自動化するのがここで紹介するスケーリング プランという機能です。
 
 [Azure Virtual Desktop の自動スケーリング プランを作成する](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/autoscale-scaling-plan)
 
@@ -343,17 +343,18 @@ AVD に接続するクライアント デバイス側で、ソフトウェア �
 [New ways to optimize flexibility, improve security, and reduce costs with Azure Virtual Desktop](https://techcommunity.microsoft.com/t5/azure-virtual-desktop-blog/new-ways-to-optimize-flexibility-improve-security-and-reduce/ba-p/3650895) (Ignite 2022 付近のタイミングでアナウンスされた機能の一覧がよくまとまっています。以下は特に重要と思われる機能です)
 
 - [Azure Virtual Desktop 用にシングル サインオンを構成する](https://learn.microsoft.com/ja-jp/azure/virtual-desktop/configure-single-sign-on) (パブリック プレビュー)
-- [Azure Files と Azure Active Directory を使用してプロファイル コンテナーを作成する (プレビュー)](https://learn.microsoft.com/ja-jp/azure/virtual-desktop/create-profile-container-azure-ad)
-- [Announcing Public Preview: FSLogix Disk Compaction](https://techcommunity.microsoft.com/t5/azure-virtual-desktop-blog/announcing-public-preview-fslogix-disk-compaction/ba-p/3644807)(パブリック プレビュー)
+- [Azure Files と Azure Active Directory を使用してプロファイル コンテナーを作成する](https://learn.microsoft.com/ja-jp/azure/virtual-desktop/create-profile-container-azure-ad)  (GA 済み)
+- [Announcing Public Preview: FSLogix Disk Compaction](https://techcommunity.microsoft.com/t5/azure-virtual-desktop-blog/announcing-public-preview-fslogix-disk-compaction/ba-p/3644807) (GA 済み)
+- [Private Link for Azure Virtual Desktop (プレビュー) を設定する](https://learn.microsoft.com/ja-jp/azure/virtual-desktop/private-link-setup)
 
 [Azure Virtual Desktop のセキュリティに関するベスト プラクティス](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/security-guide#azure-virtual-desktop-security-best-practices)
 
-[AVD および FSLogix 関連の各種公開情報](https://jpwinsup.github.io/blog/2020/11/05/RemoteDesktopService/WVD/wvd-fslogix-useful-links/) (日本マイクロソフト サポートチームによる Blog)
+[AVD および FSLogix 関連の各種公開情報](https://jpwinsup.github.io/blog/2020/11/05/RemoteDesktopService/AVD/avd-fslogix-useful-links/) (日本マイクロソフト サポートチームによる Blog)
 
 [くらう道](https://www.cloudou.net/) (日本マイクロソフト 社員によるブログ記事)
 
 [AVD 関連の更新情報](https://azure.microsoft.com/ja-jp/updates/?category=windows-virtual-desktop)
 
-[AVD 関連のロードマップ情報](https://www.microsoft.com/ja-jp/microsoft-365/roadmap?filters=Windows%20Virtual%20Desktop)
+[Azure Virtual Desktop の最新情報](https://learn.microsoft.com/ja-jp/azure/virtual-desktop/whats-new)
 
 
