@@ -1,10 +1,11 @@
-## AKS セキュリティのベストプラクティス
+# AKS セキュリティのベストプラクティス
 
-### 目的
+## 目的
+
 このセッションでは、AKS クラスターを実行するときに必要なセキュリティの考え方の全体像を学びます。
 ただし、アプリケーションセキュリティについては、範囲に含まれていません。
 
-### アジェンダ
+## アジェンダ
 
 クラスターレベルセキュリティの考慮点：
 
@@ -91,7 +92,7 @@
 ### コンピュートノードの分離（必須ではない）
 
 - [Azure の仮想マシン分離](https://docs.microsoft.com/ja-jp/azure/virtual-machines/isolation)
-- 近傍ノードが同じハードウェアで動く懸念がある場合に分離仮想マシンタイプを利用する [AKS で システムノードを管理する方法](https://docs.microsoft.com/ja-jp/azure/aks/use-system-pools) 
+- 近傍ノードが同じハードウェアで動く懸念がある場合に分離仮想マシンタイプを利用する [AKS で システムノードを管理する方法](https://docs.microsoft.com/ja-jp/azure/aks/use-system-pools)
 - ノート：これは、レジリエンシーのベストプラクティスであり、セキュリティに必要なものではありません
 
 ### コンテナーレジストリーとクラスターの統合
@@ -113,7 +114,7 @@
 ### Azure Defender for Container の有効化
 
 - 課金されるためデフォルトでは有効化されていません
-  - [Defender の価格表](https://azure.microsoft.com/pricing/details/defender-for-cloud/) 
+  - [Defender の価格表](https://azure.microsoft.com/pricing/details/defender-for-cloud/)
 
 - [Defender for Container の概要](https://docs.microsoft.com/ja-jp/azure/defender-for-cloud/defender-for-containers-introduction)
   - [Kubernetesノードとクラスタのためのランタイム保護](https://docs.microsoft.com/ja-jp/azure/defender-for-cloud/defender-for-containers-introduction?tabs=defender-for-container-arch-aks#run-time-protection-for-kubernetes-nodes-and-clusters)
@@ -157,7 +158,7 @@
 - ロードバランスされたポッドを公開するためにパブリックIPアドレスを使うことを避ける
 - リバースプロキシーへ Ingress コントローラーを使い、Kubernetes の Service を束ねる
   - [AKSで内部仮想ネットワークへのIngressコントローラを作成する](https://docs.microsoft.com/ja-jp/azure/aks/ingress-internal-ip?tabs=azure-cli)
-- Kubernetes クラスターの同じ仮想ネットワーク内で実行されるアプリケーションだけにアクセスさせるために、”Kubernetes クラスターでは内部ロード バランサーを使用する必要がある” [ポリシー](https://docs.microsoft.com/ja-jp/azure/aks/policy-reference)を使う 
+- Kubernetes クラスターの同じ仮想ネットワーク内で実行されるアプリケーションだけにアクセスさせるために、”Kubernetes クラスターでは内部ロード バランサーを使用する必要がある” [ポリシー](https://docs.microsoft.com/ja-jp/azure/aks/policy-reference)を使う
 
 ### Egress のセキュリティ
 
@@ -170,56 +171,50 @@
 
 ## 開発者/マニフェスト/設定の注意点
 
-- [Best practices for pod security in Azure Kubernetes Service (AKS)](https://docs.microsoft.com/ja-jp/azure/aks/developer-best-practices-pod-security)
-- [Configure a Security Context for a Pod or Container](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)
-- [Azure Built-In Policy](https://docs.microsoft.com/ja-jp/azure/aks/policy-reference) "Kubernetes cluster should not allow privileged containers"
-  - [Policy Definition](https://portal.azure.com/#blade/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2F95edb821-ddaf-4404-9732-666045e056b4) - link opens in Azure Portal
-- [Limit Container Actions with App Armor](https://docs.microsoft.com/ja-jp/azure/aks/operator-best-practices-cluster-security#app-armor)
+- [AKS でのポッドセキュリティのためのベストプラクティス](https://docs.microsoft.com/ja-jp/azure/aks/developer-best-practices-pod-security)
+- [Pod もしくはコンテナーのためのセキュリティコンテキストの設定](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)
+- [Azure ビルトインポリシー](https://docs.microsoft.com/ja-jp/azure/aks/policy-reference) "Kubernetes cluster should not allow privileged containers"
+  - [ポリシーの定義](https://portal.azure.com/#blade/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2F95edb821-ddaf-4404-9732-666045e056b4) - Azure ポータルで開いてください
+- [App Armor を使ってコンテナーアクションの制限ｎ](https://docs.microsoft.com/ja-jp/azure/aks/operator-best-practices-cluster-security#app-armor)
 
+### シークレットの外部化
 
-### Externalize Secrets
+- [シークレットストア CSI ドライバーのための、Azure Key Vault](https://github.com/Azure/secrets-store-csi-driver-provider-azure)
+- [AKS クラスターで、シークレットストア CSI ドライバーのためのAzure Key Vault プロバイダーを使う](https://docs.microsoft.com/ja-jp/azure/aks/csi-secrets-store-driver)
 
-- [Azure Key Vault Provider for Secrets Store CSI Driver](https://github.com/Azure/secrets-store-csi-driver-provider-azure)
-- [Use the Azure Key Vault Provider for Secrets Store CSI Driver in an AKS cluster](https://docs.microsoft.com/ja-jp/azure/aks/csi-secrets-store-driver)
+### ワークロードアイデンティティ
 
+- [Kubernetesのための AAD ワークロードアイデンティティの発表](https://cloudblogs.microsoft.com/opensource/2022/01/18/announcing-azure-active-directory-azure-ad-workload-identity-for-kubernetes/)
+  - [サービスプリンシパルのサポート](https://learn.microsoft.com/ja-jp/azure/aks/kubernetes-service-principal?tabs=azure-cli)
+  - [マネージドIDのサポート](https://learn.microsoft.com/ja-jp/azure/aks/use-managed-identity)
+- [ワークロードIDフェデレーション](https://docs.microsoft.com/ja-jp/azure/active-directory/develop/workload-identity-federation)
+- [ポッドアイデンティティ(プレビュー)](https://docs.microsoft.com/ja-jp/azure/aks/use-azure-ad-pod-identity) - これは、GAしません。[ワークロードID](https://learn.microsoft.com/ja-jp/azure/aks/workload-identity-overview)を使ってください。
 
-### Workload Identity
+### ネームスペースを使う
 
-- [Announcing Azure Active Directory (Azure AD) workload identity for Kubernetes](https://cloudblogs.microsoft.com/opensource/2022/01/18/announcing-azure-active-directory-azure-ad-workload-identity-for-kubernetes/) 
-  - Announced 18 January 2022 with Service Principal support. 
-  - Managed Identity support is on the roadmap.
-- [Workload identity federation (preview)](https://docs.microsoft.com/ja-jp/azure/active-directory/develop/workload-identity-federation) 
-- [Azure Pod Identity (preview)](https://docs.microsoft.com/ja-jp/azure/aks/use-azure-ad-pod-identity) - this will be *replaced* and thus will never GA.
+- [Kubernetesのドキュメンテーション: ネームスペース](https://kubernetes.io/ja/docs/concepts/overview/working-with-objects/namespaces/)
 
+## Governance concerns / Azure Policy ガバナンスの懸念点と Azure ポリシー
 
-### Use Namespaces
+- [Kubernetes クラスターのための Azure ポリシーの理解](https://docs.microsoft.com/ja-jp/azure/governance/policy/concepts/policy-for-kubernetes)
+- [AKS の Azure ポリシービルトイン定義](https://docs.microsoft.com/ja-jp/azure/aks/policy-reference)
+- [ポリシー イニシアティブ](https://docs.microsoft.com/ja-jp/azure/aks/policy-reference#initiatives) represent an implementation of the [Kubernetes Pod セキュリティ標準](https://kubernetes.io/docs/concepts/security/pod-security-standards/) specification
+- Policy extension can be auto provisioned from the [Defender for Cloud 設定](https://docs.microsoft.com/ja-jp/azure/defender-for-cloud/kubernetes-workload-protections#configure-defender-for-containers-components)
 
-- [Kubernetes Documentation: Namespaces](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) 
+## イメージ管理の懸念点
 
+下記の内容で、AKS クラスターとコンテナーイメージを保護します。
 
-## Governance concerns / Azure Policy
+### イメージスキャン
 
-- [Understand Azure Policy for Kubernetes clusters](https://docs.microsoft.com/ja-jp/azure/governance/policy/concepts/policy-for-kubernetes)
-- [Azure Policy built-in definitions for Azure Kubernetes Service](https://docs.microsoft.com/ja-jp/azure/aks/policy-reference)
-- [Azure Policy Initiatives](https://docs.microsoft.com/ja-jp/azure/aks/policy-reference#initiatives) represent an implementation of the [Kubernetes Pod Security Standards](https://kubernetes.io/docs/concepts/security/pod-security-standards/) specification
-- Policy extension can be auto provisioned from the [Defender for Cloud setting](https://docs.microsoft.com/ja-jp/azure/defender-for-cloud/kubernetes-workload-protections#configure-defender-for-containers-components)
+- [脆弱性対応のために、Defernder for Container を使い、イメージをスキャンする](https://docs.microsoft.com/ja-jp/azure/defender-for-cloud/defender-for-container-registries-usage)
+- [Defender for Containers の概要](https://docs.microsoft.com/ja-jp/azure/defender-for-cloud/defender-for-containers-introduction)
+  - [ノードとクラスタのためのランタイム保護](https://docs.microsoft.com/ja-jp/azure/defender-for-cloud/defender-for-containers-introduction?tabs=defender-for-container-arch-aks#run-time-protection-for-kubernetes-nodes-and-clusters)
+- [CI/CDワークフローの中で、コンテナーイメージの脆弱性を特定する](https://docs.microsoft.com/ja-jp/azure/defender-for-cloud/defender-for-container-registries-cicd)
 
+### コンテナーレジストリーアクセス
 
-## Image Management concerns
-
-Protect and secure aspects of container images and the AKS cluster 
-
-### Scan Images
-
-- [Use Microsoft Defender for container registries to scan your images for vulnerabilities](https://docs.microsoft.com/ja-jp/azure/defender-for-cloud/defender-for-container-registries-usage)
-- [Overview of Microsoft Defender for Containers](https://docs.microsoft.com/ja-jp/azure/defender-for-cloud/defender-for-containers-introduction)
-  - [Run-time protection for Kubernetes nodes and clusters](https://docs.microsoft.com/ja-jp/azure/defender-for-cloud/defender-for-containers-introduction?tabs=defender-for-container-arch-aks#run-time-protection-for-kubernetes-nodes-and-clusters)
-- [Identify vulnerable container images in your CI/CD workflows](https://docs.microsoft.com/ja-jp/azure/defender-for-cloud/defender-for-container-registries-cicd)
-
-
-### Container Regsitry Access
-
-- [Azure Built-in Policy](https://docs.microsoft.com/ja-jp/azure/aks/policy-reference#microsoftcontainerservice) "Kubernetes cluster containers should only use allowed images"
+- [Azure ビルトインポリシー](https://docs.microsoft.com/ja-jp/azure/aks/policy-reference#microsoftcontainerservice) "Kubernetes クラスター コンテナーでは、許可されているイメージのみを使用する必要がある"
   - [Policy Definition](https://github.com/Azure/azure-policy/blob/master/built-in-policies/policyDefinitions/Kubernetes/ContainerAllowedImages.json)
-- Acccess registry via [Azure Container Registry roles and permissions](https://docs.microsoft.com/ja-jp/azure/container-registry/container-registry-roles?tabs=azure-cli)
-- [Connect privately to an Azure container registry using Azure Private Link](https://docs.microsoft.com/ja-jp/azure/container-registry/container-registry-private-link)
+- [Azure Container Registry のロールと許可](https://docs.microsoft.com/ja-jp/azure/container-registry/container-registry-roles?tabs=azure-cli) を通じてレジストリーにアクセスする
+- [Azure Private Link を使ったコンテナーレジストリーへの閉じた接続](https://docs.microsoft.com/ja-jp/azure/container-registry/container-registry-private-link)
