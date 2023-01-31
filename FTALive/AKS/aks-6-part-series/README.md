@@ -1,25 +1,34 @@
 # AKS 6 Part Series
 
-Please find the links below to the handouts from the 6 Part AKS Series.
+README | [ネットワークのベストプラクティス &rarr;](.//1-networking.md)
 
-| # | Sesstion Title | Date | Notes |
+
+# 6パートシリーズの概要説明
+
+このシリーズでは、Azure Kubernetes Service (AKS) のベストプラクティスについて、ドキュメントベースで学ぶことができます。このシリーズは、6つのパートに分かれています。各パートは、AKS のベストプラクティスに関する重要なトピックをカバーしています。このシリーズを通じて、AKS のベストプラクティスを学び、AKS をより効果的に使用する方法を学ぶことができます。
+
+## このシリーズの目的
+
+このシリーズでは、以下のことを学ぶことができます。
+
+| # | セッションタイトル | 日付 | ノート |
 |:--|:--|:--|:--|
-| 1 | **[Networking](./1-networking.md)** | 16 August 2022 | |
-| 2 | **[Security Best Practices](./2-security-best-practices.md)** | 18 August 2022 | See also [standalone handout &rarr;](../aks-security/readme.md) |
-| 3 | **[Automating Cluster Deployments](./3-cluster-deployment-automation.md)** | 23 August 2022 | |
-| 4 | **[Operations](./4-operations.md)** | 25 August 2022 | See also [standalone handout &rarr;](../aks-operations/README.md) |
-| 5 | **[Monitoring](./5-monitoring.md)** | 30 August 2022 | |
-| 6 | **[Automating Workload Deployments](./6-workload-deployments-automation.md)** | 01 September 2022 | |
-
-### Feedback
-
-Please rate this session and help us improve future sessions
-
-[https://aka.ms/ftalive/6-part-aks/feedback](https://aka.ms/ftalive/6-part-aks/feedback)
+| 1 | **[ネットワークのベストプラクティス](./1-networking.md)** | 2023年2月1日| |
+| 2 | **[セキュリティのベストプラクティス](./2-security-best-practices.md)** | 2023年2月８日 | こちらを御覧ください [standalone handout &rarr;](../aks-security/readme.md) |
+| 3 | **[クラスターデプロイと自動化のべストプラクティス](./3-cluster-deployment-automation.md)** | 2023年2月15日 | |
+| 4 | **[オペレーションのベストプラクティス](./4-operations.md)** | 2023年2月22日 | こちらを御覧ください [standalone handout &rarr;](../aks-operations/README.md) |
+| 5 | **[モニタリングのベストプラクティス](./5-monitoring.md)** | 2023年3月1日 | |
+| 6 | **[ワークロードのデプロイと自動化のベストプラクティス](./6-workload-deployments-automation.md)** | 2023年3月8日 | |
 
 
-### Request a personal FastTrack Engineer Session
+## このシリーズの対象者
 
-For details on this limited time offer to attendees of the August/Sept 6 Part Series pilot, apply today
+このシリーズは、Azure Kubernetes Service (AKS) のベストプラクティスについて学びたい人に向けて作成されています。例えば、以下のような人に向けて作成されています。
 
-[https://aka.ms/ftalive/6-part-aks/review](https://aka.ms/ftalive/6-part-aks/review)
+1. AKS を将来的に使用する予定の人で、事前にベストプラクティスについて学びたい人
+2. AKS を使用しているが、ベストプラクティスについて学び、より効果的に使用する方法を学びたい人
+3. 他社クラウドの Kubernetes クラスターを使用しているが、Azure Kubernetes Service (AKS) に移行する予定の人で、ベストプラクティスについて学びたい人
+
+特に、設計担当者や運用担当者の方で、より効果的な方法を学びたい人にとっては、最適なシリーズとなっています。
+
+次へ進むには、[ネットワークのベストプラクティス](./1-networking.md) をクリックしてください。
