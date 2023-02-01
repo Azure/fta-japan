@@ -1,3 +1,5 @@
+# AKS 6 part series 1/6
+
 Part 1 of 6 | [セキュリティベストプラクティス &rarr;](./2-security-best-practices.md)
 
 # ネットワーク
@@ -6,27 +8,108 @@ Part 1 of 6 | [セキュリティベストプラクティス &rarr;](./2-securit
 > _この配布資料は、事前に用意されており、実際のセッションの内容とは、議論によって異なる可能性があります_
 > 
 
-### 概念
+## 概念
 
-- [AKS ネットワーク接続とセキュリティに関するベストプラクティス](https://learn.microsoft.com/ja-jp/azure/aks/operator-best-practices-network)
-  - 適切なネットワークモデルを選択する
-    AKSには、2つのネットワークモデルがあります
-    - CNIネットワーク
-    - Kubenet ネットワーク
-    - この2つのネットワークの違いを理解するために以下の資料が役に立ちます
-      - 参考：[ネットワークモデルの比較表 - Kubenet vs Azure CNI](https://learn.microsoft.com/ja-jp/azure/aks/concepts-network#compare-network-models)
-  - Ingress トラフィックを分散する
-    - Ingress リソース（yamlファイルの例）
-    - Ingress コントローラー
-      - Nginx だけでなく、Contour、HAProxy、Traefik なども使えます
-  - WAF を使ったトラフィックの保護
-    - 外部からのトラフィックを保護するために、Azure Application Gateway、Azure Front Door、Azure Firewall を使う
-    - 例では、Azure Application Gateway を使っています
-  - ネットワークポリシーを使用してトラフィックフローを制御する
-  - 踏み台ホストを介してノードに安全に接続する
-    - Azure Bastion Service を使う
+まず、AKS クラスターを作成する前に以下の内容を理解しておく必要があります。
+[Azure Kubernetes Service (AKS) クラスターのベースライン アーキテクチャ](https://learn.microsoft.com/ja-jp/azure/architecture/reference-architectures/containers/aks/baseline-aks) では、ネットワークの構成、クラスター構成、ID管理、データフローのセキュリティ保護、ビジネス継続性、オペレーションについての記載があります。
+今回は、ネットワークについてですので、上記のドキュメントのネットワーク・トポロジーとIPアドレスの計画（割り当て）、イングレスリソースのデプロイを扱います。
 
-### どのようにして、自分で管理している VNET を AKSに接続するのか？
+### ネットワーク・トポロジー
+
+![ネットワーク・トポロジー図](./images/AKS_topology.png)
+
+下記にベストプラクティスを含む、 AKS クラスターをデプロイする場合の一般的なネットワーク・トポロジーを示します。ポイントは以下のとおりです。
+
+1. 分離された管理、ガバナンスの適用と最小特権の原則の遵守
+2. Azure のリソースを直接インターネットに公開することを防ぐ
+3. 将来的なネットワークの拡張、ワークロードの分離などのために、ハブ・スポークモデルを採用する
+   1. 複数のサブスクリプションを使う場合
+   2. 新しいワークロードを追加する場合に、スポークを追加するだけなので、ネットワーク・トポロジーの再設計が不要
+   3. FW や DNS などの特定のリソースを共有化できる
+4. すべてのWebアプリケーションに HTTP のトラフィックフロー管理に役立つ WAF を導入する
+
+ハブアンドスポークの詳しい内容は、[Azure エンタープライズ規模のランディングゾーン](https://learn.microsoft.com/ja-jp/azure/cloud-adoption-framework/ready/enterprise-scale/implementation) を参照してください。
+
+ハブに用意するサブネットに紐づくリソースは以下のとおりです。
+
+- Azure Firewall
+- Bastion (踏み台として)
+- VPN ゲートウェイ
+
+スポークに用意するサブネットに紐づくリソースは以下の通りです。
+
+- Azure Application Gateway
+- イングレスリソース（イングレスコントローラー）
+- クラスターノード
+- プライベートリンク・エンドポイント
+
+### IPアドレスの計画
+
+AKS を使う上でIPアドレス空間について十分大きなものを用意する必要があります。
+その理由の一部は以下の通りです。
+
+1. アップグレード  
+   アップグレードをする場合、ポッドの可用性を担保しながら、クラスターをアップグレードする必要があります。その場合、古いポッドの正常終了と新しいポッドの正常起動を確認して、新しいポッドへ接続を開始します。その瞬間、一時的ではありますが、ポッドのIPアドレスを消費することになります。
+2. スケーラビリティ  
+   もし、必要なワークロードが大きくなり、ワーカーノードを増やす必要性があった場合、4倍のクラスターを用意するとしたら、4倍のアドレス空間が必要になります。
+3. プライベートリンク  
+   新たなリソースを追加する場合、プライベートリンクを使うことになります。プライベートリンクを使う場合、プライベートIPアドレスを割り当てる必要があります。そのため、プライベートIPアドレスを割り当てるためには、十分なアドレス空間が必要になります。
+4. 予約アドレスは使用不可  
+  [IPアドレスの使用に関する制限](https://learn.microsoft.com/ja-jp/azure/virtual-network/virtual-networks-faq#are-there-any-restrictions-on-using-ip-addresses-within-these-subnets)
+   >  Azure では、各サブネット内で最初の 4 つの IP アドレスと最後の IP アドレスの合計 5 つの IP アドレスが予約されます。
+   > たとえば、IP アドレスの範囲が 192.168.1.0/24 の場合、次のアドレスが予約されます。
+   >
+   > - 192.168.1.0: ネットワーク アドレス
+   > - 192.168.1.1: 既定のゲートウェイ用に Azure によって予約されます
+   > - 192.168.1.2、192.168.1.3: Azure DNS IP を VNet 空間にマッピングするために Azure によって予約されます
+   > - 192.168.1.255: ネットワーク ブロードキャスト アドレス。
+
+上記に記載した内容は例であり、一部分です。デプロイする要件に応じて十分大きなアドレス空間を確保する必要があります。
+
+![IPアドレス設計](./images/aks-baseline-network-topology.png)
+
+### イングレスリソースのデプロイ
+
+イングレスリソースは、クラスターの外部からクラスター内部へのアクセスを許可するために必要です。クラスターへの着信トラフィックのルーティングと分散を行います。概ね2つの役割があります。
+
+1. 内部ロードバランサー
+   プライベートな静的IPアドレスを持ち、クラスター内部のポッドに対してトラフィックを分散します。
+2. イングレスコントローラー
+   いくつかの種類のイングレスコントローラーがありますが、例えば、Azure Application Gatewayを使う場合、外部からの着信トラフィックを受け付け、クラスター内部のロードバランサーにルーティングします。一方で、Nginx や Traefik などを使う場合、ロードバランサーで受け付けたトラフィックを クラスター内部の Pod で構成された、Nginx や Traefik にルーティングします。
+
+#### イングレスコントローラーを使う場合の注意点
+
+イングレスコントローラー、特に、Nginx や Treafik を使う場合には、クラスター内のリソースとして十分な考慮が必要になります。
+
+- イングレスコントローラーがアクセスできる範囲を、コントローラーと特定のワークロードのポッドへのアクセスに制限します。
+- 負荷分散とノードがダウンしたときを考慮し、`podAntiAffinity`を使い、同じノードにレプリカを配置しないようにします。
+- ポッドがユーザー（ワーカー）ノードプールでのみ、スケジューリングされるように、`nodeSelecotors` を使用します。これにより、システムノードにて、ワークロードを実行するポッドが稼働しないように制限できます。
+- イングレスコントローラーとポッド間で必要なポートとプロトコルだけを受け付けるように設定します。
+- イングレスコントローラーからポッドの正常性を確認するために、`redinessProbe`と`livenessProbe`を設定します。
+- イングレスコントローラーについて、 Kubernetes の RBAC を使って、特定のリソースへのアクセスと特定のアクションのみを実行するように制限してください。例えば、 Kubenetes の `ClusterRole` のルールを使って、イングレスコントローラーにサービスとエンドポイントを監視、取得、一覧表示するためのアクセス許可を付与することができます。
+
+### [AKS ネットワーク接続とセキュリティに関するベストプラクティス](https://learn.microsoft.com/ja-jp/azure/aks/operator-best-practices-network)
+
+> 注意： 次回のセキュリティのベストプラクティスでは、これよりも深い内容で多角的に説明をしますので、そちらも合わせてご参加ください。
+
+- 適切なネットワークモデルを選択する
+  AKSには、2つのネットワークモデルがあります
+  - CNIネットワーク
+  - Kubenet ネットワーク
+  - この2つのネットワークの違いを理解するために以下の資料が役に立ちます
+    - 参考：[ネットワークモデルの比較表 - Kubenet vs Azure CNI](https://learn.microsoft.com/ja-jp/azure/aks/concepts-network#compare-network-models)
+- Ingress トラフィックを分散する
+  - Ingress リソース（yamlファイルの例）
+  - Ingress コントローラー
+    - Nginx だけでなく、Contour、HAProxy、Traefik なども使えます
+- WAF を使ったトラフィックの保護
+  - 外部からのトラフィックを保護するために、Azure Application Gateway、Azure Front Door、Azure Firewall を使う
+  - 例では、Azure Application Gateway を使っています
+- ネットワークポリシーを使用してトラフィックフローを制御する
+- 踏み台ホストを介してノードに安全に接続する
+  - Azure Bastion Service を使う
+
+### Azure の VNET と AKS を接続するには？
 
 この疑問を解消するために以下の2つの記事が役にたちます。シンプルな例ですが、これらの記事を参考にして、自分の環境に適したネットワークモデルを選択してください。
 
@@ -70,28 +153,9 @@ Part 1 of 6 | [セキュリティベストプラクティス &rarr;](./2-securit
     - カスタムプライベートDNSゾーン
       - CUSTOM_PRIVATE_DNS_ZONE_RESOURCE_ID
 
-## Misc. Links
+## Question and Misc. Links
 
-出席者の質問に基づいてチャットで共有されるリンク
+> 参加者の方から質問を受け付けます。今回回答できなかった内容については、後日こちらに記載しておきます。
 
-### カスタムマネージドリソースグループネーム
-
-For people who prefer different conventions, e.g. `-rg` suffix over default `MC_` prefix
-AKSノードリソースグループに独自の名前を付けたい場合。例えば、"-rg", "MC_"以外の名前など。
-
-- [MS Docs - FAQ](https://docs.microsoft.com/azure/aks/faq#can-i-provide-my-own-name-for-the-aks-node-resource-group)
-- [Terraform](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster#node_resource_group)  `node_resource_group` 属性を利用する
-- [Azure CLI](https://docs.microsoft.com/cli/azure/aks?view=azure-cli-latest#az-aks-create)  `--node-resource-group` オプションをクラスターを作るときに付与する
-
-### Kubernetes のサービスタイプ
-
-[Kubernetes Docs: サービスタイプ](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types)
-
-- クラスターIP
-- [ノードポート](https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport)
-- [ロードバランサー](https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer)
-- [エクスターナルネーム](https://kubernetes.io/docs/concepts/services-networking/service/#externalname)
-
-### クラスターにはどのネットワークモデルがありますか？
-
-[`az aks show command`](https://docs.microsoft.com/en-us/cli/azure/aks?view=azure-cli-latest#az-aks-show) で見つけることができます。
+例） グローバル・サービスを構築したいのですが、 Frontdoor と Application Gateway を組み合わせて利用することはできますか？ - はい、要件や状況に応じて使い分けてください。こちらのドキュメントが参考になります。
+[Front Door の背後に Application Gateway をデプロイする必要はありますか?](https://learn.microsoft.com/ja-jp/azure/frontdoor/front-door-faq#front-door------application-gateway-----------------)
