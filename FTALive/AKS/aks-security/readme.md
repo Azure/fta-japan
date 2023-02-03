@@ -124,7 +124,7 @@
 
 - [AKS クラスターのための複数ノードプールの作成と管理](https://docs.microsoft.com/ja-jp/azure/aks/use-multiple-node-pools)
 
-### Encryption
+### 暗号化
 
 - [Azure ディスクのための自己所有キーの利用](https://docs.microsoft.com/ja-jp/azure/aks/azure-disk-customer-managed-keys)
 - [AKS ホストの暗号化](https://docs.microsoft.com/ja-jp/azure/aks/enable-host-encryption)
