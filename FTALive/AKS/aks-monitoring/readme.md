@@ -116,3 +116,4 @@ Kubernetes は、安定したクラスター操作のために、システムサ
 - [Firewall 健全状態の監視](https://docs.microsoft.com/en-us/azure/firewall/logs-and-metrics#metrics)
   - 可能なステータスは、「Healthy」、「Degraded」、「Unhealthy」です。
   - SNAT ポートの利用率 - 利用された SNAT ポートの割合
+
