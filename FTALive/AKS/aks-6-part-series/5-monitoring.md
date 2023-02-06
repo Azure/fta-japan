@@ -1,200 +1,201 @@
-[&larr; Operations](./4-operations.md) | Part 5 of 6 | [Workload Deployment &rarr;](./6-workload-deployments-automation.md)
+[&larr; 運用](./4-operations.md) | Part 5 of 6 | [ワークロードのデプロイ自動化 &rarr;](./6-workload-deployments-automation.md)
 
-# AKS Monitoring
+# AKS モニタリング
 
-## Part 1 - Introduction: Monitoring Concepts and Strategies
+## パート1 - イントロダクション: モニタリングの概念と戦略
 
-### Concepts
+### コンセプト
 
-- [Black-box monitoring](https://docs.microsoft.com/en-us/azure/architecture/framework/devops/health-monitoring#black-box-monitoring) vs. [white-box monitoring](https://docs.microsoft.com/en-us/azure/architecture/framework/devops/health-monitoring#white-box-monitoring) 
-- Metrics vs Logs
-- Signals vs Noise
+- [ブラックボックス モニタリング](https://docs.microsoft.com/ja-jp/azure/architecture/framework/devops/health-monitoring#black-box-monitoring) vs. [ホワイトボックス モニタリング](https://docs.microsoft.com/ja-jp/azure/architecture/framework/devops/health-monitoring#white-box-monitoring)
+- メトリックス vs ログ
+- シグナル vs ノイズ
 
-### USE Method
+### USE メソッド
 
-Infrastructure point of view, quickly identify constraints and bottlenecks
+インフラストラクチャの観点から、制約とボトルネックを素早く特定します。
 
-- U = Utilization
-- S = Saturation
-- E = Errors    
+- U = 利用率
+- S = 過負荷
+- E = エラー
 
-Popularized by [Brendan Gregg](https://www.brendangregg.com/usemethod.html)
+この考え方は、[Brendan Gregg](https://www.brendangregg.com/usemethod.html) によって提唱されました。
 
-### RED Method
+### RED メソッド
 
-Monitor from client point of view, ignoring infrastructure
+クライアントからの観点でモニタリングし、インフラストラクチャを無視します。
 
-- R = Rate
-- E = Errors
-- D = Duration
+- R = レート
+- E = エラー
+- D = 持続時間/間隔
 
-Popularized by [Tom Willke](https://grafana.com/blog/2018/08/02/the-red-method-how-to-instrument-your-services) (VP Technology, Granfana Labs)
+[Tom Willke](https://grafana.com/blog/2018/08/02/the-red-method-how-to-instrument-your-services) (VP Technology, Granfana Labs) によって広く普及しました。
 
-## Part 2 - Deep Dive: AKS Monitoring
+## パート2 - ディープダイブ: AKS モニタリング
 
-### Tools
+### ツール
 
-- Azure Monitor
-- Alerting
-- Querying Logs with Container Insights
 
-### Enable Azure Monitor for Containers
+- Azure モニター
+- アラート
+- クエリーログのコンテナーインサイト
+
+### Azure Monitor for Containers を有効にする
+
 ```bash
-# Set subscription context
+# サブスクリプション コンテキストをセットします
 az account set --subscription <subscriptionId>
 
-# Enable monitoring on existing cluster
+# 既存のクラスターでモニタリングを有効にします
 az aks enable-addons -a monitoring -n <clustername> -g <resourcegroupname>
 
-# Enable monitoring on existing cluster with existing workspace
+# 既存のクラスターで既存のワークスペースを使用してモニタリングを有効にします
 az aks enable-addons -a monitoring -n <clustername> -g <resourcegroupname> --workspace-resource-id "/subscriptions/<subscriptionId>/resourcegroups/<resourcegroupname>/providers/microsoft.operationalinsights/workspaces/<workspacename>"
 
-# Verify the status and the agent version
+# ステータスとエージェントのバージョンを確認します
 kubectl get ds omsagent --namespace kube-system
 
-# To verify the agent version running on Windows nodepool.
+# Windows ノードプールで実行されているエージェントのバージョンを確認します
 kubectl get ds omsagent-win --namespace kube-system
 
-# Check the connected workspace details for an existing cluster
+# 既存のクラスターの接続されたワークスペースの詳細を確認します
 az aks show -g <resourcegroupname> -n <clustername> | grep -i "logAnalyticsWorkspaceResourceID"
 
-# To disable the addon Azure monitor for containers
+# Azure Monitor for Containers アドオンを無効にするには
 az aks disable-addons -a monitoring -g <resourcegroupname> -n <clustername>
 
 ````
 
-### What to Measure?
+### モニタリングするものは何か？
 
-This session follows the structure are illustrated in [Monitor AKS with Azure Monitor for Container Insights](https://docs.microsoft.com/azure/aks/monitor-aks#monitor-layers-of-aks-with-container-insights)
+- このセッションは、[Monitor AKS with Azure Monitor for Container Insights](https://docs.microsoft.com/azure/aks/monitor-aks#monitor-layers-of-aks-with-container-insights) で示されている構造に従います。
 
-- [Layer 1 - Cluster Level Infrastructure Components](#layer-1---cluster-level-infrastructure-components)
-- [Layer 2 - AKS Managed Components](#layer-2---aks-managed-components)
-- [Layer 3 - Cluster Availability (Kubernetes pods, replicasets, and daemonsets)](#layer-3---cluster-availability-kubernetes-pods-replicasets-and-daemonsets)
-- [Layer 4 - Workloads and hosted Applications](#layer-4---workloads-and-hosted-applications)
-- [Layer 5 - Resources Additional to AKS](#layer-5---resources-additional-to-aks)
+- [Layer 1 - クラスター レベルのインフラストラクチャ コンポーネント](#layer-1---cluster-level-infrastructure-components)
+- [Layer 2 - AKS 管理コンポーネント](#layer-2---aks-managed-components)
+- [Layer 3 - クラスターの可用性 (Kubernetes pods, replicasets, and daemonsets)](#layer-3---cluster-availability-kubernetes-pods-replicasets-and-daemonsets)
+- [Layer 4 - ワークロードとホストされたアプリケーション](#layer-4---workloads-and-hosted-applications)
+- [Layer 5 - AKS 以外のリソース](#layer-5---resources-additional-to-aks)
 
 ![AKS Monitoring Layers](https://docs.microsoft.com/en-us/azure/aks/media/monitor-aks/layers.png)
 
+## Layer 1 - クラスター レベルのインフラストラクチャ コンポーネント
 
-## Layer 1 - Cluster Level Infrastructure Components
+- ノード
+- ノード プール
 
-- Nodes
-- Node Pools
+Kubenetes は、ノード プール (VM SKU が同じノード) を使用し、多くの本番環境では、ノードとノード プールを監視する自動スケーリングを使用します。
 
-Kubernetes uses node pools (nodes that are identical as they use same VM SKU), and most production environments uses node pools with auto scaling, monitoring the nodes and node pools are important.
+適切なモニターとしきい値を使用してアラートを有効にして、積極的に対応します。
 
-Enable alerting with right monitor and threshold to act proactively.
-
-| Name | Objective / Description | Metrics & Resource logs |
+| 名前 | 目的 / 説明 | メトリクス と リソース ログ |
 |:-----|:------------------------|:------------------------|
-| Monitor Node conditions - [Not ready status](https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-metric-alerts)| Monitor the node conditions for health status. Not Ready or Unknown| Metric and resource logs |
-| Nodes under resource pressure - [Node conditions](https://kubernetes.io/docs/concepts/architecture/nodes/#condition) | Monitor the nodes under resource pressure like CPU, memory, PID and disk pressures.| Resource logs |
-| Node level CPU utilization - [CPU Utilization](https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-metric-alerts)| CPU utilization for individual nodes and aggregated at node pools.| Metric |
-| Node level memory utilization - [Memory Utilization](https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-metric-alerts)	| Monitor memory utilization for individual nodes and aggregated at node pools.| Metric |
-| Active nodes and scale out %	| Monitor the scale out % of node pools	| Resource log |
+| ノードの状態を監視する - [Not ready status](https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-metric-alerts)| ノードの状態を監視して、ヘルス ステータスを確認します。Not Ready または Unknown| メトリクス と リソース ログ |
+| リソース圧迫下のノードを監視する - [Node conditions](https://kubernetes.io/docs/concepts/architecture/nodes/#condition) | CPU、メモリ、PID、ディスクの圧迫などのリソース圧迫下のノードを監視します。| リソース ログ |
+| ノード レベルの CPU 利用率を監視する - [CPU Utilization](https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-metric-alerts)| 個々のノードの CPU 利用率と、ノード プールで集計された CPU 利用率を監視します。| メトリクス |
+| ノード レベルのメモリ利用率を監視する - [Memory Utilization](https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-metric-alerts)	| 個々のノードのメモリ利用率と、ノード プールで集計されたメモリ利用率を監視します。| メトリクス |
+| アクティブなノードとスケール アウト %	| ノード プールのスケール アウト % を監視します	| リソース ログ |
 
+# ヒント - Azure Portal でノードのパフォーマンスを表示する
 
-#### Tip - View Node Performance in Azure Portal
+もし Azure monitor for containers を使用している場合、[ポータル](https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-analyze#view-performance-directly-from-a-cluster) からノードのパフォーマンスを直接表示できます。
 
-If you use Azure monitor for containers, you can view node performance directly from [the portal](https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-analyze#view-performance-directly-from-a-cluster).
+## Layer 2 - AKS 管理されたコンポーネント
 
-
-## Layer 2 - AKS Managed Components
-
-- AKS Control Plane Components
-- Kubernetes API Service
-- Controllers
+- AKS コントロール プレーン コンポーネント
+- Kubernetes API サービス
+- コントローラー
 - Kubelet
-- etc.
+- その他
 
-#### Tip - Enable "Diagnostic" Sessions
+### ヒント - "Diagnostic" セッションを有効にする
 
-To assist with troubleshooting AKS cluster problems and gain deeper insights enable the collection of AKS master node logs. Enable “Diagnostic” settings for the control plane to stream logs to a log aggregation solution such as Azure Storage or Log Analytics, or to a third party via EventHubs.
+AKS クラスターの問題のトラブルシューティングを支援し、より深い洞察を得るために、AKS マスターノードのログの収集を有効にします。コントロール プレーンの "Diagnostic" 設定を有効にして、Azure ストレージまたはログ分析、または EventHubs を介したサード パーティにログをストリーミングします。
 
-### Supported Metrics
+### サポートされているメトリクス
 
-[List of supported platform metrics](https://docs.microsoft.com/azure/azure-monitor/essentials/metrics-supported#microsoftcontainerservicemanagedclusters), if Azure Monitor for container is used.
+[サポートされているプラットフォーム メトリクスのリスト](https://docs.microsoft.com/azure/azure-monitor/essentials/metrics-supported#microsoftcontainerservicemanagedclusters)、Azure Monitor for container を使用している場合。
 
-| Name | Objective/Description	| Metrics & Resource logs|
-|:-----|:----------------------|:------------------------|
-| API Server | Monitor the API server logs	| Resource logs |
-| Allocatable resources availability | Monitor how much resources are available for scheduling the pods/containers. Allocatable memory and CPU|   Metric and resource logs |
-| Pods pending for schedule	| Monitor the long pending schedule status. This may be due to resource unavailability.	| Resource logs |
-| Auto-scaler – scaling events	| Monitor the scaling events to determine is it expected (scale out or scale in events). | Metric |
-| Kubelet status - [Get kubelet logs from AKS cluster nodes](https://docs.microsoft.com/azure/aks/kubelet-logs) | Monitor the kubelet status for pod eviction and OOM kill.	| Metric |
-| Cluster health |		| Metric |
-| Unschedulable pods | Monitor the unschedulable pods. | Metric |
+| 名前 | 目的/説明 | メトリクスとリソース ログ |
+|:-----|:----------|:------------------------|
+| API サーバー | API サーバーのログを監視します | リソース ログ |
+| スケジュール可能なリソースの可用性 | ポッド/コンテナのスケジュールに使用できるリソースの量を監視します。スケジュール可能なメモリと CPU | メトリクスとリソース ログ |
+| スケジュール待ちのポッド | スケジュール待ちの長い状態を監視します。これは、リソースの利用不可のために発生する可能性があります。 | リソース ログ |
+| オートスケーラー - スケーリング イベント | スケーリング イベントを監視して、予期されたものかどうか (スケール アウトまたはスケール イン イベント) を判断します。 | メトリクス |
+| Kubelet ステータス - [AKS クラスター ノードから kubelet ログを取得する](https://docs.microsoft.com/azure/aks/kubelet-logs) | ポッドの強制終了と OOM キルの kubelet ステータスを監視します。 | メトリクス |
+| クラスターの状態 | | メトリクス |
+| スケジュール不可能なポッド | スケジュール不可能なポッドを監視します。 | メトリクス |
 
-## Layer 3 - Cluster Availability (Kubernetes pods, replicasets, and daemonsets)
+## Layer 3 - クラスターの可用性 (Kubernetes ポッド、レプリカセット、およびデーモンセット)
 
-Kubernetes requires its system services pods to run in desired state for stable cluster operation. Monitoring the system services critical pods is a minimum requirement.
+Kubernetes では、システム サービスのポッドを安定したクラスター操作のための目的状態で実行する必要があります。システム サービスの重要なポッドを監視することは、最低限の要件です。
 
-| Name | Objective/Description	| Metrics & Resource logs |
-|:------|:---------------------|:-------------------------|
-| System pods & Container restarts | Continuous restart on critical system services could cause instability in cluster operations. Monitor the pods/containers under kube-system namespace. Some of them are like, coredns, metric-server	| Metric and Resource logs |
-| Replicasets specific to system pods ** | Most of the system services are 2 Replicas as desired state, set the right threshold to alert if one becomes unavailable or in non-stable state (any state other than running/ready). | Metric and resource logs |
-| Daemonsets specific to system pods | Running below desired state may not always cause an issue. However, this could cause an intermittent behavior as some of the nodes may not be running with the required daemonsets. Monitor pods under kube-system namespace. | Metric and resource logs |
+| 名前 | 目的/説明 | メトリクスとリソース ログ |
+|:------|:----------|:-------------------------|
+| システム ポッドとコンテナの再起動 | 重要なシステム サービスの継続的な再起動は、クラスター操作の不安定性を引き起こす可能性があります。kube-system 名前空間の下のポッド/コンテナを監視します。それらの一部は、たとえば、coredns、metric-server です。 | メトリクスとリソース ログ |
+| システム ポッドに固有のレプリカセット ** | ほとんどのシステム サービスは、目的状態として 2 つのレプリカを持っています。利用不可になったり、安定していない状態 (実行/準備状態以外の状態) になった場合に警告するために、適切なしきい値を設定します。 | メトリクスとリソース ログ |
+| システム ポッドに固有のデーモンセット | 目的状態より少ない実行状態は、常に問題を引き起こさないことがあります。ただし、一部のノードが必要なデーモンセットを実行していない場合、これは一時的な動作を引き起こす可能性があります。kube-system 名前空間の下のポッドを監視します。 | メトリクスとリソース ログ |
 
-** *The rolling update strategy generally set the PDB as 1 as unavailable with 25% max surge. This could result in false positive during the rolling updates if the monitoring frequency and duration is too aggressive.*
+** *ローリング アップデート戦略では、一般的に PDB が 1 で、利用不可になる最大サージが 25% に設定されます。これは、監視頻度と期間が過度に激しい場合に、ローリング アップデート中に誤検知を引き起こす可能性があります。*
 
-## Layer 4 - Workloads and hosted Applications
+## Layer 4 - ワークロードとホストされたアプリケーション
 
-| Name | Objective/Description	| Metrics & Resource logs |
-|:------|:---------------------|:-------------------------|
-|Pods & containers availability** |	Monitor the availability of application pods.|Metric and resource logs|
-|Deployment scale out % - [HPA metrics with Container Insight](https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-deployment-hpa-metrics)| Number of current replicas versus the maximum number of scales out limit. Help detect if deployment reaches scale limits.	|Resource logs
-|Pod & Deployment status -  [HPA metrics with Container Insight](https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-deployment-hpa-metrics)| Monitor the number of ready pods vs target by the deployment.|	Metric
-| Pods resource requests and limits	|Monitor resource (CPU & Memory) requests and limits configuration on each deployment. Helps to determine the overcommitted nodes. |Metric
-CPU and memory usage at controller level|	Monitor the applications CPU and memory usage at controller level.|	Resource log
+| 名前 | 目的/説明 | メトリクスとリソース ログ |
+|:------|:----------|:-------------------------|
+| ポッドとコンテナの可用性 ** | アプリケーション ポッドの可用性を監視します。 | メトリクスとリソース ログ |
+| デプロイメントのスケール アウト % - [コンテナ インサイトでの HPA メトリクス](https://docs.microsoft.com/ja-jp/azure/azure-monitor/containers/container-insights-deployment-hpa-metrics) | 現在のレプリカ数と最大スケール アウト制限の数。デプロイメントがスケール制限に達したことを検出するのに役立ちます。 | リソース ログ |
+| ポッドとデプロイメントのステータス - [コンテナ インサイトでの HPA メトリクス](https://docs.microsoft.com/ja-jp/azure/azure-monitor/containers/container-insights-deployment-hpa-metrics) | デプロイメントによってターゲットとされた準備状態のポッドの数を監視します。 | メトリクス |
+| ポッドのリソース要求と制限 | 各デプロイメントでリソース (CPU およびメモリ) の要求と制限の構成を監視します。オーバーコミットされたノードを判断するのに役立ちます。 | メトリクス |
+| コントローラー レベルの CPU とメモリー使用 | アプリケーションの CPU とメモリー使用をコントローラー レベルで監視します。 | リソース ログ |
 
-** *The availability can be monitored based on pod/container status, restart counts. If replicasets, individual pod unavailability may not impact the service, having correct threshold will help monitor the availability and give enough time to address issue before it becomes completely down. Monitor the number of replicas vs desired state.*
+** *可用性は、ポッド/コンテナのステータス、再起動回数に基づいて監視できます。レプリカセットの場合、個々のポッドの利用不可はサービスに影響を与えない場合があります。正しいしきい値を設定すると、可用性を監視し、完全にダウンする前に問題を解決するのに十分な時間を確保できます。レプリカの数と目的の状態を監視します。*
 
-## Layer 5 - Resources Additional to AKS
+## Layer 5 - AKS 以外のリソース
 
-### Monitor Azure Application gateway
+### Azure Application gateway の監視
 
-- [Recommended alert rules for Application Gateway](https://docs.microsoft.com/azure/application-gateway/monitor-application-gateway#alerts)
-- [List of metrics that Application Gateway supports](https://docs.microsoft.com/azure/application-gateway/monitor-application-gateway-reference)
+- [Application Gateway の推奨アラート ルール](https://docs.microsoft.com/ja-jp/azure/application-gateway/monitor-application-gateway#alerts)
+- [Application Gateway がサポートするメトリクスの一覧](https://docs.microsoft.com/ja-jp/azure/application-gateway/monitor-application-gateway-reference)
 
-| Name | Objective/Description	| Metrics & Resource logs |
-|:------|:---------------------|:-------------------------|
-|Compute unit utilization	|Compute unit is the measure of compute utilization of your Application Gateway. 	|Resource logs
-|Capacity unit utilization | Capacity units represent overall gateway utilization in terms of throughput, compute, and connection count.| Resource logs
-|Unhealthy host count	|Indicates number of backend servers that application gateway is unable to probe successfully	|Metric and resource logs
-|Backend response time	|Monitor the backend response latency.|Metric
-|http status 4xx, 5xx	|Monitor the http status code 4xx, and 5xx for bad gateways.|Resource logs
+| 名前 | 目的/説明 | メトリクスとリソース ログ |
+|:------|:----------|:-------------------------|
+| コンピューティング ユニットの使用率 | コンピューティング ユニットは、Application Gateway のコンピューティングの使用率を測定する単位です。 | リソース ログ |
+| 容量ユニットの使用率 | 容量ユニットは、スループット、コンピューティング、接続数の観点から、ゲートウェイの全体的な使用率を表します。 | リソース ログ |
+| 不健康なホスト数 | Application Gateway が正常にプローブできないバックエンド サーバーの数を示します。 | メトリクスとリソース ログ |
+| バックエンドの応答時間 | バックエンドの応答遅延を監視します。 | メトリクス |
+| http ステータス 4xx、5xx | 不良ゲートウェイの http ステータス コード 4xx および 5xx を監視します。 | リソース ログ |
 
-### Monitor Azure Load Balancer
+### Azure Load Balancer の監視
 
-- [Azure Standard load balancers diagnostics with metrics, alerts and resource health](https://docs.microsoft.com/azure/load-balancer/load-balancer-standard-diagnostics)
-- [Common and recommended alert rules for Load Balancer](https://docs.microsoft.com/azure/load-balancer/monitor-load-balancer#alerts)
+- [Azure Standard load balancers の診断 (メトリクス、アラート、リソース ヘルス)](https://docs.microsoft.com/ja-jp/azure/load-balancer/load-balancer-standard-diagnostics)
+- [Load Balancer の一般的なおよび推奨アラート ルール](https://docs.microsoft.com/ja-jp/azure/load-balancer/monitor-load-balancer#alerts)
 
-| Name | Objective/Description	| Metrics & Resource logs |
-|:------|:---------------------|:-------------------------|
-| Monitor SNAT port exhaustion|This alerts when used SNAT ports is greater than the allocated number of ports (or greater the threshold).| Metric
-| Monitor failed outbound connections.|If SNAT Connection Count filtered to Connection State = Failed is greater than zero, then fire alert| Metric
+| 名前 | 目的/説明 | メトリクスとリソース ログ |
+|:------|:----------|:-------------------------|
+| SNAT ポートの枯渇を監視 | 使用された SNAT ポートが割り当てられたポート数 (またはしきい値) よりも大きい場合に警告します。 | メトリクス |
+| 失敗したアウトバウンド接続の監視 | SNAT 接続数を接続状態 = 失敗にフィルタリングした場合、警告を発生させます。 | メトリクス |
 
-### Monitor Azure Firewall
+### Azure Firewall の監視
 
 - [Monitor Firewall health state](https://docs.microsoft.com/en-us/azure/firewall/logs-and-metrics#metrics)
 - Possible status are "Healthy", "Degraded" & "Unhealthy"
 - SNAT port utilization - The percentage of SNAT port that has been utilized
 
+- [Firewall のヘルス状態を監視する](https://docs.microsoft.com/ja-jp/azure/firewall/logs-and-metrics#metrics)
+- 可能なステータスは "Healthy"、"Degraded" および "Unhealthy" です。
+- SNAT ポートの使用率 - 使用された SNAT ポートの割合
 
-## Misc. References
+## その他の参考資料
 
-### Concepts
+### コンセプト2
 
 - [WeaveWorks Blog: the RED Method: key metrics for microservices architecture](https://www.weave.works/blog/the-red-method-key-metrics-for-microservices-architecture/)
 - [Monitor Kubernetes cluster performance with Container Insights](https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-analyze)
 
-### Logs & Alerts
+### ログとアラート
 
-- [How to query logs from Container insights](https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-log-query)
-- [Create log alert rules](https://docs.microsoft.com/en-us/azure/azure-monitor/containers/container-insights-log-alerts)
+- [Container insights からのログ クエリ](https://docs.microsoft.com/ja-jp/azure/azure-monitor/containers/container-insights-log-query)
+- [ログ アラート ルールの作成](https://docs.microsoft.com/ja-jp/azure/azure-monitor/containers/container-insights-log-alerts)
 
-### References & Recommended Metrics
+### 参考資料と推奨メトリクス
 
-- [Supported Platform Metrics](https://docs.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftcontainerservicemanagedclusters) (if Azure Monitor for Containers is Used)
-- [Recommended metric alerts (preview) from Container insights](https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-metric-alerts)
-- [Monitoring AKS data reference](https://docs.microsoft.com/azure/aks/monitor-aks-reference)
+- [サポートされているプラットフォーム メトリクス](https://docs.microsoft.com/ja-jp/azure/azure-monitor/essentials/metrics-supported#microsoftcontainerservicemanagedclusters) (Azure Monitor for Containers を使用する場合)
+- [Container insights からの推奨メトリクス アラート (プレビュー)](https://docs.microsoft.com/ja-jp/azure/azure-monitor/containers/container-insights-metric-alerts)

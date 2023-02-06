@@ -1,44 +1,52 @@
-# Business Continuity and Disaster Recovery
+# 事業継続と災害復旧
 
-## Uptime SLA of AKS
+## AKSのアップタイムSLA
 
-- The financially backed uptime SLA is for the Kubernetes API server.
-  - Clusters that use availability zones: **99.95%**
-  - Clusters that do not use availability zones: **99.9%**
-- The SLO for clusters which opt out of the paid uptime SLA is **99.5%**.
-- The SLA of the agent node is covered by the virtual machine SLA of Azure.
-- **The SLA guarantees that you will get the service credit if we don't meet the SLA.** Evaluate the **cost of the impact** vs. **the service credit** you get in case outage happens, and plan the BC/DR strategy accordingly.
+- 課金して得られるアップタイムSLAは、Kubernetes APIサーバー用です。
+  - アベイラビリティゾーンを使用するクラスター：**99.95％**
+  - アベイラビリティゾーンを使用しないクラスター：**99.9％**
+- クラスターが有料アップタイムSLAを選択しない場合のSLOは**99.5％**です。
+- エージェントノードのSLAは、**Azureの仮想マシンSLA**によってカバーされます。
+- **SLAは、SLAを満たさない場合にサービスクレジットを受け取ることを保証します。** もしアウトテージが発生した場合に、**影響のコスト**と**サービスクレジット**を評価し、BC/DR戦略を適切に計画します。
 
-Read further:
+追加情報：
 
 - [AKS Uptime SLA](https://docs.microsoft.com/azure/aks/uptime-sla)
 - [SLA for AKS](https://azure.microsoft.com/support/legal/sla/kubernetes-service/v1_1/)
 
-## BC/DR best practices
+- [AKSのアップタイムSLA](https://docs.microsoft.com/ja-jp/azure/aks/uptime-sla)
+- [AKSのSLA](https://azure.microsoft.com/ja-jp/support/legal/sla/kubernetes-service/v1_1/)
 
-- The financially backed uptime SLA is recommended for AKS clusters in production. Deploy the AKS clusters in production with availability zones.
-- Define your own SLA for the workloads that you run in AKS clusters. If the SLA of AKS cannot meet your requirement, or if the impact of the potential outage is not affordable, consider deploying another AKS cluster to the second region. The paired region is preferred if AKS is available in the paired region. The cluster in the second region can be used as a hot, warm or cold standby of the cluster in the primary region.
-  - The planned maintenance of AKS platform are serialized with a delay of at least 24 hours between paired regions.
-  - Recovery efforts for paired regions are prioritized where needed.
-- To achieve registry resilience in case of a regional failure, enable geo-replication on the Azure container registry. Geo-replication enables an Azure container registry to function as a single registry, serving multiple regions with multi-master regional registries.
-- Use Infrastructure as Code (IaC) to deploy and configure AKS clusters. With IaC, you can redeploy the clusters quickly whenever needed.
-    - Ensure any management activities (i.e. patches, upgrades, identity and access management) is applied on the secondary instances
-- Use CI/CD pipeline to deploy applications. Include your AKS clusters in different regions in the pipeline to ensure the latest code is deployed in all clusters simultaneously.
-    - Consider [GitOps](https://docs.microsoft.com/azure/azure-arc/kubernetes/tutorial-use-gitops-flux2#for-azure-kubernetes-service-clusters) to ensure consistent deployment across primary and secondary clusters
-- Avoid storing the state of applications in the cluster as much as you can. Externalize state by using a database or other data store that runs outside of the AKS cluster.
-- If you have to store the state in the cluster, think of the disaster recovery strategy for the storage of the state, such as how to backup the storage, how to replicate or migrate the data in multiple regions, the RPO/RTO etc.
-  - [ZRS](https://github.com/kubernetes-sigs/azuredisk-csi-driver/tree/master/deploy/example/topology#zrs-disk-support) Disks allows creation of volumes that can tolerate zonal failures. Stateful workloads in a multi-zone cluster can be moved across zones with uninterrupted access to the volumes.
+## BC/DRのベストプラクティス
+
+- 課金して得られるアップタイムSLAは、本番環境のAKSクラスターに推奨されます。本番環境のAKSクラスターをアベイラビリティゾーンでデプロイします。
+
+- AKSクラスターで実行するワークロードのSLAを定義します。AKSのSLAが要件を満たさない場合、または潜在的なアウトテージの影響が負担できない場合は、別のAKSクラスターを2番目のリージョンにデプロイすることを検討します。AKSがペアリングされたリージョンで利用可能な場合は、ペアリングされたリージョンが推奨されます。2番目のリージョンのクラスターは、プライマリリージョンのクラスターのホット、ウォーム、またはコールドスタンバイとして使用できます。
+  - AKSプラットフォームの計画されたメンテナンスは、ペアリングされたリージョン間で少なくとも24時間の遅延を伴ってシリアル化されます。
+  - 必要に応じてペアリングされたリージョンの回復作業が優先されます。
+
+- リージョンの障害の場合にレジストリの耐障害性を実現するには、Azureコンテナレジストリでジオレプリケーションを有効にします。ジオレプリケーションを有効にすると、Azureコンテナレジストリは単一のレジストリとして機能し、複数のリージョンでマルチマスターリージョンレジストリを提供します。
+
+- Infrastructure as Code（IaC）を使用してAKSクラスターをデプロイおよび構成します。IaCを使用すると、必要に応じてクラスターをすばやく再デプロイできます。
+  - 任意の管理アクティビティ（つまり、パッチ、アップグレード、アイデンティティおよびアクセス管理）がセカンダリインスタンスに適用されていることを確認します
+- CI/CDパイプラインを使用してアプリケーションをデプロイします。パイプラインに異なるリージョンのAKSクラスターを含めて、すべてのクラスターに最新のコードが同時にデプロイされるようにします。
+  - [GitOps](https://docs.microsoft.com/azure/azure-arc/kubernetes/tutorial-use-gitops-flux2#for-azure-kubernetes-service-clusters)を検討して、プライマリおよびセカンダリクラスター間で一貫したデプロイを確実にします。
+
+- できるだけAKSクラスターの外部で実行されるデータベースまたはその他のデータストアを使用して、アプリケーションの状態を外部化します。できるだけクラスター内にアプリケーションの状態を保存しないでください。
   
-    > ⚠️ ZRS is currently only available in West Europe, North Europe, West US 2, and France Central regions. Make sure that its [limitations](https://docs.microsoft.com/azure/virtual-machines/disks-redundancy#limitations) are reviewed before using it.
-  
-  - Build the infrastructure-based asynchronous geo-replication based on distributed storage solutions such as [GlusterFS](https://docs.gluster.org/en/latest/) or storage solutions for Kubernetes such as [Portworx](https://portworx.com/).
-  - Backup and restore the applications and the persistent volumes on the cluster by using Kubernetes backup tools such as [Velero](https://github.com/vmware-tanzu/velero-plugin-for-microsoft-azure) or [Kasten](https://www.kasten.io/).
+- クラスターに状態を保存する必要がある場合は、ストレージのバックアップ方法、複数のリージョンでデータを複製または移行する方法、RPO / RTOなど、状態のストレージの障害復旧戦略を考慮してください。
+  - [ZRS](https://github.com/kubernetes-sigs/azuredisk-csi-driver/tree/master/deploy/example/topology#zrs-disk-support)ディスクを使用すると、ゾーンの障害を耐えられるボリュームを作成できます。マルチゾーンクラスターのステートフルワークロードは、ボリュームへの中断なしのアクセスを伴ってゾーン間で移動できます。
+
+    > ⚠️ ZRSは現在、West Europe、North Europe、West US 2、およびFrance Centralリージョンでのみ利用できます。使用する前に、[制限事項](https://docs.microsoft.com/azure/virtual-machines/disks-redundancy#limitations)を確認してください。
+
+  - [GlusterFS](https://docs.gluster.org/en/latest/)などの分散ストレージソリューション、または[Portworx](https://portworx.com/)などのKubernetes用のストレージソリューションを使用したインフラストラクチャベースの非同期ジオレプリケーションを構築します。
+  - アプリケーションのバックアップとリストアおよびクラスターの永続ボリュームのバックアップとリストアには、[Velero](https://github.com/vmware-tanzu/velero-plugin-for-microsoft-azure) か [Kasten](https://www.kasten.io/)などのKubernetesバックアップツールを使用します。
 
     > 📘
-    > You can use Velero to backup applications as well as the persistent volumes that are based on Azure Managed Disk. For persistent volumes that are based on Azure Files, you can use [Velero with Restic](https://velero.io/docs/v1.6/restic/). But make sure you understand all its limitations before using it. An alternative approach is to backup Azure Files separately with Azure Backup.
+    > Veleroを使用して、Azure Managed Diskに基づく永続ボリュームのアプリケーションと同様にバックアップできます。Azure Filesに基づく永続ボリュームには、[Velero with Restic](https://velero.io/docs/v1.6/restic/)を使用できます。ただし、使用する前にすべての制限事項を理解してください。代替手段としては、Azure Backupを使用してAzure Filesを別々にバックアップすることができます。
 
-- Create a DR plan for your AKS clusters. Have rehearsals regularly to make sure it works.
+- AKSクラスターのDRプランを作成します。定期的に練習を行い、機能することを確認します。
 
-Read further:
+追加情報：
 
-- [Best practices for business continuity and disaster recovery in AKS](https://docs.microsoft.com/azure/aks/operator-best-practices-multi-region)
+- [AKSのビジネス継続性と災害復旧のベストプラクティス](https://docs.microsoft.com/azure/aks/operator-best-practices-multi-region)
