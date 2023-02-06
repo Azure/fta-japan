@@ -75,6 +75,7 @@ az aks disable-addons -a monitoring -g <resourcegroupname> -n <clustername>
 - [Layer 4 - ワークロードとホストされたアプリケーション](#layer-4---ワークロードとホストされたアプリケーション)
 - [Layer 5 - AKS 以外のリソース](#layer-5---aks-以外のリソース)
 
+
 ![AKS Monitoring Layers](https://docs.microsoft.com/en-us/azure/aks/media/monitor-aks/layers.png)
 
 ## Layer 1 - クラスター レベルのインフラストラクチャ コンポーネント
