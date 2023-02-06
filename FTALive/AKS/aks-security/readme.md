@@ -43,10 +43,10 @@
 ### Kubernetes API コントロールプレーン
 
 マスターノードについて言及することはありますが、これらのコンポーネントはマイクロソフトが管理しています。
-[こちら](https://docs.microsoft.com/ja-jp/azure/aks/concepts-security) のドキュメントでは、
+[こちら](https://docs.microsoft.com/ja-jp/azure/aks/concepts-security) のドキュメントでは、AKS のセキュリティコンセプトについて説明しています。
 
 ```text
-デフォルトで Kubernetes API サーバーは、パブリックIPとFQDNを使っている。承認されたIPアドレスレンジを使った API サーバーエンドポイントを使ってアクセスを制限することができます。
+デフォルトで Kubernetes API サーバーは、パブリックIPとFQDNを使っています。承認されたIPアドレスレンジを使った API サーバーエンドポイントを使ってアクセスを制限することができます。
 ```
 
 - [プライベートAKSクラスターをつくる](https://docs.microsoft.com/ja-jp/azure/aks/private-clusters)
@@ -105,10 +105,10 @@
 
 ### モニタリングとアラートの有効化
 
-- [クラスターを作る](https://docs.microsoft.com/ja-jp/cli/azure/aks?view=azure-cli-latest#az-aks-create) with `--enable-addons monitoring` flag
+- `--enable-addons monitoring` フラグを使って[クラスターを作る](https://docs.microsoft.com/ja-jp/cli/azure/aks?view=azure-cli-latest#az-aks-create) 
 - [コンテナーインサイトの概要](https://docs.microsoft.com/ja-jp/azure/azure-monitor/containers/container-insights-overview)
 - [コンテナーインサイトを使ったプロメテウスのスクレイピングの設定](https://docs.microsoft.com/ja-jp/azure/azure-monitor/containers/container-insights-prometheus-integration)
-- [リアルタイムでのKubernetes ログ、イベント、ポッドメトリクスの見方](https://docs.microsoft.com/ja-jp/azure/azure-monitor/containers/container-insights-livedata-overview)
+- [リアルタイムでの Kubernetes ログ、イベント、ポッドメトリクスの見方](https://docs.microsoft.com/ja-jp/azure/azure-monitor/containers/container-insights-livedata-overview)
 - アラートを有効化するための推奨メトリクスについてはこちらを御覧ください [コンテナーインサイトで使うべきメトリックアラート](https://docs.microsoft.com/ja-jp/azure/azure-monitor/containers/container-insights-metric-alerts#enable-alert-rules)
 
 ### Azure Defender for Container の有効化
@@ -135,11 +135,9 @@
 
 ### ネットワークセキュリティ
 
-- Add NSGs to the NICs of the cluster nodes is not supported for AKS.
 - AKSでは、クラスターノードの NIC に NSG をつけることはサポートされていません
-- For subnet NSGs, ensure that management traffic is not blocked. See [Azure network security groups](https://docs.microsoft.com/ja-jp/azure/aks/concepts-security#azure-network-security-groups) for details.
 - サブネット NSG について、管理トラフィックをブロックしていないことを確認してください
-  - 詳細はこちら [Azure network security groups](https://docs.microsoft.com/ja-jp/azure/aks/concepts-security#azure-network-security-groups)
+  - 詳細はこちら [Azure ネットワークセキュリティグループ](https://docs.microsoft.com/ja-jp/azure/aks/concepts-security#azure-network-security-groups)
 - [AKS でネットワークポリシーを使いポッド間のトラフィックをセキュアにする](https://docs.microsoft.com/ja-jp/azure/aks/use-network-policies)
 
 ### プライベートリンク
@@ -148,7 +146,7 @@
 - [コンテナーレジストリーのためのプライベートリンク](https://docs.microsoft.com/ja-jp/azure/container-registry/container-registry-private-link?ref=akschecklist)
 - [キーボルトのためのプライベートリンク](https://docs.microsoft.com/ja-jp/azure/key-vault/general/private-link-service?tabs=portal)
 
-### Network Policy ネットワークポリシー
+### ネットワークポリシー
 
 - [AKSのネットワークポリシーを使ってポッド間トラフィックを保護する](https://docs.microsoft.com/ja-jp/azure/aks/use-network-policies)
   - [Azure と　Calico ポリシー間の違いとそれらの機能性](https://docs.microsoft.com/ja-jp/azure/aks/use-network-policies#differences-between-azure-and-calico-policies-and-their-capabilities)
@@ -156,16 +154,15 @@
 ### Kubernetes のサービスを公開する
 
 - ロードバランスされたポッドを公開するためにパブリックIPアドレスを使うことを避ける
-- リバースプロキシーへ Ingress コントローラーを使い、Kubernetes の Service を束ねる
+- リバースプロキシーへイングレスコントローラーを使い、Kubernetes の Service を束ねる
   - [AKSで内部仮想ネットワークへのIngressコントローラを作成する](https://docs.microsoft.com/ja-jp/azure/aks/ingress-internal-ip?tabs=azure-cli)
 - Kubernetes クラスターの同じ仮想ネットワーク内で実行されるアプリケーションだけにアクセスさせるために、”Kubernetes クラスターでは内部ロード バランサーを使用する必要がある” [ポリシー](https://docs.microsoft.com/ja-jp/azure/aks/policy-reference)を使う
 
-### Egress のセキュリティ
+### エグレストラフィックのセキュリティ
 
-- [AKSのクラスターノードのために Egress トラフィックを操作する](https://docs.microsoft.com/ja-jp/azure/aks/limit-egress-traffic)
-- プライベートクラスターとスタンダード LB で Egress のために パブリック IP の利用を避ける
-- [AKS のクラスターノードで egress トラフィックを操作する](https://docs.microsoft.com/ja-jp/azure/aks/limit-egress-traffic)
-- [クラスター egress を ユーザー定義ルートでカスタマイズする](https://docs.microsoft.com/ja-jp/azure/aks/egress-outboundtype)
+- [AKSのクラスターノードのために エグレストラフィックを操作する](https://docs.microsoft.com/ja-jp/azure/aks/limit-egress-traffic)
+  - プライベートクラスターとスタンダード LB でエグレストラフィックのためにパブリック IP の利用を避ける
+- [クラスターエグレスをユーザー定義ルートでカスタマイズする](https://docs.microsoft.com/ja-jp/azure/aks/egress-outboundtype)
   - [`loadBalancer` の外部接続タイプ](https://docs.microsoft.com/ja-jp/azure/aks/egress-outboundtype#outbound-type-of-loadbalancer)
   - [`userDefinedRouting` の外部接続タイプ](https://docs.microsoft.com/ja-jp/azure/aks/egress-outboundtype#outbound-type-of-userdefinedrouting)
 
@@ -173,14 +170,14 @@
 
 - [AKS でのポッドセキュリティのためのベストプラクティス](https://docs.microsoft.com/ja-jp/azure/aks/developer-best-practices-pod-security)
 - [Pod もしくはコンテナーのためのセキュリティコンテキストの設定](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)
-- [Azure ビルトインポリシー](https://docs.microsoft.com/ja-jp/azure/aks/policy-reference) "Kubernetes cluster should not allow privileged containers"
+- [Azure ビルトインポリシー](https://docs.microsoft.com/ja-jp/azure/aks/policy-reference) "Kubernetes クラスターで特権コンテナーを許可しない"
   - [ポリシーの定義](https://portal.azure.com/#blade/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2F95edb821-ddaf-4404-9732-666045e056b4) - Azure ポータルで開いてください
-- [App Armor を使ってコンテナーアクションの制限ｎ](https://docs.microsoft.com/ja-jp/azure/aks/operator-best-practices-cluster-security#app-armor)
+- [App Armor を使ってコンテナーアクションの制限](https://docs.microsoft.com/ja-jp/azure/aks/operator-best-practices-cluster-security#app-armor)
 
 ### シークレットの外部化
 
 - [シークレットストア CSI ドライバーのための、Azure Key Vault](https://github.com/Azure/secrets-store-csi-driver-provider-azure)
-- [AKS クラスターで、シークレットストア CSI ドライバーのためのAzure Key Vault プロバイダーを使う](https://docs.microsoft.com/ja-jp/azure/aks/csi-secrets-store-driver)
+- [AKS クラスターで、シークレットストア CSI ドライバーのための Azure Key Vault プロバイダーを使う](https://docs.microsoft.com/ja-jp/azure/aks/csi-secrets-store-driver)
 
 ### ワークロードアイデンティティ
 
@@ -188,18 +185,20 @@
   - [サービスプリンシパルのサポート](https://learn.microsoft.com/ja-jp/azure/aks/kubernetes-service-principal?tabs=azure-cli)
   - [マネージドIDのサポート](https://learn.microsoft.com/ja-jp/azure/aks/use-managed-identity)
 - [ワークロードIDフェデレーション](https://docs.microsoft.com/ja-jp/azure/active-directory/develop/workload-identity-federation)
-- [ポッドアイデンティティ(プレビュー)](https://docs.microsoft.com/ja-jp/azure/aks/use-azure-ad-pod-identity) - これは、GAしません。[ワークロードID](https://learn.microsoft.com/ja-jp/azure/aks/workload-identity-overview)を使ってください。
+- [ポッドアイデンティティ(プレビュー)](https://docs.microsoft.com/ja-jp/azure/aks/use-azure-ad-pod-identity) 
+  - 数年前には、ポッドアイデンティティについてアナウンスしましたが、これは、GAしないことになりました。  
+代わりに、[ワークロードID](https://learn.microsoft.com/ja-jp/azure/aks/workload-identity-overview)を使ってください。
 
 ### ネームスペースを使う
 
 - [Kubernetesのドキュメンテーション: ネームスペース](https://kubernetes.io/ja/docs/concepts/overview/working-with-objects/namespaces/)
 
-## Governance concerns / Azure Policy ガバナンスの懸念点と Azure ポリシー
+## ガバナンスの懸念点と Azure ポリシー
 
 - [Kubernetes クラスターのための Azure ポリシーの理解](https://docs.microsoft.com/ja-jp/azure/governance/policy/concepts/policy-for-kubernetes)
 - [AKS の Azure ポリシービルトイン定義](https://docs.microsoft.com/ja-jp/azure/aks/policy-reference)
-- [ポリシー イニシアティブ](https://docs.microsoft.com/ja-jp/azure/aks/policy-reference#initiatives) represent an implementation of the [Kubernetes Pod セキュリティ標準](https://kubernetes.io/docs/concepts/security/pod-security-standards/) specification
-- Policy extension can be auto provisioned from the [Defender for Cloud 設定](https://docs.microsoft.com/ja-jp/azure/defender-for-cloud/kubernetes-workload-protections#configure-defender-for-containers-components)
+- [Kubernetes Pod セキュリティ標準](https://kubernetes.io/docs/concepts/security/pod-security-standards/) 仕様の実装を表現する、[ポリシー イニシアティブ](https://docs.microsoft.com/ja-jp/azure/aks/policy-reference#initiatives)
+- ポリシーエクステンションは、自動的に、 [Defender for Cloud 設定](https://docs.microsoft.com/ja-jp/azure/defender-for-cloud/kubernetes-workload-protections#configure-defender-for-containers-components) から自動的にプロビジョニングされます。
 
 ## イメージ管理の懸念点
 
@@ -216,5 +215,5 @@
 
 - [Azure ビルトインポリシー](https://docs.microsoft.com/ja-jp/azure/aks/policy-reference#microsoftcontainerservice) "Kubernetes クラスター コンテナーでは、許可されているイメージのみを使用する必要がある"
   - [Policy Definition](https://github.com/Azure/azure-policy/blob/master/built-in-policies/policyDefinitions/Kubernetes/ContainerAllowedImages.json)
-- [Azure Container Registry のロールと許可](https://docs.microsoft.com/ja-jp/azure/container-registry/container-registry-roles?tabs=azure-cli) を通じてレジストリーにアクセスする
+- [Azure コンテナーレジストリーのロールと許可](https://docs.microsoft.com/ja-jp/azure/container-registry/container-registry-roles?tabs=azure-cli) を通じてレジストリーにアクセスする
 - [Azure Private Link を使ったコンテナーレジストリーへの閉じた接続](https://docs.microsoft.com/ja-jp/azure/container-registry/container-registry-private-link)
