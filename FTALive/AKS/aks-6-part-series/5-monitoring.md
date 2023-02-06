@@ -69,11 +69,12 @@ az aks disable-addons -a monitoring -g <resourcegroupname> -n <clustername>
 
 - このセッションは、[Monitor AKS with Azure Monitor for Container Insights](https://docs.microsoft.com/azure/aks/monitor-aks#monitor-layers-of-aks-with-container-insights) で示されている構造に従います。
 
-- [Layer 1 - クラスター レベルのインフラストラクチャ コンポーネント](#layer-1---cluster-level-infrastructure-components)
-- [Layer 2 - AKS 管理コンポーネント](#layer-2---aks-managed-components)
-- [Layer 3 - クラスターの可用性 (Kubernetes pods, replicasets, and daemonsets)](#layer-3---cluster-availability-kubernetes-pods-replicasets-and-daemonsets)
-- [Layer 4 - ワークロードとホストされたアプリケーション](#layer-4---workloads-and-hosted-applications)
-- [Layer 5 - AKS 以外のリソース](#layer-5---resources-additional-to-aks)
+- [Layer 1 - クラスター レベルのインフラストラクチャ コンポーネント](#layer-1---クラスター-レベルのインフラストラクチャ-コンポーネント)
+- [Layer 2 - AKS 管理コンポーネント](#layer-2---aks-管理されたコンポーネント)
+- [Layer 3 - クラスターの可用性 (Kubernetes pods, replicasets, and daemonsets)](#layer-3---クラスターの可用性-kubernetes-ポッドレプリカセットおよびデーモンセット)
+- [Layer 4 - ワークロードとホストされたアプリケーション](#layer-4---ワークロードとホストされたアプリケーション)
+- [Layer 5 - AKS 以外のリソース](#layer-5---aks-以外のリソース)
+
 
 ![AKS Monitoring Layers](https://docs.microsoft.com/en-us/azure/aks/media/monitor-aks/layers.png)
 

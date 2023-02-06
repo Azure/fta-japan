@@ -1,4 +1,4 @@
-[クラスターデプロイの自動化 &rarr;](3-cluster-deployment-automation.md) | Part 4 of 6 | [モニタリング &rarr;](5-monitoring.md)
+[&larr; クラスターデプロイの自動化](3-cluster-deployment-automation.md) | Part 4 of 6 | [モニタリング &rarr;](5-monitoring.md)
 
 # 運用
 
