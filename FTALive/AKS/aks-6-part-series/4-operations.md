@@ -1,6 +1,6 @@
-[Automating Cluster Deployment &rarr;](3-cluster-deployment-automation.md) | Part 4 of 6 | [Monitoring &rarr;](5-monitoring.md)
+[クラスターデプロイの自動化 &rarr;](3-cluster-deployment-automation.md) | Part 4 of 6 | [モニタリング &rarr;](5-monitoring.md)
 
-# Operations
+# 運用
 
-Please see the [standalone AKS Operations handout &rarr;](../aks-operations/README.md)   
-which has all the links, including those not covered on 25 August 2022, and are included in separate sessions in this 6 part series.
+[独立した AKS 運用ハンドアウト](../aks-operations/README.md) を参照してください。
+この 6 パートシリーズのセッションで使うリンクがすべて含まれています

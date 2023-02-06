@@ -1,53 +1,62 @@
-# Resource Management
+# リソース管理
 
-## How resource management works in Kubernetes
+## Kubernetesでのリソース管理の仕組み
 
-- When a pod needs to be scheduled, Kubernetes scheduler doesn't look at the actual resource usage at that moment on each node. Rather, it uses the `node allocatable` and the sum of the `resource requests` of all pods running on the node to make the decision.
+ポッドがスケジュールされるとき、Kubernetesのスケジューラーは、各ノードで現在の実際のリソース使用量を見るのではなく、ノードの`node allocatable`とノード上のすべてのポッドの`resource requests`の合計を使用して決定を行います。
 
-- With the `resource limits` defined, if a container attempts to use more resources than its limits:
-  - If it attempts to use more CPU which is compressible, its CPU time will be throttled;
-  - If it attempts to use more memory which is incompressible, it will be terminated.
-- Since the scheduler only uses the `resource requests` when scheduling pods, a node could be overcommitted, the sum of the `resource limits` of all pods on the node could be more than the `node allocatable` of the node.
+- `resource limits`が定義されている場合、コンテナがリソースの制限を超えて使用しようとすると、以下のようになります。
+  - 圧縮可能なCPUを超えて使用しようとすると、CPU時間が制限されます。
+  - 圧縮不可能なメモリを超えて使用しようとすると、コンテナが終了します。
 
-- When a node is under resource pressure, it could evict the pods running on it to reclaim resources. When it has to do it, it uses the following order to identify which pod should be evicted first:
-  1. Whether the pod's resource usage exceeds its `resource requests`
-  2. Pod priority
-  3. The pod's resource usage relative to its `resource requests`
+- スケジューラーは、ポッドをスケジュールするときに`resource requests`のみを使用するため、ノードは過剰に割り当てられる可能性があります。ノード上のすべてのポッドの`resource limits`の合計が、ノードの`node allocatable`よりも大きくなる可能性があります。
 
-Read further:
+- ノードはリソース圧迫の下にあるとき、ノード上で実行されているポッドを削除してリソースを回収することができます。これを行う必要がある場合、次の順序で、どのポッドを最初に削除するかを識別します。
+  1. ポッドのリソース使用量が`resource requests`を超えているかどうか
+  2. ポッドの優先度
+  3. ポッドのリソース使用量が`resource requests`に対する相対的な使用量
 
-- [Managing Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)
-- [Node-pressure Eviction](https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/)
-- [Resource reservations of AKS](https://docs.microsoft.com/azure/aks/concepts-clusters-workloads#resource-reservations)
+追加情報:
 
-## Recommendations for resource management
+- [コンテナのリソース管理](https://kubernetes.io/ja/docs/concepts/configuration/manage-resources-containers/)
+- [ノード圧迫による削除](https://kubernetes.io/ja/docs/concepts/scheduling-eviction/node-pressure-eviction/)
+- [AKSのリソース予約](https://docs.microsoft.com/ja-jp/azure/aks/concepts-clusters-workloads#resource-reservations)
 
-- Define **resource requests and limits** on all containers in your pods. For critical pods in production, set the resource requests and limits to equal numbers so that the [QoS class](https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/) of the pods will be set to **Guaranteed**.
-- Use **resource quotas** on namespaces to reduce the side effects of different applications running on the same cluster. Use **LimitRange** to apply the default requests and limits to pods on which the resource requests and limits are not defined.
-- Enable [Azure Policy](https://docs.microsoft.com/azure/aks/policy-reference) to enforce the CPU and memory limit on pods.
-- Enable [Container Insights](https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-overview) to monitor the resource usage of pods and nodes. Adjust the resource requests and limits accordingly.
-- Monitor the OOMKilled errors by enabling the recommended metric alerts of Container Insights such as `OOM Killed Containers`, `Pods ready %` etc.
-- Use system node pool and user node pool to separate the system pods and application pods.
-- On Kubernetes nodes, don't install any software outside of the Kubernetes. If you have to install some software on nodes, use the native Kubernetes way to do it, such as using DaemonSet.
+## リソース管理の推奨事項
 
-  > ⚠️
-  > According to the [AKS support policy](https://docs.microsoft.com/azure/aks/support-policies#shared-responsibility), any modification done directly to the agent nodes using any of the IaaS APIs renders the cluster unsupportable.
+ポッドのすべてのコンテナーに**リソース要求と制限**を定義します。本番環境の重要なポッドでは、リソース要求と制限を同じ数値に設定して、ポッドの[QoSクラス](https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/)を**Guaranteed**に設定します。
 
-Read further:
+- 同じクラスター上で実行されている異なるアプリケーションの副作用を減らすために、**リソースクォータ**をネームスペースに使用します。**LimitRange**を使用して、リソース要求と制限が定義されていないポッドにデフォルトの要求と制限を適用します。
 
-- [AKS Operator Best Practices](https://docs.microsoft.com/azure/aks/operator-best-practices-scheduler)
-- [Recommended metric alerts from Container insights](https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-metric-alerts)
+- [Azure Policy](https://docs.microsoft.com/azure/aks/policy-reference)を有効にして、ポッドのCPUとメモリ制限を強制します。
 
-## Other Tools
+- [Container Insights](https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-overview)を有効にして、ポッドとノードのリソース使用状況を監視します。リソース要求と制限を適切に調整します。
 
-- Use autoscaling with Horizontal Pod Autoscaler (HPA) and Cluster Autoscaler to autoscale the pods and nodes.
+- `OOM Killed Containers`、`Pods ready %`などのContainer Insightsの推奨メトリックアラートを有効にして、OOMKilledエラーを監視します。
+
+- システムノードプールとユーザーノードプールを使用して、システムポッドとアプリケーションポッドを分離します。
+
+- Kubernetesノードでは、Kubernetes以外のソフトウェアをインストールしないでください。ノードにソフトウェアをインストールする必要がある場合は、DaemonSetなどを使用して、Kubernetesのネイティブな方法を使用してください。
 
   > ⚠️
-  > For AKS clusters, only use the Cluster Autoscaler to auto scale the nodes. Don't manually enable or configure the autoscale for the underlying VMSS.
+  > [AKSサポートポリシー](https://docs.microsoft.com/azure/aks/support-policies#shared-responsibility)に従って、IaaS APIのいずれかを使用してエージェントノードに直接変更を加えると、クラスターはサポートされなくなります。
 
-- For workloads that cannot scale out, consider using [Vertical Pod Autoscaler](https://github.com/kubernetes/autoscaler/tree/master/vertical-pod-autoscaler) (VPA). With the `Off` update mode, VPA can also be used to understand the resource limits of pods.
+追加情報:
+
+- [AKS 運用者のベストプラクティス](https://docs.microsoft.com/azure/aks/operator-best-practices-scheduler)
+- [Container insightsからの推奨メトリックアラート](https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-metric-alerts)
+
+## その他のツール
+
+- Horizontal Pod Autoscaler (HPA)とCluster Autoscalerを使用して、ポッドとノードをオートスケールします。
 
   > ⚠️
-  > Be cautious when you use VPA in production. Due to how Kubernetes works, when you create VPA in `Auto` or `Recreate` update mode, it evicts the pod if it needs to change its resource requests, which may cause downtime. Make sure you understand its [limitations](https://github.com/kubernetes/autoscaler/tree/master/vertical-pod-autoscaler#known-limitations) before using it.
+  > AKSクラスターでは、ノードのオートスケールのみにCluster Autoscalerを使用します。VMSSのオートスケールを手動で有効にしたり、構成したりしないでください。
 
-- [Kubecost](https://www.kubecost.com/) can be used to get the insights of the cost and resource usage pattern.
+
+
+- スケールアウトできないワークロードの場合は、[Vertical Pod Autoscaler](https://github.com/kubernetes/autoscaler/tree/master/vertical-pod-autoscaler) (VPA).を検討してください。`Off`アップデートモードを使用すると、VPAを使用して、ポッドのリソース制限を理解することもできます。
+  
+  > ⚠️
+  > 本番環境でVPAを使用する場合は注意してください。Kubernetesの仕組みにより、`Auto`または`Recreate`アップデートモードでVPAを作成すると、リソース要求を変更する必要がある場合には、ポッドを削除します。これにより、ダウンタイムが発生する可能性があります。使用する前に、[制限事項](https://github.com/kubernetes/autoscaler/tree/master/vertical-pod-autoscaler#known-limitations) を理解してください。
+
+- [Kubecost](https://www.kubecost.com/)を使用して、コストとリソース使用パターンの洞察を得ることができます。

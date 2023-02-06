@@ -1,27 +1,26 @@
-# AKS Operations
+# AKS の運用
 
-## Introduction
+## 概要
 
-As a managed Kubernetes service in Azure, the control plane of an AKS cluster is managed by Azure, which offloads quite significant operational overheads from you as an AKS customer. However, unlike other Azure PaaS services such as App Service, keeping an AKS cluster up and running is a shared responsibility between you and Azure. While the control plane is managed by Azure, the agent nodes are managed by you. You need to ensure the cluster is up to date so that it would not fall out of support. You also need to manage the workloads running in the cluster so that the business can be well served while the performance, availability and cost can be balanced.
+Azure のマネージド Kubernetes サービスとして、AKS クラスターのコントロール プレーンは Azure によって管理されています。
+これにより、AKS のお客様としては、かなりの運用上の負担が軽減されます。
+ただし、App Service などの他の Azure PaaS サービスとは異なり、AKS クラスターを稼働させ続けることは、Azure とお客様の共同の責任です。
+コントロール プレーンは Azure によって管理されますが、エージェントノードはお客様によって管理されます。
+サポート対象外にならないように、クラスターを最新の状態に保つ必要があります。
+また、クラスター内で実行されているワークロードを管理する必要があります。
+これにより、ビジネスがうまくサービスされ、パフォーマンス、可用性、コストがバランスよく調整されます。
 
-![Shared responsibility](./assets/shared-responsibility.png)
+![共有責任](./assets/shared-responsibility.png)
 
-In this session, we will discuss some of the key operational areas of AKS that are often asked by our customers. We will cover them by using general guidance, best practices, tools, and demos. And hopefully with this session, we can help the administrators and engineers who need to manage their AKS clusters in their day-to-day work better understand what they need to do with the AKS clusters from the operational perspective.
+本セッションでは、お客様からよく質問される AKS の運用上の重要な領域について説明します。一般的なガイダンス、ベスト プラクティス、ツール、デモを使用して、これらの領域をカバーします。そして、これにより、日々の作業で AKS クラスターを管理する必要がある管理者やエンジニアが、運用上の観点から AKS クラスターに取り組む必要があることをより理解できるようになることを願っています。
 
-This is not a session for the introduction, or the design and deployment of AKS clusters. We assume you have the basic understanding to the concepts of Kubernetes and know how to interact with it by using tools like `kubectl`.
+これは、AKS クラスターの導入、または設計および展開のセッションではありません。Kubernetes の概念を基本的に理解しており、`kubectl` などのツールを使用して Kubernetes と対話できることを前提としています。
 
-As a side note, the 3rd party open source tools that we use in the session are outside of Microsoft technical support, as it is indicated in the [Support policies for AKS](https://docs.microsoft.com/azure/aks/support-policies).
+サイドノートとして、セッションで使用するサード パーティのオープン ソース ツールは、[AKS のサポート ポリシー](https://docs.microsoft.com/ja-jp/azure/aks/support-policies)に記載されているように、Microsoft の技術サポートの対象外です。
 
 ## Agenda
 
-- [Resource Management](./articles/resource-management.md)
-- [Patching and Upgrade](./articles/patching-upgrade.md)
-- [Business Continuity and Disaster Recovery](./articles/bcdr.md)
+- [リソースの管理](./articles/resource-management.md)
+- [パッチとアップグレード](./articles/patching-upgrade.md)
+- [ビジネス継続性と災害復旧](./articles/bcdr.md)
 
-## Feedback
-
-We'd love to know if you have any feedback regarding the content and the delivery of the session, especially if there are any other areas that you want us to cover in future sessions. Please feel free to raise an issue in this repo.
-
-## About FastTrack for Azure
-
-FastTrack for Azure is a technical enablement program that helps with rapid and effective design and deployment of cloud solutions. It includes tailored guidance from Azure engineers to provide proven practices and architectural guidance. For more information, please see [Microsoft FastTrack for Azure](https://azure.microsoft.com/programs/azure-fasttrack/).
