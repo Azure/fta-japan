@@ -5,8 +5,8 @@
 
 概要
 
-- なぜ AKS を使う必要がありますか？？
-- なぜクラスターデプロイの自動化を行う必要がありますか？
+- なぜ AKS を使う必要があるのか？
+- なぜクラスターデプロイの自動化を行う必要があるのか？
 - AKS クラスター設定
   - ポータルのデモ
   - Azure CLI と シェルスクリプト
@@ -22,10 +22,12 @@
  
 ## AKS のための"現実的な" IaC の例
 
-オープンソースの AKS のための Infrastructure as Code の例
+AKS のための Infrastructure as Code の例
 
 - [Azure Kubernetes Service (AKS) ベースラインクラスター](https://github.com/mspnp/aks-baseline/)  
   マイクロソフトパターンアンドプラクティスチームによる ARM テンプレートとシェルスクリプトのドキュメント
+  - パブリックテンプレートとして公開
+  - 
   
 - [cloudkube.io AKS Clusters (demo)](https://github.com/julie-ng/cloudkube-aks-clusters)  
   複数環境のための Terraform の IaC の例（以下に説明するシナリオなど、 Managed ID と Key Vault  統合など）
@@ -47,7 +49,7 @@
 - 中央集権的運用
 - エンタープライズの運用
 
-#### Concerns 注意点
+#### 注意点
 
 - ワークロード
 - プラットフォーム

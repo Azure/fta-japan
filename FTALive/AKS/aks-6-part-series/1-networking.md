@@ -153,9 +153,29 @@ AKS を使う上でIPアドレス空間について十分大きなものを用�
     - カスタムプライベートDNSゾーン
       - CUSTOM_PRIVATE_DNS_ZONE_RESOURCE_ID
 
-## Question and Misc. Links
+## いただいた質問など
 
 > 参加者の方から質問を受け付けます。今回回答できなかった内容については、後日こちらに記載しておきます。
 
 例） グローバル・サービスを構築したいのですが、 Frontdoor と Application Gateway を組み合わせて利用することはできますか？ - はい、要件や状況に応じて使い分けてください。こちらのドキュメントが参考になります。
 [Front Door の背後に Application Gateway をデプロイする必要はありますか?](https://learn.microsoft.com/ja-jp/azure/frontdoor/front-door-faq#front-door------application-gateway-----------------)
+
+
+### 質問1 
+
+> 【状況】
+>  ・AKS を使用し、Application Gateway を介して外部からの通信を受け付けている 
+>・DNS ゾーンには特定ドメインに対し、 A レコードで Application Gateway のパブリック IP を登録 
+>
+> ・Application Gateway のバックエンドプールには AKS のドメイン（~~~.japaneast.cloudapp.azure.com）？を指定（これでロードバランサー（AKS）に対して通信が流れる認識です・・・） 
+>・AKS 内はイングレスコントローラー（pod）を Helm からデプロイし、ロードバランサー（AKS）から AKS 内サービスへの通信を実現 <br><br>
+>上記の設定で、「Application Gateway -> ロードバランサー（AKS）-> イングレスコントローラー（pod）-> AKS 内のサービス」の流れができている認識です。<br><br>
+>【質問】 そこで質問がございます。 SSL/TLS はApplication Gateway に設定して https で接続できることは確かめられておりますが、ロードバランサーやイングレスコントローラーには不要なのでしょうか？ 一時期は Application Gateway を使用していない時期があり、イングレスコントローラーに SSL/TLS 証明書をあてて https 通信をしておりました。 本日のセッションで Incoming Traffic はすべて暗号化するのがベストプラクティスとおっしゃっておりましたので、今の構成だと暗号化が不足しているのかもと思い、ぜひ教えていただきたいです。
+
+> 【回答】
+> ロードバランサー（AKS）は、L4までカバレッジを持ったサービスですので SSL/TLS 証明書をあてることができません。しかしながら、Application Gateway からの通信についても必要であれば、SSL/TLS 証明書をあてることができます。例えば、Nginx や Treafik をイングレスコントローラーに使っているケースでは、`Let's Encrypt` を利用して SSL/TLS 証明書を取得、設定することができます。<br><br>
+参考1：[Let's Encrypt を使用して Ingress コントローラーに SSL/TLS 証明書を追加する](https://docs.microsoft.com/ja-jp/azure/aks/ingress-tls#use-lets-encrypt-to-add-an-ssltls-certificate-to-an-ingress-controller)
+<br>
+参考2：[TLS - Treafik 公式ページ](https://doc.traefik.io/traefik/https/tls/)
+<br><br>
+> 基本的に、Application  Gateway からバックエンドの通信が Public に公開されることはありませんが、Microsoft DC の内部ネットワークにおいても暗号化通信が必要だというケースに上記を適用できるという認識をお持ちいただければと思います。
