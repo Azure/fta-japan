@@ -217,3 +217,18 @@
   - [Policy Definition](https://github.com/Azure/azure-policy/blob/master/built-in-policies/policyDefinitions/Kubernetes/ContainerAllowedImages.json)
 - [Azure コンテナーレジストリーのロールと許可](https://docs.microsoft.com/ja-jp/azure/container-registry/container-registry-roles?tabs=azure-cli) を通じてレジストリーにアクセスする
 - [Azure Private Link を使ったコンテナーレジストリーへの閉じた接続](https://docs.microsoft.com/ja-jp/azure/container-registry/container-registry-private-link)
+
+
+## いただいた質問など
+
+> 参加者の方から質問を受け付けます。今回回答できなかった内容については、後日こちらに記載しておきます。
+
+### 質問１
+
+> [質問] AKS クラスターに独自のサブネットを指定する場合は、AKS が管理する NIC レベルのネットワーク セキュリティ グループを変更しないようにするということですが、正直、意味がわかりませんでした。具体的な説明をしていただけると幸いです。
+> <br><br>
+> [回答] ノード(VM/NIC)のNSG については、AKSが管理しており、必要なルールが自動的に追加されますので、直接変更しないようにしてください。セキュリティポリシーの観点から必要である場合は、Kubernetes の Manifest から変更を加えるようにしてください。
+> <br><br>
+> 参考1：[チュートリアル: Azure Kubernetes Service (AKS) でのアプリケーションに対するネットワークの概念- ネットワーク セキュリティ グループ](https://learn.microsoft.com/ja-jp/azure/aks/concepts-network#network-security-groups)
+> 
+> 参考2:[Kubernetes network policy](https://kubernetes.io/ja/docs/concepts/services-networking/network-policies/)
