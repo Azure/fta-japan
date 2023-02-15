@@ -174,8 +174,9 @@ AKS を使う上でIPアドレス空間について十分大きなものを用�
 
 > 【回答】
 > ロードバランサー（AKS）は、L4までカバレッジを持ったサービスですので SSL/TLS 証明書をあてることができません。しかしながら、Application Gateway からの通信についても必要であれば、SSL/TLS 証明書をあてることができます。例えば、Nginx や Treafik をイングレスコントローラーに使っているケースでは、`Let's Encrypt` を利用して SSL/TLS 証明書を取得、設定することができます。<br><br>
-参考1：[Let's Encrypt を使用して Ingress コントローラーに SSL/TLS 証明書を追加する](https://docs.microsoft.com/ja-jp/azure/aks/ingress-tls#use-lets-encrypt-to-add-an-ssltls-certificate-to-an-ingress-controller)
-<br>
-参考2：[TLS - Treafik 公式ページ](https://doc.traefik.io/traefik/https/tls/)
-<br><br>
+> 参考1：[Let's Encrypt を使用して Ingress コントローラーに SSL/TLS 証明書を追加する](https://docs.microsoft.com/ja-jp/azure/aks/ingress-tls#use-lets-encrypt-to-add-an-ssltls-certificate-to-an-ingress-controller)
+> <br>
+>参考2：[TLS - Treafik 公式ページ](https://doc.traefik.io/traefik/https/tls/)
+> <br><br>
 > 基本的に、Application  Gateway からバックエンドの通信が Public に公開されることはありませんが、Microsoft DC の内部ネットワークにおいても暗号化通信が必要だというケースに上記を適用できるという認識をお持ちいただければと思います。
+> 

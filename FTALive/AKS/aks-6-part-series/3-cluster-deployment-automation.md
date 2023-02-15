@@ -27,7 +27,7 @@ AKS のための Infrastructure as Code の例
 - [Azure Kubernetes Service (AKS) ベースラインクラスター](https://github.com/mspnp/aks-baseline/)  
   マイクロソフトパターンアンドプラクティスチームによる ARM テンプレートとシェルスクリプトのドキュメント
   - パブリックテンプレートとして公開
-  - 
+  - :rocket: 上記の[日本語訳](https://github.com/sasukeh/aks-baseline)をしました！
   
 - [cloudkube.io AKS Clusters (demo)](https://github.com/julie-ng/cloudkube-aks-clusters)  
   複数環境のための Terraform の IaC の例（以下に説明するシナリオなど、 Managed ID と Key Vault  統合など）
