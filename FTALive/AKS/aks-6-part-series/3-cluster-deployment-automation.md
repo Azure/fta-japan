@@ -19,6 +19,18 @@
 - ワークロードの考慮事項
 - リソースのライフサイクル
 - バージョン管理
+
+
+## なぜ AKS を使うのか？
+
+- クラウドネイティブなアプリケーションの開発と運用のための、オープンソースのコンテナオーケストレーションプラットフォーム
+- [AKS とは？](https://learn.microsoft.com/ja-jp/azure/aks/intro-kubernetes)
+
+## なぜ AKS のクラスターデプロイの自動化を行う必要があるのか？
+
+> - 前回の記事でも触れましたが、Kubernetes のリリースサイクル及び、AKSのリリースサイクルは比較的早く、バージョンアップを行う際に、クラスターの再作成が必要になるケースがあります。
+> - また、何らかの理由でクラスターが不安定な状態になった場合は、クラスターの再作成が必要になります。
+> - 今回の記事の中であげる、スタンプパターンを用いて、多くのリージョンに展開が必要となった場合は、クラスターの自動化により展開が楽になります。
  
 ## AKS のための"現実的な" IaC の例
 
@@ -41,7 +53,7 @@ AKS のための Infrastructure as Code の例
 
 ## シナリオ - アプリケーションプラットフォームとしての AKS
 
-下記のコンセプトと構成は、**[Cloud Adoption Framework: Compare common cloud operating models](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/operating-model/compare)** の簡略バージョンです
+下記のコンセプトと構成は、**[Cloud Adoption Framework: Compare common cloud operating models](https://docs.microsoft.com/ja-jp/azure/cloud-adoption-framework/operating-model/compare)** の簡略バージョンです
 
 ### 運用モデル
 
@@ -66,7 +78,7 @@ AKS のための Infrastructure as Code の例
 
 重要なリンク
 
-- [Azure アーキテクチャーセンター >  リファレンスアーキテクチャ > AKS ベースラインの保護](https://docs.microsoft.com/azure/architecture/reference-architectures/containers/aks/secure-baseline-aks)
+- [Azure アーキテクチャーセンター >  リファレンスアーキテクチャ > AKS ベースラインの保護](https://learn.microsoft.com/azure/cloud-adoption-framework/operating-model/compare)
 
 その他雑多なリンク
 
