@@ -37,7 +37,7 @@ Microsoft defender for Cloud の強化されたセキュリティ機能はサブ
   
 
 ## エージェントの構成について
-Defender for Cloud は VM の内部の情報を Log Analytics エージェントを使用して情報を収集するため、一部の推奨項目を利用するためには Log Analytics エージェントのインストールが必要になります。Azure Monitor エージェントが VM に関する情報を収集するための新しい仕組みとしてリリースされています。Defender for Cloud に対しては現在パブリック プレビューでの昨日サポートが提供されています。
+Defender for Cloud は VM の内部の情報を Log Analytics エージェントを使用して情報を収集するため、一部の推奨項目を利用するためには Log Analytics エージェントのインストールが必要になります。Azure Monitor エージェントが VM に関する情報を収集するための新しい仕組みとしてリリースされています。Defender for Cloud に対しては現在パブリック プレビューでの機能サポートが提供されています。
 これらのエージェントは同時にインストールすることができるため、Defender for Cloud の機能を利用するために Log Analytics エージェントを使用し、VM 内のパフォーマンスやイベント ログを収集するためには Azure Monitor エージェントを使用する、といった構成をとることができます。
 
 [Azure Monitor エージェントの概要](https://docs.microsoft.com/ja-jp/azure/azure-monitor/agents/agents-overview)
@@ -62,11 +62,6 @@ Microsoft Defender for Cloud の Posture Management は多くのリソースの�
 [特権アクセス: 戦略](https://docs.microsoft.com/ja-jp/security/compass/privileged-access-strategy)
 ![](https://docs.microsoft.com/ja-jp/security/compass/media/overview/end-to-end-approach.png)
 特権アクセスの保護は従来からの重要な課題で、マイクロソフトではオンプレミスとクラウドをカバーする特権管理についてのの包括的なガイダンスを提供しています。  
-
-
-
-
-
 
 
 
@@ -152,7 +147,8 @@ Azure Disc Encription (ADE) で暗号化されている場合は正常、それ�
 ## vTPM を、サポートしている仮想マシンで有効にする必要があります
 
 攻撃コードには OS 上に生成されるファイルやプロセスの他にも、OS が起動する前に動作することでセキュリティ機能による検出を避けるルートキットやブートキットとよばれる種類のものがあります。
-Windows にはハードウェア ベースで OS の起動に至るまでのブートの流れを確認し、コードの整合性を保つ仕組みが導入されていて、Azure VM でも利用することができます。セキュアブートは起動コンポーネントのコード署名を確認し、予め登録された信頼できるバイナリだけが動作することを保証します。vTPM はブートに起動するコンポーネントを計測し、正常に起動した場合のブートとの比較を行い、正常に起動したことを証明します。これらの機能を有効化することで、攻撃の永続化をより困難にすることができます。
+Windows にはハードウェア ベースで OS の起動に至るまでのブートの流れを確認し、コードの整合性を保つ仕組みが導入されていて、Azure VM でも利用することができます。セキュアブートは起動コンポーネントのコード署名を確認し、予め登録された信頼できるバイナリだけが動作することを保証します。vTPM はブートに起動するコンポーネントを計測し、正常に起動した場合のブートとの比較を行い、正常に起動したことを証明します。これらの機能を有効化することで、攻撃の永続化をより困難にすることができます。特定の機能が制限される場合があるため、FAQ を確認してください。
+[参考：Azure Virtual Machines のトラステッド起動](https://learn.microsoft.com/ja-jp/azure/virtual-machines/trusted-launch)
 
 関連する推奨事項
 * セキュア ブートを、サポートしている Windows 仮想マシンで有効にする必要があります
@@ -187,23 +183,30 @@ Azure SQL のセキュリティのベストプラクティスでは、 Azure SQL
 
 Azure SQL データベースではサーバーのレベルで複数のデータベース全体へのアクセスが拒否されていても、個別のデータベースのアクセスが先に評価されます。このため、サーバーレベルでアクセスを禁止している場合でも、各データベースの管理者が個別にデータベース レベルのファイアウォールを設定し、任意のネットワークからのアクセスを許可する可能性があります。もし Azure SQL のファイアウォールでネットワークアクセスを制限している場合、これらデータベース レベルのネットワーク アクセスも定期的に監査し、不要なネットワーク アクセスが許可されていないことを確認してください。
 
-![Azure SQL Firewall Rule](./images/manage-connectivity-flowchart.png)
+[参考：Azure SQL Database と Azure Synapse の IP ファイアウォール規則]("https://learn.microsoft.com/ja-jp/azure/azure-sql/database/firewall-configure?view=azuresql")
+
+![Azure SQL Firewall Rule](https://learn.microsoft.com/ja-jp/azure/azure-sql/database/media/firewall-configure/sqldb-firewall-1.png?view=azuresql)
 
 
 ## Azure DDoS Protection Standard を有効にする必要がある
 この推奨事項については実際の要件を十分に確認してください。
+現在 Azure DDoS Protection には DDoS ネットワーク保護と DDoS IP 保護 (プレビュー) の 2 つの SKU が存在し、この推奨事項の Azure DDoS Protection Standard は DDoS ネットワーク保護を指しています。
 
-Azure DDoS Protection には Basic と Standard があり、データセンター規模の DDoS 攻撃については Basic で自動的な対処が行われます。例えば帯域消費型の DDoS 攻撃であれば 数百GB ~ 数TB/秒 といった規模の攻撃が想定されますが、お客様のアプリケーションは場合によってはこれより遥かに小規模の攻撃でサービスの提供を継続することができなくなります。これは特定の顧客のアプリケーションを対象とした攻撃では、DDoS Protection の Basic では保護が適用されない可能性があることを意味しています。
+[参考：Azure DDoS Protection SKU の比較について](https://learn.microsoft.com/ja-jp/azure/ddos-protection/ddos-protection-sku-comparison)
 
-Azure DDoS Protection はアダプティブ チューニングにより特定のサービスへのトラフィックを自動的に分析し、閾値の調整を行うため、アプリケーションに対してより適切な保護を行うことができます。DDoS 攻撃が発生した場合、メトリックやアラートが利用可能になる他、攻撃の調査と分析には DDoS Protection Rapid Response (DRR) チームの支援を受けることもできるため、組織やアプリケーションの性質として標的型の DDoS 攻撃を脅威として想定しなければならない場合には Azure DDoS Protection Standard を検討します。
-![Azure DDoS Protection](./images/ddosprotection.png)
+DDoS ネットワーク保護は月額料金に 100 個までの パブリック IP アドレスを含み、Application Gateway の WAF 機能を無償で使用することができるため、多くの IP アドレスに対する DDoS 攻撃対策を検討する場合には DDoS ネットワーク保護が有利な場合があります。
 
-Azure DDoS Protection Standard は [BreakingPoint によるシミュレーション テスト](https://docs.microsoft.com/ja-jp/azure/ddos-protection/test-through-simulations)を行うことができます。
+DDoS ネットワーク保護には DDoS Rapid Response に問い合わせを行うことができ、DDoS の検知や保護状況に関する問い合わせや、予定されているイベントにより大規模なネットワーク トラフィックが発生する可能性がある場合の調整を行うことができます。
 
-[参考：シミュレーションを通じたテスト](https://docs.microsoft.com/ja-jp/azure/ddos-protection/test-through-simulations)
-
+[参考：Azure DDoS Rapid Response](https://learn.microsoft.com/ja-jp/azure/ddos-protection/ddos-rapid-response#when-to-engage-drr)
 
 
+[参考：Azure DDoS Protection の参照アーキテクチャ](https://learn.microsoft.com/ja-jp/azure/ddos-protection/ddos-protection-reference-architectures)
+
+![Azure Firewall と Azure Bastion を使用したハブアンドスポーク ネットワークトポロジ](https://learn.microsoft.com/ja-jp/azure/ddos-protection/media/reference-architectures/ddos-network-protection-azure-firewall-bastion.png)
+
+
+DDoS 対策は [テスト パートナー](https://docs.microsoft.com/ja-jp/azure/ddos-protection/test-through-simulations) を試用してシミュレーションを行うことができます。シミューレーションでは攻撃対象のパブリック IP アドレスが申請者のサブスクリプションに属していることが確認されます。
 
 ## 仮想ネットワークは、Azure Firewall によって保護する必要がある
 
