@@ -8,36 +8,59 @@
 
 - [ブラックボックス モニタリング](https://docs.microsoft.com/ja-jp/azure/architecture/framework/devops/health-monitoring#black-box-monitoring) vs. [ホワイトボックス モニタリング](https://docs.microsoft.com/ja-jp/azure/architecture/framework/devops/health-monitoring#white-box-monitoring)
 - メトリックス vs ログ
+  - メトリックは、一定の間隔で収集される数値であり、特定の時刻におけるシステムの何らかの特性を表します。
+  - ログは、特定のアクションに対しての実行結果、または、システムの状態の変化を記録したものです。
 - シグナル vs ノイズ
+  - シグナルは、何かを検知するために必要な意味のある情報
+  - ノイズは、ランダムな値、期待しない種類の値、変化の大きい値など、シグナルとしては役に立たない情報
 
 ### USE メソッド
 
-インフラストラクチャの観点から、制約とボトルネックを素早く特定します。
+USEメソッドは、インフラストラクチャの観点から、制約とボトルネックを素早く特定します。
 
 - U = 利用率
 - S = 過負荷
-- E = エラー
+- E = エラーの数
+
+例えば、CPU 利用率が高い場合、システムが過負荷になっている可能性があります。また、CPU 利用率が高い場合、エラーが発生する可能性があります。
+
+一方で、低い利用率の場合は、過負荷となっていないと言えますか？この答えは、いいえです。
+それを確かめるためにエラーの数を見る必要があります。エラーの数が多い場合は、システムが過負荷になっている可能性があります。利用率は、システムの過負荷を示すのに十分な情報を提供していません。利用率は平均などの数値で提供することがおおく、利用率が低くても、一時的な過負荷が発生している可能性があります。
 
 この考え方は、[Brendan Gregg](https://www.brendangregg.com/usemethod.html) によって提唱されました。
 
 ### RED メソッド
 
-クライアントからの観点でモニタリングし、インフラストラクチャを無視します。
+クライアント（顧客およびユーザー）からの観点でモニタリングし、インフラストラクチャのことを考えるないで、システムの状態を素早く特定します。
 
-- R = レート
-- E = エラー
-- D = 持続時間/間隔
+- R = レート（秒間リクエスト）
+- E = エラー（リクエストの中で失敗したもの）
+- D = 持続時間/間隔（リクエストにかかった時間の総量）
+
+例えば、これらの数値のパーセンテージと待ち時間の分布がどのようになっているか把握し、ユーザーが意図しない待ち時間を体感しないために、システムの健全性を維持します。
 
 [Tom Willke](https://grafana.com/blog/2018/08/02/the-red-method-how-to-instrument-your-services) (VP Technology, Granfana Labs) によって広く普及しました。
 
+### ゴールデンシグナル
+
+RED と似ていますが、サービスに使っているコンポーネントの飽和度を示す `Saturation`（彩度？）を追加したものです。
+
+- 待機時間（要求処理にかかる時間）
+- トラフィック（システムにかかるトラフィックの量）
+- エラー（失敗した要求の数）
+- 彩度（飽和度）
+
+健全性を保つべきシステムでは、よくクオーターを利用しますが、そのクオーターがどのくらい飽和状態にあるかを知ることが重要です。
+
 ## パート2 - ディープダイブ: AKS モニタリング
+
+上記で紹介したモニタリングに必要な情報を得るためにどのようにすれば良いかを紹介します。
 
 ### ツール
 
-
-- Azure モニター
-- アラート
-- クエリーログのコンテナーインサイト
+- [Azure モニター](https://learn.microsoft.com/ja-jp/azure/azure-monitor/overview)
+- [Azure モニター - アラート](https://learn.microsoft.com/ja-jp/azure/azure-monitor/alerts/alerts-overview)
+- [クエリーログのコンテナーインサイト](https://learn.microsoft.com/ja-jp/azure/azure-monitor/containers/container-insights-log-alerts)
 
 ### Azure Monitor for Containers を有効にする
 
@@ -52,10 +75,10 @@ az aks enable-addons -a monitoring -n <clustername> -g <resourcegroupname>
 az aks enable-addons -a monitoring -n <clustername> -g <resourcegroupname> --workspace-resource-id "/subscriptions/<subscriptionId>/resourcegroups/<resourcegroupname>/providers/microsoft.operationalinsights/workspaces/<workspacename>"
 
 # ステータスとエージェントのバージョンを確認します
-kubectl get ds omsagent --namespace kube-system
+kubectl get ds ama-logs --namespace kube-system
 
 # Windows ノードプールで実行されているエージェントのバージョンを確認します
-kubectl get ds omsagent-win --namespace kube-system
+kubectl get ds ama-logs-win --namespace kube-system
 
 # 既存のクラスターの接続されたワークスペースの詳細を確認します
 az aks show -g <resourcegroupname> -n <clustername> | grep -i "logAnalyticsWorkspaceResourceID"
@@ -65,7 +88,11 @@ az aks disable-addons -a monitoring -g <resourcegroupname> -n <clustername>
 
 ````
 
-### モニタリングするものは何か？
+こちらの操作はポータルからでも可能です。
+
+> ⚠️ omsagent という名前の daemon set は ama-logs という名前にアップデートされました。詳しくは[こちら](https://techcommunity.microsoft.com/t5/azure-monitor-status-archive/name-update-for-agent-and-associated-resources-in-azure-monitor/ba-p/3576810)をご参照ください。
+
+### 何をモニタリングするか
 
 - このセッションは、[Monitor AKS with Azure Monitor for Container Insights](https://docs.microsoft.com/azure/aks/monitor-aks#monitor-layers-of-aks-with-container-insights) で示されている構造に従います。
 
@@ -89,17 +116,17 @@ Kubenetes は、ノード プール (VM SKU が同じノード) を使用し、�
 
 | 名前 | 目的 / 説明 | メトリクス と リソース ログ |
 |:-----|:------------------------|:------------------------|
-| ノードの状態を監視する - [Not ready status](https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-metric-alerts)| ノードの状態を監視して、ヘルス ステータスを確認します。Not Ready または Unknown| メトリクス と リソース ログ |
+| ノードの状態を監視する - [Node NotReady status](https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-metric-alerts)| ノードの状態を監視して、ヘルス ステータスを確認します。Not Ready または Unknown| メトリクス と リソース ログ |
 | リソース圧迫下のノードを監視する - [Node conditions](https://kubernetes.io/docs/concepts/architecture/nodes/#condition) | CPU、メモリ、PID、ディスクの圧迫などのリソース圧迫下のノードを監視します。| リソース ログ |
-| ノード レベルの CPU 利用率を監視する - [CPU Utilization](https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-metric-alerts)| 個々のノードの CPU 利用率と、ノード プールで集計された CPU 利用率を監視します。| メトリクス |
-| ノード レベルのメモリ利用率を監視する - [Memory Utilization](https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-metric-alerts)	| 個々のノードのメモリ利用率と、ノード プールで集計されたメモリ利用率を監視します。| メトリクス |
-| アクティブなノードとスケール アウト %	| ノード プールのスケール アウト % を監視します	| リソース ログ |
+| ノード レベルの CPU 利用率を監視する - [CPU Utilization / Average container CPU / Average CPU](https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-metric-alerts)| 個々のノードの CPU 利用率と、ノード プールで集計された CPU 利用率を監視します。| メトリクス |
+| ノード レベルのメモリ利用率を監視する - [Memory Utilization / Average Working set memory](https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-metric-alerts)| 個々のノードのメモリ利用率と、ノード プールで集計されたメモリ利用率を監視します。| メトリクス |
+| アクティブなノードとスケール アウト %| ノード プールのスケール アウト % を監視します| リソース ログ |
 
-# ヒント - Azure Portal でノードのパフォーマンスを表示する
+### ヒント - Azure Portal でノードのパフォーマンスを表示する
 
-もし Azure monitor for containers を使用している場合、[ポータル](https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-analyze#view-performance-directly-from-a-cluster) からノードのパフォーマンスを直接表示できます。
+もし Azure monitor for containers を使用している場合、[ポータル](https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-analyze#view-performance-directly-from-a-cluster) からノードのパフォーマンスを直接表示できます。Azure portal で Azure monitor for containers の利用を開始すると、パフォーマンス ビューが表示されます。
 
-## Layer 2 - AKS 管理されたコンポーネント
+## Layer 2 - Microsoft により管理された AKS コンポーネント
 
 - AKS コントロール プレーン コンポーネント
 - Kubernetes API サービス
