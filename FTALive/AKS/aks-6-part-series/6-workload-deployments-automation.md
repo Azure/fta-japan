@@ -43,7 +43,7 @@
 
 ### プルモデル (GitOps)
 
-一方で、プルモデルは、Gitリポジトリとコンテナーレジストリーをポーリングし、状態変化があれば、自動的にデプロイを行います。
+一方で、プルモデルは、Gitリポジトリとコンテナーレジストリーを Kubernetes 上の Agent からポーリングし、状態変化があれば、自動的にデプロイを行います。
 
 - [Flux CD](https://fluxcd.io/) - the GitOps family of projects
   - [チュートリアル: GitOps with Flux v2 を使ってアプリケーションをデプロイする](https://learn.microsoft.com/ja-jp/azure/azure-arc/kubernetes/tutorial-use-gitops-flux2?tabs=azure-cli)
