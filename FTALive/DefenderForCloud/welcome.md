@@ -11,7 +11,7 @@
 **スライドはありません** PowerPoint は使いません。この情報は新しい情報を反映するため随時更新します。
 
 
-フィードバックににご協力ください : [フィードバックへのリンク](https://forms.office.com/r/jVyjYh2v98)
+参加者の方はアンケートにご協力ください : [フィードバックへのリンク](https://forms.office.com/r/bb4TqUH546)
 
 Agenda
 1. [はじめに](./Pre-requisites.md)

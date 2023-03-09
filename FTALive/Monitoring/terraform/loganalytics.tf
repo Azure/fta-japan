@@ -30,7 +30,7 @@ resource "azurerm_monitor_data_collection_rule" "example" {
   data_sources {
     performance_counter {
       streams                       = ["Microsoft-Perf", "Microsoft-InsightsMetrics"]
-      sampling_frequency_in_seconds = 10
+      sampling_frequency_in_seconds = 60
       counter_specifiers = [
         "\\Processor Information(_Total)\\% Processor Time",
         "\\Processor Information(_Total)\\% Privileged Time",

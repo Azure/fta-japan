@@ -17,7 +17,7 @@ README | [ネットワークのベストプラクティス &rarr;](.//1-networki
 | 3 | **[クラスターデプロイと自動化のべストプラクティス](./3-cluster-deployment-automation.md)** | 2023年2月15日 | |
 | 4 | **[オペレーションのベストプラクティス](./4-operations.md)** | 2023年2月22日 | こちらを御覧ください [standalone handout &rarr;](../aks-operations/README.md) |
 | 5 | **[モニタリングのベストプラクティス](./5-monitoring.md)** | 2023年3月1日 | |
-| 6 | **[ワークロードのデプロイと自動化のベストプラクティス](./6-workload-deployments-automation.md)** | 2023年3月8日 | |
+| 6 | **[ワークロードのデプロイと自動化のベストプラクティス](./6-workload-deployments-automation.md)** | 2023年3月9日 | |
 
 
 ## このシリーズの対象者
