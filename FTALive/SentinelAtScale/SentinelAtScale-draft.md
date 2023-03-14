@@ -260,7 +260,7 @@ KQL の完全なリファレンスは次のドキュメントに記載されて�
 
 ### 収集されたログをクエリする
 
-ワークスペースに保存されているテーブルは次のクエリで表示することができます。  
+ワークスペースに保存されているテーブルは次のクエリで表示することができます。このクエリは非常に大きなワークスペースではうまく動作しない場合があります。  
 
 ```kql
 search *
@@ -268,6 +268,7 @@ search *
 ```
 
 特定のユーザーのサインインは次のクエリで参照することができます。
+
 ```kql
 SigninLogs
 | where UserPrincipalName == "<ユーザーのUPN>"
@@ -317,6 +318,20 @@ SigninLogs
 
 次のドキュメントを参考にカスタムの分析ルールを作成します。  
 [脅威を検出するためのカスタム分析規則を作成する](https://learn.microsoft.com/ja-jp/azure/sentinel/detect-threats-custom)
+
+## ユーザーとエンティティの動作分析 (UEBA) の構成（ハンズオン）
+
+UEBA は組織のエンティティ (ユーザー、ホスト、IP アドレス、アプリケーションなど) のベースライン行動プロファイルを構築します。 さまざまな手法や機械学習機能を使用して、Microsoft Sentinel で異常なアクティビティを特定でき、資産が侵害されているかどうかを判定するのに役立ちます。
+
+次のドキュメントに従って UEBA を有効化します。  
+[Microsoft Azure Sentinel でのユーザーとエンティティの動作分析 (UEBA) の有効化](https://learn.microsoft.com/ja-jp/azure/sentinel/enable-entity-behavior-analytics)
+
+この機能はエンティティ情報をワークスペースに取り込み、さらに追加のテーブルを作成するため追加のコストが発生します。
+
+![UEBA](https://learn.microsoft.com/ja-jp/azure/sentinel/media/identify-threats-with-entity-behavior-analytics/entity-behavior-analytics-architecture.png)
+
+[Microsoft Sentinel のユーザー/エンティティ行動分析 (UEBA) を使用して高度な脅威を特定する](https://learn.microsoft.com/ja-jp/azure/sentinel/identify-threats-with-entity-behavior-analytics)
+
 <!--
 ### Azure Arc
 
