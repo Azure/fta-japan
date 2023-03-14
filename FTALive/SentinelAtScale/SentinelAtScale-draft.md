@@ -229,7 +229,7 @@ Azure Activity はサブスクリプションやリソースに対する操作�
 Microsoft Sentinel の機能に対する一般提供は限定的で、Windows のイベントログや Linux の Sylog を収集するようなシナリオは一般提供の機能でカバーすることができますが、Azure Monitor Agent を他のデータコネクタの中で使用し、Syslog や CEF のフォワード先として使うようなシナリオでは注意が必要です。利用するデータコネクタごとにサポートの可否を確認することをお勧めします。  
 [Microsoft Sentinel の AMA 移行](https://learn.microsoft.com/ja-jp/azure/sentinel/ama-migrate)
 
-### Windows のセキュリティ ログ
+## Windows VM の接続
 
 次のドキュメントに従って Windows イベントのログを接続します。  
 [Microsoft Azure Sentinel を Azure、Windows、Microsoft、および Amazon サービスに接続する](https://learn.microsoft.com/ja-jp/azure/sentinel/connect-azure-windows-microsoft-services?tabs=SA%2CAMA#windows-agent-based-connections)
@@ -237,6 +237,86 @@ Microsoft Sentinel の機能に対する一般提供は限定的で、Windows �
 Azure Monitor Agent はデータ収集ルールに基づいて仮想マシンからログやパフォーマンス カウンタを収集します。Windows のイベントログは [XPath クエリを使用して](https://learn.microsoft.com/ja-jp/azure/azure-monitor/agents/data-collection-rule-azure-monitor-agent?tabs=portal#filter-events-using-xpath-queries)任意のイベントを抽出することができるため、一部のイベントを収集したい、といったシナリオに対応することができます。
 
 この手順で収集されるイベントログは XML 形式のフィールドを解析する必要があるため、セキュリティ イベントの分析であれば [AMA  を使用した Windows セキュリティ イベント](https://learn.microsoft.com/ja-jp/azure/sentinel/data-connectors-reference#windows-security-events-via-ama)が適しています。
+
+## 取り込まれたログの確認（ハンズオン）
+
+### ワークブックを使用してデータ収集とコストを確認する
+
+次のドキュメントに従ってデータ収集の状態をワークブックで確認します。  
+[データ コネクタの正常性を監視する](https://learn.microsoft.com/ja-jp/azure/sentinel/monitor-data-connector-health)  
+[ブックをデプロイして、データ インジェストを視覚化する](https://learn.microsoft.com/ja-jp/azure/sentinel/billing-monitor-costs#deploy-a-workbook-to-visualize-data-ingestion)
+
+### クエリを使用してログを確認する
+
+Log Analytics ワークスペースでは KQL を使用してログの操作を行うことができます。
+デモ環境を使用した基本的なログ操作は以下のドキュメントが参考になります。  
+[Microsoft Sentinel の Kusto 照会言語](https://learn.microsoft.com/ja-jp/azure/sentinel/kusto-overview)
+
+KQL の完全なリファレンスは次のドキュメントに記載されています。Azure Data Explorer で利用できる一部のオペレーターは Microsoft Sentinel では使えない場合があるので注意してください。  
+[https://learn.microsoft.com/ja-jp/azure/data-explorer/kusto/query/](https://learn.microsoft.com/ja-jp/azure/data-explorer/kusto/query/)
+
+よく使う KQL を学習するためのコンテンツとして以下もご利用ください。  
+[KUSTO 100+ knocks](https://tsubasaxzzz.github.io/fta-hackon2022/ja/docs/basic/)
+
+### 収集されたログをクエリする
+
+ワークスペースに保存されているテーブルは次のクエリで表示することができます。  
+
+```kql
+search *
+| distinct $table
+```
+
+特定のユーザーのサインインは次のクエリで参照することができます。
+```kql
+SigninLogs
+| where UserPrincipalName == "<ユーザーのUPN>"
+```
+
+特定のユーザーのサインインのうちサインイン成功 (Result = 0) ではないものは次のクエリで参照することができます。
+
+```kql
+SiggnInLogs
+| where UserPrincipalName == "<ユーザーのUPN>"
+| where ResultType <> 0
+```
+
+エラーコードの値の意味は次のサイトで確認することができます。  
+[https://login.microsoftonline.com/error](https://login.microsoftonline.com/error)
+
+ログインが成功した場合 ResultType は 0 になりますが、0 以外のコードも正常な結果である場合があります。
+例えば 50140 は「サインインの状態を維持しますか?」で「今後このメッセージを表示しない」を選択したした場合に記録されます。
+
+特定のユーザーの Azure リソースに対する管理操作は次のクエリで参照することができます。
+
+```kql
+AzureActivity
+| CategoryValue == "Administrative"
+| where Caller == "<ユーザーのUPN>"
+```
+
+パスワード認証に失敗したことがあるユーザーのリソースに対する管理操作は次のクエリで参照することができます。
+
+```kql
+SigninLogs
+| where ResultType == 50126
+| join (
+    AzureActivity
+    | where CategoryValue == "Administrative"
+    )  on $left.UserPrincipalName == $right.Caller
+```
+
+## 分析ルールの作成（ハンズオン）
+
+### コンテンツ ハブから分析ルールを作成
+
+次のドキュメントを参考に、Azure Active Direvctory ソリューションを追加し、分析ルールを作成します。  
+[https://learn.microsoft.com/ja-jp/azure/sentinel/sentinel-solutions-deploy](https://learn.microsoft.com/ja-jp/azure/sentinel/sentinel-solutions-deploy)
+
+### カスタム ルールの作成
+
+次のドキュメントを参考にカスタムの分析ルールを作成します。  
+[脅威を検出するためのカスタム分析規則を作成する](https://learn.microsoft.com/ja-jp/azure/sentinel/detect-threats-custom)
 <!--
 ### Azure Arc
 
