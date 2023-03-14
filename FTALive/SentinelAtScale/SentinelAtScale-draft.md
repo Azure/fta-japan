@@ -276,7 +276,7 @@ SigninLogs
 特定のユーザーのサインインのうちサインイン成功 (Result = 0) ではないものは次のクエリで参照することができます。
 
 ```kql
-SiggnInLogs
+SigninLogs
 | where UserPrincipalName == "<ユーザーのUPN>"
 | where ResultType <> 0
 ```
@@ -291,7 +291,7 @@ SiggnInLogs
 
 ```kql
 AzureActivity
-| CategoryValue == "Administrative"
+| Where CategoryValue == "Administrative"
 | where Caller == "<ユーザーのUPN>"
 ```
 
