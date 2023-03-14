@@ -326,7 +326,7 @@ UEBA は組織のエンティティ (ユーザー、ホスト、IP アドレス�
 次のドキュメントに従って UEBA を有効化します。  
 [Microsoft Azure Sentinel でのユーザーとエンティティの動作分析 (UEBA) の有効化](https://learn.microsoft.com/ja-jp/azure/sentinel/enable-entity-behavior-analytics)
 
-この機能はエンティティ情報をワークスペースに取り込み、さらに追加のテーブルを作成するため追加のコストが発生します。
+この機能はエンティティ情報をワークスペースに取り込み、さらに分析結果を保持するテーブルを作成するため追加のコストが発生します。
 
 ![UEBA](https://learn.microsoft.com/ja-jp/azure/sentinel/media/identify-threats-with-entity-behavior-analytics/entity-behavior-analytics-architecture.png)
 
