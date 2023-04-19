@@ -57,7 +57,6 @@ AVD は以下の図のイメージで Azure サブスクリプションの Vnet 
 	- AVD のマシンを展開するAzureサブスクリプション
 	- AVD にアクセスするユーザーが存在する Azure AD テナントに紐づく Azure サブスクリプションが必要
 
-
 <br>
 
 ## 2. コンセプト
@@ -106,10 +105,26 @@ FSLogix 利用時にはユーザー プロファイルは外部ストレージ�
 |ユーザー規模|制限なし|制限なし|300人未満|
 |パフォーマンス|Azure 上で利用可能な VM と<br> Disk から柔軟に選択可|[W365 用 SKU](https://www.microsoft.com/ja-jp/windows-365/all-pricing) から選択|[W365 用 SKU](https://www.microsoft.com/ja-jp/windows-365/all-pricing) から選択|
 |Azure サブスクリプション|必要|基本的に必要 (利用しないことも可能) |不要|
-|監視|Azure Monitor|MEM|MEM|
+|監視|Azure Monitor|Intune|Intune|
 |RemoteApp|利用可|利用不可|利用不可|
 
 <br>
+<!--
+### (参考2) AVD の構成パターン
+1章で説明したように AVD の利用には AD DS 参加が必須であったものの、後から Azure AD 参加の構成もサポートされるようになりました。更に、Azure AD 参加がサポートされた当初はプール型の AVD でできることはかなり限定的であったものの、後に Azure Files におよる AAD Kerberos がサポートされたことにより、Azure AD 参加であったとしても問題なくプール型の AVD を使えるようになりました。今後も AVD として構成可能なシナリオは拡大していくと思われますが、それにつれて複雑さも増しているため、実際は実現できない構成で設計や見積もりを進めてしまって。後で手戻りが発生するような状況も増えてきています。これから AVD の設計や展開を進める方は、以下のテーブルを参考に、今想定している設計が実現可能なものなのかチェックいただくとよいかと思います。
+
+||  ドメイン参加 &nbsp; | &nbsp; &nbsp; プール型 or 個人型　&nbsp; &nbsp;  |　FSLogix 配置先|
+| ---- | ---- | ---- | ---- |
+|パターン1| AD DS 参加 or <br>Hybrid AAD 参加|個人型|制限なし (FSlogix 不要)|
+|パターン2| AD DS 参加 or <br>Hybrid AAD 参加|プール型|制限なし|
+|パターン3| AAD 参加|個人型|制限なし (FSlogix 不要)|
+|パターン4| AAD 参加|プール型|Azure Files のみ (※)|
+
+※ AVD 利用ユーザーはオンプレミスから同期されたハイブリッドユーザーである必要もあり
+
+<br>
+-->
+
 
 ## 3. ネットワーク要件
 
@@ -293,11 +308,11 @@ https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-enable-
 
 <br>
 
-### 6.2 Azure Monitor Workbook によるモニタリング
+### 6.2 Azure Monitor Workbook および分析情報によるモニタリング
 
-上述したログ情報を Azure Monitor (LogAnalytics ワークスペース) に送信してあることが前提ですが、Azure Monitor の Workbook (ブック) 機能を使用して収集したログ情報を簡単にダッシュボード化して監視することができます。正しく構成することで接続済みのセッション数や接続時のエラーなどのホストプールに直接関係する情報のほか、セッションホスト VM の CPU 使用率等のパフォーマンス情報や問題発生時のトラブル シューティングに役立つ特定のイベントログの有無を確認できます。具体的な設定内容は以下のドキュメントに纏められています。
+5章で説明した AVD 関連のログ情報を Azure Monitor (LogAnalytics ワークスペース) に送信してあることが前提ですが、Azure Monitor の Workbook (ブック) 機能を使用して収集したログ情報を簡単にダッシュボード化して監視することができます。正しく構成することで接続済みのセッション数や接続時のエラーなどのホストプールに直接関係する情報のほか、セッションホスト VM の CPU 使用率等のパフォーマンス情報や問題発生時のトラブル シューティングに役立つ特定のイベントログの有無を確認できます。具体的な設定内容は以下のドキュメントに纏められています。
 
-[Windows Virtual Desktop 向けの Azure Monitor を使用してデプロイを監視する](https://docs.microsoft.com/ja-jp/azure/virtual-desktop/azure-monitor)
+[Windows Virtual Desktop 向けの Azure Monitor を使用してデプロイを監視する](https://learn.microsoft.com/ja-jp/azure/virtual-desktop/insights)
 
 >**(注意)** なお、以前は以下のドキュメントで紹介されているように github に公開されたテンプレートをインポートすることで、Azure Monitor Workbook を使用した監視機能が提供されていましたが、現在は Azure Portal に統合された上記の方法に置き換わっています。
 >
@@ -307,7 +322,7 @@ https://docs.microsoft.com/ja-jp/azure/azure-monitor/insights/vminsights-enable-
 
 ### 6.3 Start Virtual Machine (VM) on Connect
 
-この機能は電源管理に関するもので、ユーザーが仮想マシンに接続しようとしたタイミングで停止済み（割り当て解除）であった仮想マシンを自動的に立ち上げることができます。この機能がない場合、ユーザーが接続しようとしたタイミングで対象となる仮想マシンが停止していると接続処理はエラーで終了します。利用シナリオとしては、上述した "スケーリング ツール" や仮想マシンの自動シャットダウンの機能などを使って、夜間や週末に使用していない仮想マシンを自動的にシャットダウン（割り当て解除）する運用とセットで使用し、ユーザーが使用しない時間帯には可能な限り仮想マシンを停止し、必要になったタイミングで起動するように構成することでコストを最適化します。
+この機能は電源管理に関するもので、ユーザーが仮想マシンに接続しようとしたタイミングで停止済み（割り当て解除）であった仮想マシンを自動的に立ち上げることができます。この機能がない場合、ユーザーが接続しようとしたタイミングで対象となる仮想マシンが停止していると接続処理はエラーで終了します。利用シナリオとしては、仮想マシンの自動シャットダウンの機能などを使って、夜間や週末に使用していない仮想マシンを自動的にシャットダウン（割り当て解除）する運用とセットで使用し、ユーザーが使用しない時間帯には可能な限り仮想マシンを停止し、必要になったタイミングで起動するように構成することでコストを最適化します。
 
 有効化のための手順は以下に纏められています。個人用、プール用の両方のシナリオで利用可能です。
 
@@ -338,7 +353,25 @@ AVD に接続するクライアント デバイス側で、ソフトウェア �
 <br>
 
 
-### 6.6 参考リンク情報
+### 6.6 マルチメディア リダイレクト (MMR) 機能
+
+こちらは 2023年2月ごろに一般公開された機能で、セッションホスト内でブラウザー（Edge or Chrome 限定）から動画を視聴する際に、処理をローカル コンピューターにオフロードすることで動画視聴の際の負荷を低減させる機能です。ブラウザー経由での Teams Live イベント視聴時にも効果があります。この機能を使うためにはセッションホストと接続元のクライアント端末側でそれぞれ追加のソフトウェアのインストールが必要になります。
+
+[Azure Virtual Desktop でマルチメディア リダイレクトを使用する](https://learn.microsoft.com/ja-jp/azure/virtual-desktop/multimedia-redirection?tabs=edge)
+
+<br>
+
+### 6.7 Uniform Resource Identifier スキームによる接続（プレビュー）
+
+2023年4月時点ではプレビュー段階の機能ですが、URI スキームによるセッションホストやリモート アプリへの接続が可能となりました。これの意味するところしては、従来 Remote Desktop Client ツールを起動し、接続可能なデスクトップやアプリの一覧を表示させた後、接続先を選択する必要があったところが、コマンド実行で目的のデスクトップやアプリケーションに直接接続可能となったため、より単純な操作で目的のデスクトップやアプリケーションに接続できるようになったことを意味しています。URI スキームにより実行するコマンドはショートカットとして保存できるため、ローカルデバイス側のデスクトップ等によく使用するデスクトップやアプリケーションを登録しておくといった使い方が可能です。
+
+![URI Scheme](images/URI.png)
+
+[Azure Virtual Desktop 用リモート デスクトップ クライアントでの Uniform Resource Identifier スキーム (プレビュー)](https://learn.microsoft.com/ja-jp/azure/virtual-desktop/uri-scheme)
+
+<br>
+
+### 6.8 参考リンク情報
 
 [New ways to optimize flexibility, improve security, and reduce costs with Azure Virtual Desktop](https://techcommunity.microsoft.com/t5/azure-virtual-desktop-blog/new-ways-to-optimize-flexibility-improve-security-and-reduce/ba-p/3650895) (Ignite 2022 付近のタイミングでアナウンスされた機能の一覧がよくまとまっています。以下は特に重要と思われる機能です)
 
@@ -352,8 +385,6 @@ AVD に接続するクライアント デバイス側で、ソフトウェア �
 [AVD および FSLogix 関連の各種公開情報](https://jpwinsup.github.io/blog/2020/11/05/RemoteDesktopService/AVD/avd-fslogix-useful-links/) (日本マイクロソフト サポートチームによる Blog)
 
 [くらう道](https://www.cloudou.net/) (日本マイクロソフト 社員によるブログ記事)
-
-[AVD 関連の更新情報](https://azure.microsoft.com/ja-jp/updates/?category=windows-virtual-desktop)
 
 [Azure Virtual Desktop の最新情報](https://learn.microsoft.com/ja-jp/azure/virtual-desktop/whats-new)
 
