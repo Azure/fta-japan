@@ -4,15 +4,13 @@
 ### データベースそのもののアセスメント
 
 1. Database size を確認する
-'''sql
-//Query-1 to get database size
+
+```sql
 SELECT pg_size_pretty( pg_database_size('postgres') );
-'''
+```
 
 2. テーブル一覧を確認する
-'''sql
-//Query-2 to generate table list
-
+```sql
 SELECT n.nspname as "Schema",
   c.relname as "Name",
   CASE c.relkind WHEN 'r' THEN 'table' WHEN 'v' THEN 'view' WHEN 'm' THEN 'materialized view' WHEN 'i' THEN 'index' WHEN 'S' THEN 'sequence' WHEN 's' THEN 'special' WHEN 'f' THEN 'foreign table' WHEN 'p' THEN 'partitioned table' WHEN 'I' THEN 'partitioned index' END as "Type",
@@ -25,47 +23,42 @@ WHERE c.relkind IN ('r','p','')
       AND n.nspname <> 'information_schema'
       AND n.nspname !~ '^pg_toast'
 ORDER BY 1,2;
-'''
+```
 
 3. テーブル内のブロートの取得
-'''sql
-//Query-3 to get table bloat
 
+```SQL
 SELECT schemaname, relname, n_dead_tup, n_live_tup, round(n_dead_tup::float/n_live_tup::float*100) dead_pct ,autovacuum_count , last_vacuum, last_autovacuum ,last_autoanalyze
 FROM pg_stat_user_tables  
 WHERE n_live_tup > 0  
 ORDER BY n_live_tup DESC;
-'''
+```
+
 > Bloat （ブロート）
 未使用（自由）空間、あるいは古くなった行バージョンのように、現在の行バージョンを含まないデータページ内の空間
 
 4. 拡張機能の確認
-'''sql
-// query-4 to check extensions
-
+```SQL
 SELECT e.extname AS "Name", e.extversion AS "Version", n.nspname AS "Schema", c.description AS "Description"
 FROM pg_catalog.pg_extension e LEFT JOIN pg_catalog.pg_namespace n ON n.oid = e.extnamespace 
 LEFT JOIN pg_catalog.pg_description c ON c.objoid = e.oid AND c.classoid = 'pg_catalog.pg_extension'::pg_catalog.regclass
 ORDER BY 1;
-'''
+```
 
 5. ラージオブジェクトの確認
-'''sql
-//query -5 to check large objects :
-
+```SQL
 SELECT oid as "ID",
   pg_catalog.pg_get_userbyid(lomowner) as "Owner",
   pg_catalog.obj_description(oid, 'pg_largeobject') as "Description"
   FROM pg_catalog.pg_largeobject_metadata   ORDER BY oid;
-'''
+```
 
 6. みなしごのラージオブジェクトの確認
-'''sql
-// query--6 to check orphan objects;
 
+```SQL
 select oid from pg_largeobject_metadata m where not exists
 (select 1 from <name_of_table>  where m.oid=name_of_oid_column);
-'''
+```
 
 
 ### 現在のデプロイメント機能の確認
