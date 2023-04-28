@@ -73,13 +73,16 @@ select oid from pg_largeobject_metadata m where not exists
 - [Azure Database for PostgreSQL - フレキシブル サーバーの PostgreSQL 拡張機能](https://learn.microsoft.com/ja-jp/azure/postgresql/flexible-server/concepts-extensions)
 
 注意する拡張機能は以下のとおり。
-> [!NOTE]
-> TIMESCALEDB, PG_PARTMAN, POSTGIS_TIGER_DECODER 
-__サポートリクエスト経由で支援依頼が必要__
 
-> [!TIP]
-> PG_CRON, PG_HINT_PLAN, PG_PARTMAN_BGW, PG_PREWARM, PG_STAT_STATEMENTS, PG_AUDIT, PGLOGICAL, WAL2JSON
-__"shared_preloar_libraries"から追加する必要がある。__
+| NOTE |
+| ---- |
+|TIMESCALEDB, PG_PARTMAN, POSTGIS_TIGER_DECODER <br>__サポートリクエスト経由で支援依頼が必要__|
+
+
+
+| TIP |
+| ---- |
+|PG_CRON, PG_HINT_PLAN, PG_PARTMAN_BGW, PG_PREWARM, PG_STAT_STATEMENTS, PG_AUDIT, PGLOGICAL, WAL2JSON <br> __"shared_preloar_libraries"から追加する必要がある。__|
 
 
 ## 移行計画
@@ -90,8 +93,9 @@ __"shared_preloar_libraries"から追加する必要がある。__
 
 
 ### 移行先の SKU と移行時に使用する SKU を決定する
-> [!IMPORTANT]
-> 移行エクスペリエンスを最適化するため、フレキシブル サーバーのバースト可能 SKU を使用した移行の実行はサポートされていません。 汎用またはメモリ最適化 SKU (4 仮想コア以上) をターゲット フレキシブル サーバーとして使用して、移行を実行してください。 移行が完了したら、必要に応じて、バースト可能なインスタンスにスケールダウンできます。
+| IMPORTANT |
+| ---- |
+|移行エクスペリエンスを最適化するため、フレキシブル サーバーのバースト可能 SKU を使用した移行の実行はサポートされていません。 汎用またはメモリ最適化 SKU (4 仮想コア以上) をターゲット フレキシブル サーバーとして使用して、移行を実行してください。 移行が完了したら、必要に応じて、バースト可能なインスタンスにスケールダウンできます。|
 
 
 ### 移行リハーサルと所要時間の確認

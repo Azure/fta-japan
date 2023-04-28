@@ -13,13 +13,13 @@
 
 ## アジェンダ
 > 大まかに決まってはいますが、参加者の皆様に合わせて調整します。
-1. [提供終了のお知らせの後、Azure Database for PostgreSQL - 単一サーバーはどうなりますか?](https://learn.microsoft.com/ja-jp/azure/postgresql/single-server/whats-happening-to-postgresql-single-server)
+
+[提供終了のお知らせの後、Azure Database for PostgreSQL - 単一サーバーはどうなりますか?](https://learn.microsoft.com/ja-jp/azure/postgresql/single-server/whats-happening-to-postgresql-single-server)
  
-> [!IMPORTANT]
-> 
-> Azure Database for PostgreSQL - 単一サーバーは廃止が予定されており、2025 年 3 月 28 日までに廃止される予定です。
-> 
-> 2023 年 11 月 9 日以降は、Azure portal を使用して PostgreSQL バージョン 11 の新しい単一サーバー インスタンスを作成できなくなります。 ただし、2024 年 11 月までは CLI を使用して引き続き作成できます。
+| Azure Database for PostgreSQL - 単一サーバーは廃止が予定されており、2025 年 3 月 28 日までに廃止される予定です。|
+|:----|
+|2023 年 11 月 9 日以降は、Azure portal を使用して PostgreSQL バージョン 11 の新しい単一サーバー インスタンスを作成できなくなります。 ただし、2024 年 11 月までは CLI を使用して引き続き作成できます。|
+
 
 1. [Single Server と Flexible Server の違いと優位性](./01_Overview.md)
 1. [移行方法について](./02_Migration.md)
