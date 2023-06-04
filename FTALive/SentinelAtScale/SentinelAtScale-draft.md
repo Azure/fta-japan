@@ -345,10 +345,33 @@ UEBA は組織のエンティティ (ユーザー、ホスト、IP アドレス�
 
 [Microsoft Sentinel のユーザー/エンティティ行動分析 (UEBA) を使用して高度な脅威を特定する](https://learn.microsoft.com/ja-jp/azure/sentinel/identify-threats-with-entity-behavior-analytics)
 
+## 複数テナントの管理
+
+### Azure Light House
+
+[Azure Lighthouse](https://learn.microsoft.com/ja-jp/azure/lighthouse/overview) は異なるテナントに対してリソースの管理を委任するための仕組みで、例えばサブスクリプションのリソースの読み取り権限や、リソースグループの共同管理者など、RBAC の役割を別テナントのユーザーやグループに与えることができます。顧客に SOC サービスを提供するパートナーや、複数の子会社を管理する SOC チームなどを想定するシナリオで、独立したログのメンテナンスを実現しながら、セキュリティ監視を集中化することができます。
+
+次のドキュメントから ARM テンプレートとパラメーターをダウンロードし、パラメーターに任意の委任を記述したものを展開します。  
+[Azure Lighthouse への顧客のオンボード](https://learn.microsoft.com/ja-jp/azure/lighthouse/how-to/onboard-customer#create-your-template-manually)
+
+また、Sentinel は複数のワークスペースで生成されたインシデントを管理するための機能が用意されているため、Lighthouse で委任を構成することで複数のワークスペースに対して、１つの画面からインシデントを管理することができるようになります。
+
+![複数ワークスペース ビュー](https://learn.microsoft.com/ja-jp/azure/sentinel/media/multiple-workspace-view/workspaces.png)
+
+[多くのワークスペースのインシデントを一度に操作する](https://learn.microsoft.com/ja-jp/azure/sentinel/workspace-manager)
+
+### ワークスペース マネージャー
+
+Sentinel のワークスペースには分析ルールやワークブックなどのリソースが含まれていますが、共通するコンテンツを複数のワークスペースに簡単に展開するための機能であるワークスペース マネージャーがプレビュー機能として公開されています。この機能を利用すると、中央のワークスペースからテナントが同じ / 異なるワークスペースに対してコンテンツを展開することができるため、複雑な環境のコンテンツの運用を簡単にすることができます。
+
+![ワークスペース マネージャー](https://learn.microsoft.com/ja-jp/azure/sentinel/media/workspace-manager/architectures.png)
+
+[ワークスペース マネージャーを使用して複数の Microsoft Sentinel ワークスペースを一元管理する](https://learn.microsoft.com/ja-jp/azure/sentinel/workspace-manager)
+
+<!--
 
 ## ログが落ちることを追加する
 
-<!--
 ### Azure Arc
 
 mark.kendrick
