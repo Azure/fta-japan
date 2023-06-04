@@ -18,9 +18,11 @@
 
 Microsoft Sentinel はこの機能の中で主に `Detect` と `Respond` を担当する製品です。脅威検知製品を活用することで、特定の組織や資産に依存しない脅威の検知を行うことができますが、Identify の機能が適切であれば企業固有の資産に対する具体的な脅威を見つけることが期待できますし、Protect が適切であれば監視すべき攻撃面を小さくすることができるため、ログのコスト効率と脅威検知の効率の両方を高めることができます。逆に Identify が行われていない場合には目的のないログが大量に保存され、コストを圧迫したり、必要なログが保存されていないなどの問題が発生します。
 
-継続的にメンテナンスされている展も重要で、現在発行されているCSF は 1.1 ですが、今後リリースされる [2.0](https://www.nist.gov/system/files/documents/2023/01/19/CSF_2.0_Concept_Paper_01-18-23.pdf) は上の 5 つの機能に加えて、Govern が追加されるようです。リスク管理は組織としての意思決定が重要ですが、この点が強調される形です。
+継続的にメンテナンスされている点も重要で、現在発行されているCSF は 1.1 ですが、今後リリースされる [2.0](https://www.nist.gov/system/files/documents/2023/01/19/CSF_2.0_Concept_Paper_01-18-23.pdf) は上の 5 つの機能に加えて、Govern が追加されるようです。リスク管理は組織としての意思決定が重要ですが、この点が強調される形です。
 
-Microsoft はクラウドを運用する際に必要となるセキュリティ コントロールを Microsoft Cloud Security Benchmark (MCSB) として公開しています。コントロールはメンテナンスしやすい適度な粒度になっているのでセキュリティ コントロールのベースとしてお勧めです。Defender for Cloud のセキュリティ態勢管理（CSPM - 無償機能）はこのコントロールに基づいて環境のリソースのセキュリティ状態を評価します。CSPM は CSF において `Identity` と `Protect` をカバーするため、Microsoft Sentinel と併せて使うと効果的です。Defender for Cloud については FTA Live でセッションがあるため、詳しく知りたい方はこちらにご参加ください。
+![CSF MS](../SAP/images/cyber-security-framework.png)
+
+Microsoft はクラウドを運用する際に必要となるセキュリティ コントロールを Microsoft Cloud Security Benchmark (MCSB) として公開しています。コントロールはメンテナンスしやすい適度な粒度になっているのでセキュリティ コントロールのベースとしてお勧めです。Defender for Cloud のセキュリティ態勢管理（CSPM - 無償機能）はこのコントロールに基づいて環境のリソースのセキュリティ状態を評価します。CSPM は CSF において `Identity` と `Protect` をカバーするため、Microsoft Sentinel と併せて使うと効果的です。Defender for Cloud については定期的に FTA Live でセッションを実施しているため、詳しく知りたい方はこちらにご参加ください。
 
 [FTA Live - Defender for Cloud](https://github.com/Azure/fta-japan/blob/main/FTALive/DefenderForCloud/Pre-requisites.md)
 
@@ -217,6 +219,17 @@ Microsoft 365 Defender のデータ コネクタは 3 種類の構成を含ん�
 
 Azure Activity はサブスクリプションやリソースに対する操作が行われた場合に記録されるログで、リソースの作成、変更や削除、権限の付与などの管理操作を記録しています。Azure 環境に対する操作の監査ログとしてもよく使われるため、Microsoft Sentinel に取り込んでおくことをお勧めしています。
 
+### Microsoft Defender 脅威インテリジェンス の接続
+
+脅威インテリジェンスとは脅威に関する様々な情報を指す言葉ですが、セキュリティ監視の文脈では侵害インジケーター (IoC) または攻撃インジケーター (IoA) を意味します。これらのインジケーターは攻撃者に関係する IP アドレス、ドメイン名や URL、メールの送信元や件名、ファイル名やハッシュを含んでいて、収集されたログにこれらの攻撃の足跡が記録されているか、検知されたアラートに含まれるエンティティに攻撃者に関するものがあるか、などの判断に利用することができます。脅威検知製品のアラートだけでなく、様々なデータソースからのログを取り込むシナリオではログに含まれるエンティティに不審なものが含まれているかどうかを判断する必要があるため、脅威インテリジェンスは重要な要素になります。
+
+[Microsoft Sentinel の脅威インテリジェンスについて](https://learn.microsoft.com/ja-jp/azure/sentinel/understand-threat-intelligence)
+
+Microsoft が管理する脅威インテリジェンスを取り込むためのデータコネクタがプレビュー提供されているのでこれを分析に利用することができます。また、
+Microsoft Sentinel では脅威インテリジェンスを記述するデータ構造である STIX を使用し、TAXII サーバーから脅威インジケーターを取り込むデータコネクタ―が用意されているため、組織で使用している TAXII サーバーがある場合にはデータを取り込むことができます。これらのログは ThreatIntelligenceIndicator というテーブルに保持されます。
+
+![脅威インジケーターの例](https://learn.microsoft.com/ja-jp/azure/sentinel/media/understand-threat-intelligence/threat-intel-tagging-indicators.png#lightbox)
+
 ## 仮想マシンの接続
 
 仮想マシンを接続することで仮想マシンのパフォーマンス情報やログの情報を Microsoft Sentinel に取り込むことができるようになります。仮想マシンのこれらの情報を取り込むかどうかは組織の監視や監査の要件に寄りますが、仮想マシンが接続を行う仕組みはネットワーク機器などからログを収集するデータコネクタの前提条件になるため、いくつかの仮想マシンを接続し、ログが取り込まれる流れを理解しておくことをお勧めします。
@@ -229,7 +242,7 @@ Azure Activity はサブスクリプションやリソースに対する操作�
 Microsoft Sentinel の機能に対する一般提供は限定的で、Windows のイベントログや Linux の Sylog を収集するようなシナリオは一般提供の機能でカバーすることができますが、Azure Monitor Agent を他のデータコネクタの中で使用し、Syslog や CEF のフォワード先として使うようなシナリオでは注意が必要です。利用するデータコネクタごとにサポートの可否を確認することをお勧めします。  
 [Microsoft Sentinel の AMA 移行](https://learn.microsoft.com/ja-jp/azure/sentinel/ama-migrate)
 
-## Windows VM の接続
+### Windows VM の接続
 
 次のドキュメントに従って Windows イベントのログを接続します。  
 [Microsoft Azure Sentinel を Azure、Windows、Microsoft、および Amazon サービスに接続する](https://learn.microsoft.com/ja-jp/azure/sentinel/connect-azure-windows-microsoft-services?tabs=SA%2CAMA#windows-agent-based-connections)
@@ -332,9 +345,23 @@ UEBA は組織のエンティティ (ユーザー、ホスト、IP アドレス�
 
 [Microsoft Sentinel のユーザー/エンティティ行動分析 (UEBA) を使用して高度な脅威を特定する](https://learn.microsoft.com/ja-jp/azure/sentinel/identify-threats-with-entity-behavior-analytics)
 
+
+## ログが落ちることを追加する
+
 <!--
 ### Azure Arc
 
+mark.kendrick
+
+５分以内に連続でパスワードが５回失敗したユーザー
+
+リソースのロックを解除したユーザー
+
+脅威モデリング
+
+MITRE TTP
+
+Threat Intelligence Indicator
 
 ### Linux のログ
 
