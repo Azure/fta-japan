@@ -8,7 +8,7 @@
 
 組織のセキュリティ機能を Identify、Protect、Detect、Respond、Recover の 5 つのカテゴリーに分類していて、この順番に考えていくと効率的にセキュリティ機能を展開できるようになっています。セキュリティ運用が存在しない中でセキュリティ製品を展開する必要があったり、セキュリティ運用に自信がない場合の現状の把握など、多くの組織にお勧めできるフレームワークです。よく使われているセキュリティ標準（ISO 27001 / NIST SP 800-53 / CIS CSC など) へのマッピングを持つため、これらの標準を既に使っている場合には重ね合わせて使うこともできます。
 
-![Framework Version 1.1](https://www.nist.gov/sites/default/files/styles/220_x_220_limit/public/images/2019/10/18/framework_functions_wheel.png?itok=1KLGPsFQ)
+![CSF MS](../SAP/images/cyber-security-framework.png)
 
 - **Identify**：ビジネス状況と資産を特定し、リスク アセスメントを実施する
 - **Protect**：アクセス制御と保護を展開する
@@ -20,7 +20,7 @@ Microsoft Sentinel はこの機能の中で主に `Detect` と `Respond` を担�
 
 継続的にメンテナンスされている点も重要で、現在発行されているCSF は 1.1 ですが、今後リリースされる [2.0](https://www.nist.gov/system/files/documents/2023/01/19/CSF_2.0_Concept_Paper_01-18-23.pdf) は上の 5 つの機能に加えて、Govern が追加されるようです。リスク管理は組織としての意思決定が重要ですが、この点が強調される形です。
 
-![CSF MS](../SAP/images/cyber-security-framework.png)
+
 
 Microsoft はクラウドを運用する際に必要となるセキュリティ コントロールを Microsoft Cloud Security Benchmark (MCSB) として公開しています。コントロールはメンテナンスしやすい適度な粒度になっているのでセキュリティ コントロールのベースとしてお勧めです。Defender for Cloud のセキュリティ態勢管理（CSPM - 無償機能）はこのコントロールに基づいて環境のリソースのセキュリティ状態を評価します。CSPM は CSF において `Identity` と `Protect` をカバーするため、Microsoft Sentinel と併せて使うと効果的です。Defender for Cloud については定期的に FTA Live でセッションを実施しているため、詳しく知りたい方はこちらにご参加ください。
 
