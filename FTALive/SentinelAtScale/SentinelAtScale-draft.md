@@ -320,6 +320,21 @@ SigninLogs
     )  on $left.UserPrincipalName == $right.Caller
 ```
 
+脅威インジケーターから 14 日以内の有効な IP アドレスを取得する (TI Map IP Entity to DnsEvents に含まれる KQL)
+
+```kql
+let ioc_lookBack = 14d;
+ThreatIntelligenceIndicator
+| where TimeGenerated >= ago(ioc_lookBack) and ExpirationDateTime > now()
+| summarize LatestIndicatorTime = arg_max(TimeGenerated, *) by IndicatorId
+| where Active == true
+| where isnotempty(NetworkIP) or isnotempty(EmailSourceIpAddress) or isnotempty(NetworkDestinationIP) or isnotempty(NetworkSourceIP)
+| extend TI_ipEntity = iff(isnotempty(NetworkIP), NetworkIP, NetworkDestinationIP)
+| extend TI_ipEntity = iff(isempty(TI_ipEntity) and isnotempty(NetworkSourceIP), NetworkSourceIP, TI_ipEntity)
+| extend TI_ipEntity = iff(isempty(TI_ipEntity) and isnotempty(EmailSourceIpAddress), EmailSourceIpAddress, TI_ipEntity)
+| where ipv4_is_private(TI_ipEntity) == false and  TI_ipEntity !startswith "fe80" and TI_ipEntity !startswith "::" and TI_ipEntity !startswith "127."
+```
+
 ## 分析ルールの作成（ハンズオン）
 
 ### コンテンツ ハブから分析ルールを作成
