@@ -347,6 +347,22 @@ ThreatIntelligenceIndicator
 次のドキュメントを参考にカスタムの分析ルールを作成します。  
 [脅威を検出するためのカスタム分析規則を作成する](https://learn.microsoft.com/ja-jp/azure/sentinel/detect-threats-custom)
 
+### ウォッチリスト
+
+ウォッチリストはワークスペース内で小規模 (上限 1,000万行) なデータを管理するためのテーブルで、分析の対象とするユーザーやシステム名、監視から除外したいプロセス名など、分析ルールの中で使用する条件が使用するデータの格納に使用することができます。分析ルールの KQL を直接変更することなく分析ルールのふるまいを変更することができるため、KQL に習熟していないオペレーターでもウォッチリストを使うことで分析ルールのメンテナンスの一部を実施することができます。
+
+ウォッチリストは CSV ファイルを直接、あるいはストレージアカウントからアップロードして作成することができ、一度作成されたウォッチリストの項目は Azure ポータルから直接変更することができます。ウォッチリストはには同じワークスペース内から KQL の _GetWatchlist 関数を呼び出すことでアクセスすることができます。
+
+```kql
+Heartbeat
+| where ComputerIP in ( 
+    (_GetWatchlist('ipwatchlist')
+    | project SearchKey)
+)
+```
+
+[Microsoft Sentinel でウォッチリストを作成する](https://learn.microsoft.com/ja-jp/azure/sentinel/watchlists-create)
+
 ## ユーザーとエンティティの動作分析 (UEBA) の構成（ハンズオン）
 
 UEBA は組織のエンティティ (ユーザー、ホスト、IP アドレス、アプリケーションなど) のベースライン行動プロファイルを構築します。 さまざまな手法や機械学習機能を使用して、Microsoft Sentinel で異常なアクティビティを特定でき、資産が侵害されているかどうかを判定するのに役立ちます。
@@ -383,16 +399,14 @@ UEBA は組織のエンティティ (ユーザー、ホスト、IP アドレス�
 
 ## オートメーション (ハンズオン)
 
-Sentinel のオートメーションは、オートメーション ルールとプレイ ブックの 2 つの要素で構成されています。
+Sentinel のオートメーションは、オートメーション ルールとプレイ ブックの 2 つの要素で構成されています。プレイブックは Sentinel に実装されていた最初のオートメーションの機能です。続いて基本的な自動化を簡単に実装するためにオートメーション ルールが追加されました。
 
-**オートメーション ルール**はインシデントやアラートの生成、インシデントの更新の際に実行されるオートメーションで、インシデントのステータスや重大度の変更、担当者の割り当てなど基本的な処理を自動化することができます。より複雑な処理を実行する必要がある場合には、オートメーション ルールの中から後述のプレイブックを実行することができます。次のドキュメントを参照しながらオートメーション ルールを作成します。  
+**オートメーション ルール**はインシデントやアラートの生成、インシデントの更新の際に実行されるオートメーションで、インシデントのステータスや重大度の変更、担当者の割り当てなど基本的な処理を自動化することができます。より複雑な処理を実行する必要がある場合には、オートメーション ルールからプレイブックを実行することができます。次のドキュメントを参照しながらオートメーション ルールを作成します。  
 [自動化ルールを使って Microsoft Sentinel の脅威への対応を自動化する](https://learn.microsoft.com/ja-jp/azure/sentinel/automate-incident-handling-with-automation-rules)
 
 **プレイブック**は Logic Apps のワークフローを使用するオートメーションです。Microsoft Office 365 や Microsoft Azure など Microsoft のサービスの他、Amazon や Google といったサードパーティの様々な SaaS / PaaS 製品に接続するための[コネクタ](https://learn.microsoft.com/ja-jp/connectors/connector-reference/connector-reference-logicapps-connectors)を持っていて、これらのサービスと連携した自動処理を行うことができます。
 ロジック アプリと Microsoft Sentinel 双方の 共同作成やロールがあればプレイブックによる自動化に必要な操作は全て実施することができます。最小権限を与える必要がある場合には[こちら](https://learn.microsoft.com/ja-jp/azure/sentinel/automate-responses-with-playbooks#permissions-required)のドキュメントを参照し、必要な権限を与えてください。次のドキュメントを参照しながらプレイブックを作成します。  
 [Microsoft Sentinel のプレイブックを使用して脅威への対応を自動化する](https://learn.microsoft.com/ja-jp/azure/sentinel/automate-responses-with-playbooks)
-
-プレイブックは Sentinel に実装されていた最初のオートメーションの機能です。続いて基本的な自動化を簡単に実装するためにオートメーション ルールが追加されました。
 
 ## 複数テナントの管理
 
