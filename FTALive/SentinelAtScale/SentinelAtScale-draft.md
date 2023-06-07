@@ -2,7 +2,7 @@
 
 ## Microsoft Cloud Security Benchmark と NIST Cybersecurity Framework
 
-リスクが効果的に管理された状態のためには包括的なセキュリティ コントロールが組織に展開されている必要があります。セキュリティ コントロールは多岐にわたるため、適切なセキュリティ運用が行われていなくて既存の指針がないような環境でセキュリティ コントロールを展開しようとすると、幅が広すぎて何から手をつければよいかわからない、という状況になります。
+リスクが効果的に管理された状態を実現するためにはセキュリティ コントロール (セキュリティ対策) が、包括的に組織に展開されている必要があります。セキュリティ コントロールは多くの分類が存在し、その対象も IT 機器からプロセスまで多岐にわたるため、適切なセキュリティ運用が行われておらず、利用可能な既存の指針がないような環境に対してセキュリティ コントロールを展開しようとした場合、膨大すぎて何から手をつければよいかわからない、という状況になります。
 
 [Cybersecurity Framework (CSF)](https://www.nist.gov/cyberframework) は組織が実装すべきセキュリティ コントロールをコンパクトに整理していて、粒度が細かすぎず、荒すぎず、シンプルで使いやすいという特徴があります。このため、当初は重要インフラを保護することを目的に作られましたが、様々な組織で利用されるようになっています。日本でも [IPA が翻訳を公開](https://www.ipa.go.jp/files/000071204.pdf)しています。
 
@@ -269,7 +269,7 @@ KQL の完全なリファレンスは次のドキュメントに記載されて�
 [https://learn.microsoft.com/ja-jp/azure/data-explorer/kusto/query/](https://learn.microsoft.com/ja-jp/azure/data-explorer/kusto/query/)
 
 よく使う KQL を学習するためのコンテンツとして以下もご利用ください。  
-[KUSTO 100+ knocks](https://tsubasaxzzz.github.io/fta-hackon2022/ja/docs/basic/)
+[KUSTO 100+ knocks](https://aka.ms/ftakusto)
 
 ### 収集されたログをクエリする
 
@@ -359,6 +359,40 @@ UEBA は組織のエンティティ (ユーザー、ホスト、IP アドレス�
 ![UEBA](https://learn.microsoft.com/ja-jp/azure/sentinel/media/identify-threats-with-entity-behavior-analytics/entity-behavior-analytics-architecture.png)
 
 [Microsoft Sentinel のユーザー/エンティティ行動分析 (UEBA) を使用して高度な脅威を特定する](https://learn.microsoft.com/ja-jp/azure/sentinel/identify-threats-with-entity-behavior-analytics)
+
+## 脅威の探索
+
+インシデントが生成された際に利用するツールを確認します。
+
+- **ハンティング ダッシュボード**から予め用意されたハンティング用のクエリを実行することができます。インシデントの発生に伴い毎回実施するクエリを用意しておくことで、初期の対応や判断を速やかにすることができます。
+
+  ![Hunting](https://learn.microsoft.com/ja-jp/azure/sentinel/media/hunting/save-query.png#lightbox)
+
+- **ブックマーク**を使用することで、ハンティング中に発見された関連する情報を保存し、既存のインシデントに結び付けて管理することができます。ログを探索し、探索した結果を外部のエディタで管理する、といった手間を省くことができます。
+
+- **ライブストリーム**は新たにインジェストされたログを分析し、条件に一致するログがあった場合に UI から通知を受け取ることができる機能です。例えば特定のユーザーについてログの調査を行っている間に、そのユーザーから新たなログインがあった場合にすぐに通知を受け取りたい、などの状況で利用することができます。
+
+  ![Live Stream](https://learn.microsoft.com/ja-jp/azure/sentinel/media/livestream/notification.png)  
+[Microsoft Sentinel でハンティング ライブストリームを使用して脅威を検出する](https://learn.microsoft.com/ja-jp/azure/sentinel/livestream)
+
+- **タスク**を使用し、調査の経過や必要な手順を管理することができます。ここのタスクは手動で追加することもできますが、後述のオートメーションの機能を用いて追加することもできます。これにより、特定の種類のインシデントに求められる手順を標準化し、オペレーターは標準化されたタスクにもとづいてインシデントを処理することができるようになります。
+
+  ![タスク](https://learn.microsoft.com/ja-jp/azure/sentinel/media/incident-tasks/incident-details-screen.png#lightbox)
+
+- **ノートブック**は Jupyter Notebook を使用して機械学習、視覚化、データ解析を行うための機能です。
+
+## オートメーション (ハンズオン)
+
+Sentinel のオートメーションは、オートメーション ルールとプレイ ブックの 2 つの要素で構成されています。
+
+**オートメーション ルール**はインシデントやアラートの生成、インシデントの更新の際に実行されるオートメーションで、インシデントのステータスや重大度の変更、担当者の割り当てなど基本的な処理を自動化することができます。より複雑な処理を実行する必要がある場合には、オートメーション ルールの中から後述のプレイブックを実行することができます。次のドキュメントを参照しながらオートメーション ルールを作成します。  
+[自動化ルールを使って Microsoft Sentinel の脅威への対応を自動化する](https://learn.microsoft.com/ja-jp/azure/sentinel/automate-incident-handling-with-automation-rules)
+
+**プレイブック**は Logic Apps のワークフローを使用するオートメーションです。Microsoft Office 365 や Microsoft Azure など Microsoft のサービスの他、Amazon や Google といったサードパーティの様々な SaaS / PaaS 製品に接続するための[コネクタ](https://learn.microsoft.com/ja-jp/connectors/connector-reference/connector-reference-logicapps-connectors)を持っていて、これらのサービスと連携した自動処理を行うことができます。
+ロジック アプリと Microsoft Sentinel 双方の 共同作成やロールがあればプレイブックによる自動化に必要な操作は全て実施することができます。最小権限を与える必要がある場合には[こちら](https://learn.microsoft.com/ja-jp/azure/sentinel/automate-responses-with-playbooks#permissions-required)のドキュメントを参照し、必要な権限を与えてください。次のドキュメントを参照しながらプレイブックを作成します。  
+[Microsoft Sentinel のプレイブックを使用して脅威への対応を自動化する](https://learn.microsoft.com/ja-jp/azure/sentinel/automate-responses-with-playbooks)
+
+プレイブックは Sentinel に実装されていた最初のオートメーションの機能です。続いて基本的な自動化を簡単に実装するためにオートメーション ルールが追加されました。
 
 ## 複数テナントの管理
 
