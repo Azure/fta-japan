@@ -92,7 +92,7 @@ Virtual WAN を利用すると、仮想ネットワークの推移的な接続�
 
 以下は Azure のリソースで必要なアドレス空間の一例です。
 
-|リソース|必要なアドレス空間|備考|
+|リソース|推奨されているアドレス空間|備考|
 |:-----|:-----|:------|
 |VPN Gatway|/27 以上|[ドキュメント](https://docs.microsoft.com/ja-jp/azure/vpn-gateway/vpn-gateway-vpn-faq#do-i-need-a-gatewaysubnet)|
 |Azure Firewall|/26|[ドキュメント](https://docs.microsoft.com/ja-jp/azure/firewall/firewall-faq#azure-firewall----26---------------------)|
