@@ -1,4 +1,6 @@
-Azure Networking #2 - アプリケーション配信基盤の設計・展開 # **[prev](./why.md)** | **[home](./appdelivery/README.md)**  | **[next](./appdelivery/application-delivery.md)**
+<!-- Azure Networking #1 - アプリケーション配信基盤の設計・展開 # **[prev](./why.md)** | **[home](./appdelivery/README.md)**  | **[next](./appdelivery/application-delivery.md)** -->
+Azure Networking #1 - Azure ネットワークの基礎とハイブリッドネットワークの設計・展開 # **[prev](./why.md)** | **[home](./core/README.md)**  | **[next](./core/hybrid-network.md)**
+
 
 # 2. Azure Networking の全体像と機能概要
 
@@ -181,10 +183,15 @@ Azure のさまざまなリソースに対してインターネットからア�
    `SNAT`を行うことを目的としたサービスです。サブネットにリンクすることで、そのサブネットに所属するすべての仮想マシンからの送信方向を`SNAT`します。動的にポートを確保するためスケーラビリティが高い方法です。1 つの NAT Gateway に 16 個の Public IP Address が設定でき、1 つの Public IP Address ごとに 64,000 ポートが利用できるため、最大 16 * 64,000 = 1,0240,000 ポートが利用できます。
 1. Azure Firewall 等の NVA  
    Azure Firewall 等の NVA によって`SNAT`する方法です。その仕様動作は NVA によって異なります。NVA であっても Public IP Address やロード バランサーの制約を受けることになります。Azure Firewall の場合、Public IP Address ごとに 2496 ポートが利用できます。
-1. 既定の接続  
+1. 既定の送信アクセス
    Public IP Address やロード バランサー等のバックエンドにない仮想マシンの場合であってもインターネットへの接続が可能です。これは、Azure によって管理される Public IP Address によって送信接続が自動的に設定されるためです。従って、送信元の IP アドレスはランダムとなり、ポートも最大 1024 ポートまでと限定的な性能が提供されます。
 
 ![NAT](images/flow-direction4.png)
+
+|:exclamation: 既定の送信アクセスの廃止|
+|:------------------------------------------|
+|2023 年 9 月に既定の送信アクセスの提供終了がアナウンスされました([link](https://azure.microsoft.com/en-us/updates/default-outbound-access-for-vms-in-azure-will-be-retired-updates-and-more-information/))。このアナウンスでは、2025 年 9 月 30 日に既定の送信アクセスの提供がリタイアすることが述べられています。この影響により、仮想マシンがインターネット接続を行う場合、先に挙げた`既定の送信アクセス`以外の方法で送信接続する方法をユーザーが実装する必要があります。[サポートチームのブログ](https://jpaztech.github.io/blog/network/default-outbound-access-for-vms-will-be-retired/) もご確認ください。|
+
 
 どの方法が最も適しているかは、要件によって異なるため一概にお勧めをお伝えすることはできません。さまざまな送信接続の方法があるということを理解したうえで適切な方法を検討してください。
 
@@ -215,6 +222,7 @@ Azure の Load Balancer に関する詳細な技術情報は論文で公開さ�
   - フロントエンドに Public IP Address を関連付け、外部(インターネット)との通信を可能とする外部 Load Balancer を展開できる
   - フロントエンドに仮想ネットワークのプライベート IP アドレスを使用し、内部通信を可能とする内部 Load Balancer を展開できる
 - Standard と Basic の 2 つの SKU がある
+  - Basic のロード バランサーは、2025 年 9 月 30 日にリタイアする
   - 99.99 % の SLA が定義されている SKU は Standard のみ
   - バックエンドに IP アドレスを指定できるのは Standard のみ
   - メトリックを取得できるのは Standard のみ
@@ -230,7 +238,7 @@ Azure の Load Balancer に関する詳細な技術情報は論文で公開さ�
 - インバウンド NAT 規則を構成すると DNAT ができる
   - Load Balancer のフロントエンドの IP アドレスとバックエンドサーバーを紐づけられる
 - 送信規則を構成すると SNAT のルールを構成でき、外部へのアウトバウンドを行える
-- Cross-region Load Balancer を用いるとリージョンをまたいだ L4 の負荷分散ができる(2022/4現在プレビュー)
+- Cross-region Load Balancer を用いるとリージョンをまたいだ L4 の負荷分散ができる
 
 </details>
 
@@ -246,6 +254,7 @@ Azure の Load Balancer に関する詳細な技術情報は論文で公開さ�
 - Application Gateway は特定のリージョンに展開する
 - ゾーン冗長ができる
 - Application Gateway v1(IIS ベース) と v2(nginx ベース) がある
+  - v1 ベースの Application Gateway は 2026 年 4 月 28 日にリタイアする
   - 基本的に v2 を選択する(以下断りがない場合 v2 の特徴とする)
 - Application Gateway は仮想ネットワークに展開する
   - `/24` のアドレス空間のサブネットが推奨
@@ -473,9 +482,10 @@ Azure Firewall はいわゆる透過プロキシとして動作します。Azure
   - `AzureFirewallSubnet` という名前の専用のサブネットに展開
   - アドレス空間は `/26` を確保
 - 可用性ゾーンに展開できる
-- Standard と Premium の SKU がある
+- Basic と Standard、 Premium の SKU がある
   - Premium は IDP/IDS 機能や TLS インスペクション機能がある
   - それぞれのフィルタリング機能の詳細については以下ドキュメントを参照
+  - 参考: [Azure Firewall Basic の機能](https://learn.microsoft.com/ja-jp/azure/firewall/basic-features)
   - 参考: [Azure Firewall Standard の機能](https://docs.microsoft.com/ja-jp/azure/firewall/features)
   - 参考: [Azure Firewall Premium の機能](https://docs.microsoft.com/ja-jp/azure/firewall/premium-features)
 - 自動的にスケールアウト・スケールインを行う
@@ -504,7 +514,13 @@ Azure Firewall はハブアンドスポーク構成を展開する上でセキ�
 
 Azure Bastion を使用すると、Azure の仮想マシンへ安全にログインできます。いわゆる踏み台サーバーを提供するサービスです。Azure Bastion をサブネットに展開すると、そのサブネットから到達可能なネットワーク上の仮想マシンへ RDP もしくは SSH でログインできます。また、Azure Bastion への認証は Azure AD による認証を使用するため、MFA のような Azure AD ならではの機能も活用できます。
 
-Azure Bastion には `Basic` と `Standard` の2 つの SKU があります。`Basic` は Azure ポータルから仮想マシンに対してブラウザで RDP もしくは SSH が可能です。従って、操作性や機能はブラウザの機能に制限されることになりますが、ブラウザがあれば仮想マシンにログインができます。`Standard` は ネイティブクライアントやノードのスケールに対応します。`Basic` と同様にブラウザベースでのログインも可能ですが、ネイティブクライアントを使用することで、ユーザーエクスペリエンスを向上できます。
+Azure Bastion には `Developer` と `Basic`、 `Standard` の3 つの SKU があります。
+
+`Basic` は Azure ポータルから仮想マシンに対してブラウザで RDP もしくは SSH が可能です。従って、操作性や機能はブラウザの機能に制限されることになりますが、ブラウザがあれば仮想マシンにログインができます。
+
+`Standard` は ネイティブクライアントやノードのスケールに対応します。`Basic` と同様にブラウザベースでのログインも可能ですが、ネイティブクライアントを使用することで、ユーザーエクスペリエンスを向上できます。
+
+`Developer` は最低限の機能を提供します。仮想マシンへのブラウザベースの接続ができますが、ピアリングされた VNet 上の仮想マシンへの接続が出来ない等の制約があります。
 
 - 参照: [Azure Bastion とは](https://docs.microsoft.com/ja-jp/azure/bastion/bastion-overview)
 

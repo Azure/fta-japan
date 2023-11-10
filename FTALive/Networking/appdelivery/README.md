@@ -1,4 +1,4 @@
-# Welcome to the FastTrack for Azure - Azure Networking - アプリケーション配信編
+# Welcome to the FastTrack for Azure - Azure Networking #2 - アプリケーション配信編
 ## まもなくセッションを開始しますのでしばらくお待ちください
 
 >このセッションは録音を行いません。多くの方にご参加いただいているということと、気軽にご質問をしていただきたいためです。
