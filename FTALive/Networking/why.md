@@ -2,6 +2,7 @@ Azure Networking #2 - アプリケーション配信基盤の設計・展開 # *
 <!--Azure Networking #1 - Azure ネットワークの基礎とハイブリッドネットワークの設計・展開 # **[home](./core/README.md)**  | **[next](./overview.md)**-->
 
 
+
 # 1. なぜ Azure Networking を理解しなければいけないのか
 
 Azure を使う上で必ず利用されるサービスとして、Azure のネットワークがあります。Azure 上に仮想マシンを構築する IaaS で利用する場面はもちろんですが、Web アプリケーションを構築するためのサービスやデータベースサービスのような PaaS を利用する場合であっても、Azure のネットワークを必ず通ることになります。
