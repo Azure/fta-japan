@@ -1,5 +1,5 @@
-<!-- Azure Networking #1 - アプリケーション配信基盤の設計・展開 # **[prev](./why.md)** | **[home](./appdelivery/README.md)**  | **[next](./appdelivery/application-delivery.md)** -->
-Azure Networking #1 - Azure ネットワークの基礎とハイブリッドネットワークの設計・展開 # **[prev](./why.md)** | **[home](./core/README.md)**  | **[next](./core/hybrid-network.md)**
+Azure Networking #1 - アプリケーション配信基盤の設計・展開 # **[prev](./why.md)** | **[home](./appdelivery/README.md)**  | **[next](./appdelivery/application-delivery.md)**
+<!--Azure Networking #1 - Azure ネットワークの基礎とハイブリッドネットワークの設計・展開 # **[prev](./why.md)** | **[home](./core/README.md)**  | **[next](./core/hybrid-network.md)**-->
 
 
 # 2. Azure Networking の全体像と機能概要
