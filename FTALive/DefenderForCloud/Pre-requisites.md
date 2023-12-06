@@ -57,10 +57,15 @@ Microsoft Cloud Security Benchmark ではセキュリティ ベースライン�
 * 構成の誤りと弱点を修正するためのセキュリティに関するレコメンデーション
 * セキュリティ スコア
 
+![secure score](./images/securescore.png)
+
 #### 有効化の手順
 
 [Microsoft Defender for Cloud] - [環境設定] - [<目的のサブスクリプション>] - [セキュリティ ポリシー] を開き、[Microsoft cloud security benchmark] のトグルスイッチを [有効] に設定します。
 ![enable basic cspm](./images/defaultpolicy.png)
+
+* [AWS の接続](https://learn.microsoft.com/ja-jp/azure/defender-for-cloud/concept-aws-connector)
+* [GCP の接続](https://learn.microsoft.com/ja-jp/azure/defender-for-cloud/concept-gcp-connector)
 
 #### 推奨事項への対応
 
