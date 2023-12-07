@@ -149,7 +149,7 @@ Azure 上の仮想マシンを監視する場合、観点として仮想マシ�
 
 以下の設定より診断拡張機能をインストールできます。
 
-![](./image/../images/overview-vmdiag1.png)
+![](./images/overview-vmdiag1.png)
 
 #### Azure Platform
 
