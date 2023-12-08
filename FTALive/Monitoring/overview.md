@@ -474,7 +474,7 @@ AMA はエージェントが再実装され、パフォーマンスが改善さ�
 
 |:question: Tips: Azure Monitor エージェント による Azure Monitor VM Insights|
 |:-----------------------------------------|
-|VM Insights は、仮想マシンから追加のメトリックを Log Analytics ワークスペースへ収集し仮想マシンの監視に役立つダッシュボードを提供します。VM Insights も Azure Monitor エージェントで利用できますが、2022 年 11月現在、まだプレビューの機能です。VM Insights とそれ以外のログやメトリックの収集を行う際は、正しく拡張機能がインストールされない等の事象が確認されているため別のデータ収集ルールを用いることが推奨されます。詳細はサポートチームのブログ確認してください。<br>[Azure Monitor エージェントを使用した Azure Monitor VM insights の有効化 (プレビュー)](https://jpazmon-integ.github.io/blog/LogAnalytics/Azure_Monitor_VM_insights_using_AMA/)|
+|VM Insights は、仮想マシンから追加のメトリックを Log Analytics ワークスペースへ収集し仮想マシンの監視に役立つダッシュボードを提供します。VM Insights も Azure Monitor エージェントで利用できます。VM Insights とそれ以外のログやメトリックの収集を行う際は、正しく拡張機能がインストールされない等の事象が確認されているため別のデータ収集ルールを用いることが推奨されます。詳細はサポートチームのブログ確認してください。<br>[Azure Monitor エージェントを使用した Azure Monitor VM insights の有効化 (プレビュー)](https://jpazmon-integ.github.io/blog/LogAnalytics/Azure_Monitor_VM_insights_using_AMA/)|
 
 ### Log Analytics ワークスペースの配置
 
