@@ -159,12 +159,25 @@ Microsoft Sentinel では 100 を超えるデータコネクタが提供さて�
 
 ![Data ingestion methods](./images/data-ingestion.png)
 
-### **Microsoft 365 Defender**
+### **インストールするソリューション**
 
-次のドキュメントに従って Microsoft 365 Defender を接続します。  
-[Microsoft 365 Defender から Microsoft Azure Sentinel にデータを接続する](https://learn.microsoft.com/ja-jp/azure/sentinel/connect-microsoft-365-defender?tabs=MDE)
+コンテンツ ハブから次のソリューションをインストールします。
 
-Microsoft 365 Defender のデータ コネクタは 3 種類の構成を含んでいます。
+- **Microsoft Entra ID** - Microsoft Entra ID のサインイン ログや監査ログのデータ コネクタが含まれています
+- **Azure Activirty** - Azure Activity のデータコネクタが含まれています
+- **Microsoft Defendre XDR** - Microsoft Defender for Endpoint / Identity / Office 365 / Cloud Apps のログやアラートを取り込むことができます
+- **Defender for Cloud** - Microsoft Defender for Cloud のアラートを連携します
+- **Threat Intelligence** - Microsoft が提供する脅威インテリジェンスを取り込みます
+- **UEBA Essentials** - UEBA を使用する際に便利なハンティング クエリが含まれています
+- **Windows Server DNS** - DNS の役割が有効になっている DNS サーバーから DNS のログを取り込みます
+- **Common Event Fromat** - Linux から CEF ログを収集します、ネットワーク機器からのログを収集する場合に主に使われます
+
+### **Microsoft Defender XDR**
+
+次のドキュメントに従って Microsoft Defender XDR を接続します。  
+[Microsoft Defender XDR から Microsoft Sentinel にデータを接続する](https://learn.microsoft.com/ja-jp/azure/sentinel/connect-microsoft-365-defender?tabs=MDE)
+
+Microsoft Defender XDR のデータ コネクタは 3 種類の構成を含んでいます。
 
 #### **インシデントとアラートを接続する**
 
@@ -242,6 +255,14 @@ Microsoft Sentinel では脅威インテリジェンスを記述するデータ�
 Microsoft Sentinel の機能に対する一般提供は限定的で、Windows のイベントログや Linux の Sylog を収集するようなシナリオは一般提供の機能でカバーすることができますが、Azure Monitor Agent を他のデータコネクタの中で使用し、Syslog や CEF のフォワード先として使うようなシナリオでは注意が必要です。利用するデータコネクタごとにサポートの可否を確認することをお勧めします。  
 [Microsoft Sentinel の AMA 移行](https://learn.microsoft.com/ja-jp/azure/sentinel/ama-migrate)
 
+### Azure Arc
+
+Azure Arc は Azure 以外の環境の物理 / 仮想マシンを管理するためのサービスです。Azure 以外のクラウドや、オンプレミスのデータセンターからのログ収集にも Azure Monitor Agent が使われますが、これらのマシンでは Azure Arc による管理がログ収集の前提条件になります。各マシンに Connected Machine Agent をインストールし、オンボード処理をすることで Azure Arc による管理が有効化されます。
+
+![Arc connected](https://learn.microsoft.com/ja-jp/azure/azure-arc/servers/media/onboard-portal/arc-for-servers-successful-onboard.png)
+
+[デプロイ スクリプトを使用してハイブリッド マシンを Azure に接続する](https://learn.microsoft.com/ja-jp/azure/azure-arc/servers/onboard-portal)
+
 ### Windows VM の接続
 
 次のドキュメントに従って Windows イベントのログを接続します。  
@@ -250,6 +271,52 @@ Microsoft Sentinel の機能に対する一般提供は限定的で、Windows �
 Azure Monitor Agent はデータ収集ルールに基づいて仮想マシンからログやパフォーマンス カウンタを収集します。Windows のイベントログは [XPath クエリを使用して](https://learn.microsoft.com/ja-jp/azure/azure-monitor/agents/data-collection-rule-azure-monitor-agent?tabs=portal#filter-events-using-xpath-queries)任意のイベントを抽出することができるため、一部のイベントを収集したい、といったシナリオに対応することができます。
 
 この手順で収集されるイベントログは XML 形式のフィールドを解析する必要があるため、セキュリティ イベントの分析であれば [AMA  を使用した Windows セキュリティ イベント](https://learn.microsoft.com/ja-jp/azure/sentinel/data-connectors-reference#windows-security-events-via-ama)が適しています。
+
+### Linux VM の接続
+
+#### Syslog の収集
+
+Syslog は Linux マシンのローカルで生成されたログの収集に使われる他、Syslog を転送する仕組みを使って、他の Linux マシンのログの収集や、ネットワーク機器のログの収集に利用されます。
+次のドキュメントに従って Syslog を接続します。  
+[Azure Monitor エージェントを使用して Syslog イベントを収集する](https://learn.microsoft.com/ja-jp/azure/azure-monitor/agents/data-collection-syslog)
+
+設定では Microsoft Sentinel に送信するファシリティとログのレベルを選択します。既定では全てのファシリティが最も詳細なレベルで取得される構成になっているため、必要な設定を行ってください。次の Common Event Format で使用するファシリティがここで設定されていると、同じログが重複してインジェストされます。
+
+#### Common Event Format (CEF) の収集
+
+CEF はセキュリティ イベントを記述するためのデータフォーマットで、様々なネットワーク機器やセキュリティ製品はこの形式でログを出力する機能を持っています。Microsoft Sentinel は Syslog を伝送プロトコルとして、CEF を収集することができます。Syslog Forwarder として構成された Linux マシンに CEF の設定を追加することが必要な構成です。
+
+ 次のドキュメントに従って CEF を接続します。
+[AMA コネクタで CEF ログをストリーミングする - コネクタを設定する](https://learn.microsoft.com/ja-jp/azure/sentinel/connect-cef-ama#set-up-the-connector)
+
+この手順のデータ収集ルール (DCR) では CEF の転送に使用するファシリティを指定していて、このファシリティに対して Syslog が転送されると、データは CEF として解釈され、Microsoft Sentinel の CommonSecurityEvent テーブルに送られます。
+
+同じマシンで Syslog を収集している場合、CEF と同じファシリティを Syslog でも指定することができます。この場合、同じログが Syslog テーブルと CommonSecurityEvent テーブルの 2 つに書き込まれることになります。この重複を避けるためには次のドキュメントに従って、Syslog のファシリティから CEF が使用するファシリティを削除する、またはデータ取集ルールの中で CEF を含むログを削除する構成を行います。  
+[CEF と Syslog の両方の形式でログをストリーミングする - データ インジェストの重複を回避する](https://learn.microsoft.com/ja-jp/azure/sentinel/connect-cef-syslog#avoid-data-ingestion-duplication)
+
+##### CEF の検証
+
+CEF データコネクタの Linux マシンで次のコマンドを実行します。文字列の最初の数字 <188> が Syslog のプライオリティを表していて、この例では local7 ファシリティと Warning レベルを指定しています。この [Broadcom のドキュメント](https://techdocs.broadcom.com/us/en/symantec-security-software/identity-security/privileged-access-manager/4-0/reference/messages-and-log-formats/syslog-message-formats/syslog-priority-facility-severity-grid.html)などで確認することができるので、設定した内容に対して適切な値を指定してください。
+
+```bash
+echo -n "<188>CEF:0|Mock-test-with-extension|MOCK|common-event-format-test|end|TRAFFIC|1|rt=$common=event-formatted-receive_time|SourceIP=192.168.100.100|DestinationIP=172.199.100.10" | nc -u -w0 localhost 514
+```
+
+DCR の dataFlow に transformKql を追加することで、AdditionalExtensions 列のデータを予め解析し、テーブルに含めることもできます。次の例は CEF の Extension 部分から DestionationIP や SourceIP があればテーブルの列を追加します。
+
+```json
+"dataFlows": [
+    {
+        "streams": [
+            "Microsoft-CommonSecurityLog"
+        ],
+        "destinations": [
+            "DataCollectionEvent"
+         ],
+        "transformKql": "source | extend DestinationIP = extract(@'DestinationIP=;(.*?)(\\|)', 1, AdditionalExtensions) |  extend SourceIP = extract(@'SourceIP=;(.*?)(\\|)', 1, AdditionalExtensions)"
+    }
+]
+```
 
 ## 取り込まれたログの確認（ハンズオン）
 
@@ -335,34 +402,6 @@ ThreatIntelligenceIndicator
 | where ipv4_is_private(TI_ipEntity) == false and  TI_ipEntity !startswith "fe80" and TI_ipEntity !startswith "::" and TI_ipEntity !startswith "127."
 ```
 
-## 分析ルールの作成（ハンズオン）
-
-### コンテンツ ハブから分析ルールを作成
-
-次のドキュメントを参考に、Azure Active Direvctory ソリューションを追加し、分析ルールを作成します。  
-[https://learn.microsoft.com/ja-jp/azure/sentinel/sentinel-solutions-deploy](https://learn.microsoft.com/ja-jp/azure/sentinel/sentinel-solutions-deploy)
-
-### カスタム ルールの作成
-
-次のドキュメントを参考にカスタムの分析ルールを作成します。  
-[脅威を検出するためのカスタム分析規則を作成する](https://learn.microsoft.com/ja-jp/azure/sentinel/detect-threats-custom)
-
-### ウォッチリスト
-
-ウォッチリストはワークスペース内で小規模 (上限 1,000万行) なデータを管理するためのテーブルで、分析の対象とするユーザーやシステム名、監視から除外したいプロセス名など、分析ルールの中で使用する条件が使用するデータの格納に使用することができます。分析ルールの KQL を直接変更することなく分析ルールのふるまいを変更することができるため、KQL に習熟していないオペレーターでもウォッチリストを使うことで分析ルールのメンテナンスの一部を実施することができます。
-
-ウォッチリストは CSV ファイルを直接、あるいはストレージアカウントからアップロードして作成することができ、一度作成されたウォッチリストの項目は Azure ポータルから直接変更することができます。ウォッチリストはには同じワークスペース内から KQL の _GetWatchlist 関数を呼び出すことでアクセスすることができます。
-
-```kql
-Heartbeat
-| where ComputerIP in ( 
-    (_GetWatchlist('ipwatchlist')
-    | project SearchKey)
-)
-```
-
-[Microsoft Sentinel でウォッチリストを作成する](https://learn.microsoft.com/ja-jp/azure/sentinel/watchlists-create)
-
 ## ユーザーとエンティティの動作分析 (UEBA) の構成（ハンズオン）
 
 UEBA は組織のエンティティ (ユーザー、ホスト、IP アドレス、アプリケーションなど) のベースライン行動プロファイルを構築します。 さまざまな手法や機械学習機能を使用して、Microsoft Sentinel で異常なアクティビティを特定でき、資産が侵害されているかどうかを判定するのに役立ちます。
@@ -375,6 +414,61 @@ UEBA は組織のエンティティ (ユーザー、ホスト、IP アドレス�
 ![UEBA](https://learn.microsoft.com/ja-jp/azure/sentinel/media/identify-threats-with-entity-behavior-analytics/entity-behavior-analytics-architecture.png)
 
 [Microsoft Sentinel のユーザー/エンティティ行動分析 (UEBA) を使用して高度な脅威を特定する](https://learn.microsoft.com/ja-jp/azure/sentinel/identify-threats-with-entity-behavior-analytics)
+
+## 分析ルールの作成（ハンズオン）
+
+Microsoft Sentinel は分析ルールを使用して脅威の検出を行います。分析ルールには以下の種類があります。
+
+- **Microsoft Security**  
+接続された Microsoft セキュリティ製品のアラートに基づいてインシデントを作成します。ここまでの手順で Microsoft Defender XDR と Microsoft Defender for Cloud のアラートは自動的にインシデントが作成されるように構成されています。  
+[Microsoft セキュリティ アラートからインシデントを自動的に作成する](https://learn.microsoft.com/ja-jp/azure/sentinel/create-incidents-from-alerts)
+
+- **Fusion ルール**  
+セキュリティ アラートを分析し、複数の攻撃ステージにまたがる攻撃を検出します。既定で有効化されています。このルールはセキュリティ アラートに含まれるアラートと戦術の情報を分析するため、カスタムで作成する分析ルールではこれらの情報を適切に構成してください。  
+[Microsoft Sentinel での高度なマルチステージ攻撃の検出](https://learn.microsoft.com/ja-jp/azure/sentinel/fusion)
+
+- **機械学習による行動分析**  
+機械学習を使用して Syslog または SecurityEvent のテーブルから不審なサインインを検出します。この機能を使用するためにはこれらのログが収集されていることと、分析ルール `(Preview) Anomalous RDP Login Detections` 、`(Preview) Anomalous SSH Login Detection` が有効化されている必要があります。  
+[異常な RDP ログイン検出用にセキュリティ イベントまたは Windows セキュリティ イベント コネクタを構成する](https://learn.microsoft.com/ja-jp/azure/sentinel/configure-connector-login-detection)
+
+- **Microsoft Defender for TI による分析**  
+Microsoft インフラストラクチャが保持する脅威インテリジェンスを参照し、ログの中から自動的に脅威を検出します。CEF や Syslog、DNS などのログに含まれる特定のフィールドから不信度の高い IP アドレスや URL への接続が自動的に分析されます。このル機能を使用するためには分析ルール `(Preview) Microsoft Defender Threat Intelligence Analytics` を有効化する必要があります。  
+[照合分析を使用して脅威を検出する](https://learn.microsoft.com/ja-jp/azure/sentinel/use-matching-analytics-to-detect-threats)
+
+- **異常検出ルール**  
+機械学習と UEBA エンジンを使用して異常を検出します。ルールは既定で動作しており、検出の結果は `Anomalies` テーブルに記録されます。自動的にインシデントは作成されないため、使い方については次のドキュメントを参照してください。  
+[Microsoft Sentinel で異常検出分析ルールを使用する](https://learn.microsoft.com/ja-jp/azure/sentinel/configure-connector-login-detection)
+
+- **スケジュールされた分析ルール / ほぼリアルタイム (NRT) 分析ルール**  
+KQL を使用してログからアラートを検出するルールです。カスタムの分析ルールを自由に作成することができます。また、コンテンツ ハブではそのまま使える豊富なルール テンプレートが用意されています。  
+
+### コンテンツ ハブから分析ルールを作成する
+
+次のドキュメントを参考に、Azure Active Direvctory ソリューションを追加し、分析ルールを作成します。  
+[https://learn.microsoft.com/ja-jp/azure/sentinel/sentinel-solutions-deploy](https://learn.microsoft.com/ja-jp/azure/sentinel/sentinel-solutions-deploy)
+
+### カスタム ルールを作成する
+
+次のドキュメントを参考にカスタムの分析ルールを作成します。  
+[脅威を検出するためのカスタム分析規則を作成する](https://learn.microsoft.com/ja-jp/azure/sentinel/detect-threats-custom)
+
+### ウォッチリスト
+
+ウォッチリストはワークスペース内で小規模 (上限 1,000万行) なデータを管理するためのテーブルで、分析の対象とするユーザーやシステム名、監視から除外したいプロセス名など、分析ルールの中で使用する条件が使用するデータの格納に使用することができます。分析ルールの KQL を直接変更することなく分析ルールのふるまいを変更することができるため、KQL に習熟していないオペレーターでもウォッチリストを使うことで分析ルールのメンテナンスの一部を実施することができます。
+
+ウォッチリストは CSV ファイルを直接、あるいはストレージアカウントからアップロードして作成することができ、一度作成されたウォッチリストの項目は Azure ポータルから直接変更することができます。ウォッチリストはには同じワークスペース内から KQL の _GetWatchlist 関数を呼び出すことでアクセスすることができます。
+
+ipwatchlist という名前のウォッチリストに記述された IP アドレスを元にフィルタする例
+
+```kql
+Heartbeat
+| where ComputerIP in ( 
+    (_GetWatchlist('ipwatchlist')
+    | project SearchKey)
+)
+```
+
+[Microsoft Sentinel でウォッチリストを作成する](https://learn.microsoft.com/ja-jp/azure/sentinel/watchlists-create)
 
 ## 脅威の探索
 
