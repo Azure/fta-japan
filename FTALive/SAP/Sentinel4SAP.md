@@ -118,8 +118,7 @@ Microsoft Sentinel で SAP アプリケーション用のソリューション�
   - 監視対象の / 監視から除外する SAP システム、ネットワーク、ユーザー
   - 重要な ABAP プログラム、トランザクション、関数モジュール、プロファイル、テーブル、ロール
   - 古いプログラムと関数モジュール、FTP サーバー
-  - システムパラメーター、クリティカルな認可オブジェクト
-  SAP - クリティカルな認可オブジェクト
+  - システムパラメーター、クリティカルな SAP 認可オブジェクト
 
   [使用可能なウォッチリスト](https://learn.microsoft.com/ja-jp/azure/sentinel/sap/sap-solution-security-content#available-watchlists)
 
