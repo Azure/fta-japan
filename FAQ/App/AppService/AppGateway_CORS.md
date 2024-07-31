@@ -121,7 +121,12 @@ CORS 設定を見直し、不要なオリジンを削除するには次のコマ
 az webapp cors remove --resource-group <ResourceGroupName> --name <AppName> --allowed-origins "https://untrusted-domain.com"
 ```
 
+### 参考資料
+
+- [Azure App Service の CORS サポート](https://learn.microsoft.com/ja-jp/azure/app-service/app-service-web-tutorial-rest-api)
+- [Azure Application Gateway のドキュメント](https://learn.microsoft.com/ja-jp/azure/application-gateway/overview)
+- [axios の公式ドキュメント](https://axios-http.com/docs/intro)
+
 ### まとめ
 
 CORS 設定はウェブアプリケーションのセキュリティにおいて非常に重要な要素です。具体的なドメイン、メソッド、ヘッダーのみを許可し、環境ごとに適切な設定を行うことで、セキュリティリスクを最小限に抑えることができます。定期的な見直しと更新を行い、常に最適な CORS 設定を維持しましょう。
-
